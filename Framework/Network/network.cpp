@@ -105,6 +105,7 @@ void network_poll( ENetHost* socket )
 	{
 		e.user.data1 = (intptr_t)ev.peer;
 		e.user.data2 = (intptr_t)ev.packet;
+		e.user.data3 = 0;
 		switch( ev.type )
 		{
 			case ENET_EVENT_TYPE_CONNECT:
@@ -130,5 +131,6 @@ ALLEGRO_EVENT_SOURCE* get_network_event_source()
 
 void event_destructor(ALLEGRO_USER_EVENT* e)
 {
-	enet_packet_destroy( (ENetPacket*)e->data3 );
+	if( e->data2 != 0 )
+		enet_packet_destroy( (ENetPacket*)e->data2 );
 }
