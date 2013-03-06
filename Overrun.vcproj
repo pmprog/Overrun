@@ -193,6 +193,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Game\GUI\panel.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Framework\Core\stagestack.cpp"
 				>
 			</File>
@@ -228,6 +232,10 @@
 			</File>
 			<File
 				RelativePath=".\Framework\Network\network.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Game\GUI\panel.h"
 				>
 			</File>
 			<File

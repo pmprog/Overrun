@@ -4,9 +4,27 @@
 
 void BootUp::Begin()
 {
+	//al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
+
 	cursor = new Mouse( EventQueue );
 	cursor->AllowBoxing = true;
 	r = 0;
+	testPanel = new Panel();
+	testPanel->Position.X = 60;
+	testPanel->Position.Y = 60;
+	testPanel->Size.X = 120;
+	testPanel->Size.Y = 80;
+	testPanel->HasTitle = false;
+
+	testPanel2 = new Panel();
+	testPanel2->Position.X = 300;
+	testPanel2->Position.Y = 150;
+	testPanel2->Size.X = 200;
+	testPanel2->Size.Y = 600;
+	testPanel2->HasTitle = true;
+	testPanel2->Background = al_map_rgba( 128, 128, 255, 128 );
+	testPanel2->Border = al_map_rgb( 128, 128, 255 );
+	testPanel2->CornerCut = 32;
 }
 
 void BootUp::Pause()
@@ -37,6 +55,7 @@ void BootUp::Event(ALLEGRO_EVENT *e)
 			break;
 
 		case ALLEGRO_EVENT_MOUSE_DOUBLECLICK:
+			r = (r + 64) % 256;
 			al_unref_user_event( &e->user );
 			break;
 		case ALLEGRO_EVENT_MOUSE_BOXED:
@@ -50,15 +69,21 @@ void BootUp::Event(ALLEGRO_EVENT *e)
 
 void BootUp::Update()
 {
+	testPanel->Update();
+	testPanel2->Update();
 	cursor->Update();
+
 }
 
 void BootUp::Render()
 {
-	al_clear_to_color( al_map_rgb( 0, 0, r ) );
+	al_clear_to_color( al_map_rgb( 128, 128, r ) );
 
 
-	
+	al_draw_filled_circle( 40, 60, 40, al_map_rgb( 128, 128, 128 ) );
+
+	testPanel->Render();
+	testPanel2->Render();
 	cursor->Render();
 }
 
