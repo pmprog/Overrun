@@ -14,6 +14,9 @@ class FontManager;
 #ifndef ImageManager
 class ImageManager;
 #endif
+#ifndef SoundManager
+class SoundManager;
+#endif
 
 
 #ifdef _core
@@ -28,6 +31,7 @@ ALLEGRO_MIXER*				mixer;
 ALLEGRO_VOICE*				voice;
 FontManager*					Fonts;
 ImageManager*					Images;
+SoundManager*					Audio;
 
 #else
 
@@ -39,6 +43,7 @@ extern ALLEGRO_MIXER*				mixer;
 extern ALLEGRO_VOICE*				voice;
 extern FontManager*					Fonts;
 extern ImageManager*				Images;
+extern SoundManager*				Audio;
 
 #endif
 

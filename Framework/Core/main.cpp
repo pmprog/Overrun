@@ -4,6 +4,7 @@
 #include "../../Game/configure.h"
 #include "../Resource/fontmanager.h"
 #include "../Resource/imagemanager.h"
+#include "../Resource/soundmanager.h"
 
 int main( int argc, char* argv[] )
 {
@@ -94,6 +95,7 @@ int main( int argc, char* argv[] )
 
 	Fonts = new FontManager();
 	Images = new ImageManager();
+	Audio = new SoundManager();
 
 	al_set_blender( ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA );
 
@@ -149,6 +151,7 @@ int main( int argc, char* argv[] )
 
 	delete Fonts;
 	delete Images;
+	delete Audio;
 
 	al_destroy_event_queue( EventQueue );
 	al_destroy_display( Screen );

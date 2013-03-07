@@ -26,6 +26,7 @@
 #include <string>
 #include "Resource/fontmanager.h"
 #include "Resource/imagemanager.h"
+#include "Resource/soundmanager.h"
 
 #if NETWORK_SUPPORT != 0
 #include "Network/network.h"

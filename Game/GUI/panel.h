@@ -16,7 +16,7 @@ class Panel : public Control
 
 		Panel();
 		virtual void Event(ALLEGRO_EVENT *e);
-		virtual void Render();
 		virtual void Update();
+		virtual void Render();
 
 };

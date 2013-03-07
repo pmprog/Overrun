@@ -20,6 +20,9 @@ void Panel::Event(ALLEGRO_EVENT *e)
 
 void Panel::Render()
 {
+	if( !Visible )
+		return;
+
 	float pts[18] = {
 		Position.X,																												Position.Y,
 		Position.X,																												Position.Y + Size.Y,
