@@ -22,9 +22,11 @@ void BootUp::Begin()
 	testPanel2->Size.X = 200;
 	testPanel2->Size.Y = 600;
 	testPanel2->HasTitle = true;
+	testPanel2->Title = "Testing Panel";
 	testPanel2->Background = al_map_rgba( 128, 128, 255, 128 );
 	testPanel2->Border = al_map_rgb( 128, 128, 255 );
-	testPanel2->CornerCut = 32;
+	//testPanel2->CornerCut = 16;
+	testPanel2->FontSize = 24;
 }
 
 void BootUp::Pause()
@@ -77,7 +79,9 @@ void BootUp::Update()
 
 void BootUp::Render()
 {
-	al_clear_to_color( al_map_rgb( 128, 128, r ) );
+	al_clear_to_color( al_map_rgb( 48, 48, 48 ) );
+
+	al_draw_text( Fonts->GetFont("Resource/forte.ttf", 24, 0), al_map_rgb( 255, 255, 255 ), 100, 300, 0, "RTesting Text dsvnjsdvnsjdvindivn uivnsduvin sduvndu sivn" );
 
 
 	al_draw_filled_circle( 40, 60, 40, al_map_rgb( 128, 128, 128 ) );

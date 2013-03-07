@@ -181,6 +181,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Framework\Resource\fontmanager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Framework\Resource\imagemanager.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Framework\Core\main.cpp"
 				>
 			</File>
@@ -194,6 +202,10 @@
 			</File>
 			<File
 				RelativePath=".\Game\GUI\panel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Framework\Resource\soundmanager.cpp"
 				>
 			</File>
 			<File
@@ -223,6 +235,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Framework\Resource\fontmanager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Framework\Resource\imagemanager.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Framework\Core\main.h"
 				>
 			</File>
@@ -236,6 +256,10 @@
 			</File>
 			<File
 				RelativePath=".\Game\GUI\panel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Framework\Resource\soundmanager.h"
 				>
 			</File>
 			<File

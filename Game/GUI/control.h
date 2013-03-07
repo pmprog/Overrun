@@ -12,6 +12,9 @@ class Control
 		bool Enabled;
 		int Z;
 
+		std::string FontName;
+		int FontSize;
+		int FontFlags;
 
 		virtual void Event(ALLEGRO_EVENT *e) = 0;
 		virtual void Render() = 0;

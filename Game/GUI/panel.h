@@ -8,8 +8,9 @@ class Panel : public Control
 	public:
 		ALLEGRO_COLOR Border;
 		ALLEGRO_COLOR Background;
+		ALLEGRO_COLOR Foreground;
 		bool HasTitle;
-		char* Title;
+		std::string Title;
 		int BorderWidth;
 		int CornerCut;
 

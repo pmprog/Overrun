@@ -41,6 +41,8 @@ void Mouse::Update()
 				Position.Y = e.mouse.y;
 				if( mouseDownButton != 0 && AllowBoxing )
 					isBoxing = true;
+				if( !AllowBoxing && isBoxing )
+					isBoxing = false;	// Cancel boxing if it has been disabled
 				break;
 			case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
 				Position.X = e.mouse.x;

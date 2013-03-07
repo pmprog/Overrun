@@ -22,6 +22,10 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
+#include <list>
+#include <string>
+#include "Resource/fontmanager.h"
+#include "Resource/imagemanager.h"
 
 #if NETWORK_SUPPORT != 0
 #include "Network/network.h"

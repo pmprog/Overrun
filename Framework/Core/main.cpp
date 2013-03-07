@@ -2,6 +2,8 @@
 #include "main.h"
 #include "../../Game/boot.h"
 #include "../../Game/configure.h"
+#include "../Resource/fontmanager.h"
+#include "../Resource/imagemanager.h"
 
 int main( int argc, char* argv[] )
 {
@@ -81,7 +83,6 @@ int main( int argc, char* argv[] )
     Quit = true;
   al_start_timer( t );
 
-
 	EventQueue = al_create_event_queue();
 	al_register_event_source( EventQueue, al_get_display_event_source( Screen ) );
 	al_register_event_source( EventQueue, al_get_keyboard_event_source() );
@@ -90,6 +91,9 @@ int main( int argc, char* argv[] )
 #if NETWORK_SUPPORT != 0
 	al_register_event_source( EventQueue, get_network_event_source() );
 #endif
+
+	Fonts = new FontManager();
+	Images = new ImageManager();
 
 	al_set_blender( ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA );
 
@@ -142,6 +146,9 @@ int main( int argc, char* argv[] )
 	{
 		GameStack->Pop();
 	}
+
+	delete Fonts;
+	delete Images;
 
 	al_destroy_event_queue( EventQueue );
 	al_destroy_display( Screen );
