@@ -177,6 +177,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Game\GUI\button.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Game\configure.cpp"
 				>
 			</File>
@@ -227,6 +231,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Game\GUI\button.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Game\configure.h"
 				>
 			</File>
@@ -244,6 +252,10 @@
 			</File>
 			<File
 				RelativePath=".\Framework\Resource\fontmanager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Game\GUI\guihost.h"
 				>
 			</File>
 			<File

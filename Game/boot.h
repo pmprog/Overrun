@@ -4,6 +4,7 @@
 #include "../Framework/Core/main.h"
 #include "GUI/mouse.h"
 #include "GUI/panel.h"
+#include "GUI/button.h"
 
 class BootUp : Stage
 {
@@ -11,6 +12,7 @@ class BootUp : Stage
 		Mouse* cursor;
 		Panel* testPanel;
 		Panel* testPanel2;
+		Button* testButton;
 		int r;
   public:
     // Stage control

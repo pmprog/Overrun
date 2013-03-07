@@ -27,6 +27,15 @@ void BootUp::Begin()
 	testPanel2->Border = al_map_rgb( 128, 128, 255 );
 	//testPanel2->CornerCut = 16;
 	testPanel2->FontSize = 24;
+
+
+	testButton = new Button();
+	testButton->Position.X = 600;
+	testButton->Position.Y = 100;
+	testButton->Size.X = 100;
+	testButton->Size.Y = 32;
+	testButton->Text = "Test Button";
+
 }
 
 void BootUp::Pause()
@@ -74,6 +83,7 @@ void BootUp::Update()
 	testPanel->Update();
 	testPanel2->Update();
 	cursor->Update();
+	testButton->Update();
 
 }
 
@@ -88,6 +98,7 @@ void BootUp::Render()
 
 	testPanel->Render();
 	testPanel2->Render();
+	testButton->Render();
 	cursor->Render();
 }
 
