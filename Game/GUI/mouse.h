@@ -13,27 +13,28 @@ class Mouse
 		ALLEGRO_EVENT_QUEUE*	mouseQueue;
 		ALLEGRO_EVENT_SOURCE	mouseEventSource;
 
-		ALLEGRO_EVENT_QUEUE*	gameQueue;
-
-		Vector2 mouseDownAt;
-		unsigned int mouseDownButton;
 		bool isBoxing;
+		bool blockBoxing;
 		double lastClickTime;
 		double lastDblClickTime;
 
 		static void event_destructor(ALLEGRO_USER_EVENT* e);
 
 	public:
+		Vector2 mouseDownAt;
+		unsigned int mouseDownButton;
 		Vector2 Position;
 		int ClickFidelity;
 		double DoubleClickFidelity;
 		bool AllowBoxing;
 
-		Mouse( ALLEGRO_EVENT_QUEUE* queue );
+		Mouse();
 		~Mouse();
 
 		void Update();
 		void Render();
+
+		void CancelBoxing();
 
 		ALLEGRO_EVENT_SOURCE* get_event_source();
 };

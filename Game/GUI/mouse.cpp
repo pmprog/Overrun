@@ -2,15 +2,13 @@
 #include "mouse.h"
 
 
-
-Mouse::Mouse( ALLEGRO_EVENT_QUEUE* queue ) : AllowBoxing(false), ClickFidelity(3), isBoxing(false), DoubleClickFidelity(0.4)
+Mouse::Mouse() : AllowBoxing(false), ClickFidelity(3), isBoxing(false), DoubleClickFidelity(0.4), blockBoxing(false)
 {
 	mouseQueue = al_create_event_queue();
 	al_register_event_source( mouseQueue, al_get_mouse_event_source() );
 
-	gameQueue = queue;
 	al_init_user_event_source( &mouseEventSource );
-	al_register_event_source( gameQueue, &mouseEventSource );
+	al_register_event_source( EventQueue, &mouseEventSource );
 
 	Position.X = 0;
 	Position.Y = 0;
@@ -23,7 +21,7 @@ Mouse::Mouse( ALLEGRO_EVENT_QUEUE* queue ) : AllowBoxing(false), ClickFidelity(3
 
 Mouse::~Mouse()
 {
-	al_unregister_event_source( gameQueue, &mouseEventSource );
+	al_unregister_event_source( EventQueue, &mouseEventSource );
 	al_destroy_event_queue( mouseQueue );
 	al_destroy_user_event_source( &mouseEventSource );
 }
@@ -39,7 +37,7 @@ void Mouse::Update()
 			case ALLEGRO_EVENT_MOUSE_AXES:
 				Position.X = e.mouse.x;
 				Position.Y = e.mouse.y;
-				if( mouseDownButton != 0 && AllowBoxing )
+				if( mouseDownButton != 0 && AllowBoxing && !blockBoxing )
 					isBoxing = true;
 				if( !AllowBoxing && isBoxing )
 					isBoxing = false;	// Cancel boxing if it has been disabled
@@ -52,6 +50,7 @@ void Mouse::Update()
 				mouseDownButton = e.mouse.button;
 				break;
 			case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
+				blockBoxing = false;
 				Position.X = e.mouse.x;
 				Position.Y = e.mouse.y;
 				if( mouseDownButton == e.mouse.button )
@@ -121,4 +120,10 @@ void Mouse::event_destructor(ALLEGRO_USER_EVENT* e)
 	free( (void*)e->data1 );
 	if( e->data2 != 0 )
 		free( (void*)e->data2 );
+}
+
+void Mouse::CancelBoxing()
+{
+	isBoxing = false;
+	blockBoxing = true;
 }

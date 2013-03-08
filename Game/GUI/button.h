@@ -3,6 +3,8 @@
 
 #include "control.h"
 
+#define ALLEGRO_EVENT_BUTTON_CLICK					ALLEGRO_GET_EVENT_TYPE('B', 't', 'c', 'k')
+
 class Button : public Control
 {
 	public:

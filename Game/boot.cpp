@@ -6,7 +6,7 @@ void BootUp::Begin()
 {
 	//al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
 
-	cursor = new Mouse( EventQueue );
+	cursor = new Mouse();
 	cursor->AllowBoxing = true;
 	r = 0;
 	testPanel = new Panel();

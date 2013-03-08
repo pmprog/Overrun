@@ -123,6 +123,14 @@ int main( int argc, char* argv[] )
 					default:
 						if( !GameStack->IsEmpty() )
 							GameStack->Current()->Event( &e );
+						switch( e.type )
+						{
+							case ALLEGRO_EVENT_NETWORK_CONNECTION:
+							case ALLEGRO_EVENT_NETWORK_RECEIVEPACKET:
+							case ALLEGRO_EVENT_NETWORK_DISCONNECTION:
+								al_unref_user_event( &e.user );
+								break;
+						}
 						break;
 				}
 			}

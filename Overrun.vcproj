@@ -185,10 +185,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Game\GUI\controlhost.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Framework\Resource\fontmanager.cpp"
 				>
 			</File>
@@ -247,15 +243,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Game\GUI\controlhost.h"
-				>
-			</File>
-			<File
 				RelativePath=".\Framework\Resource\fontmanager.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Game\GUI\guihost.h"
 				>
 			</File>
 			<File
