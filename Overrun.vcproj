@@ -193,6 +193,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Framework\GUI\imagebutton.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Framework\Resource\imagemanager.cpp"
 				>
 			</File>
@@ -252,6 +256,14 @@
 			</File>
 			<File
 				RelativePath=".\Framework\GUI\gui.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Framework\GUI\guistage.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Framework\GUI\imagebutton.h"
 				>
 			</File>
 			<File

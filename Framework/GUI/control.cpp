@@ -10,15 +10,17 @@ Control::Control()
 	Enabled = true;
 	Visible = true;
 	FontName = "Resource/visitor1.ttf";
-	FontSize = 12;
+	FontSize = 14;
 	FontFlags = ALLEGRO_TTF_MONOCHROME;
 
 	al_init_user_event_source( &controlEventSource );
 	al_register_event_source( EventQueue, &controlEventSource );
-};
+}
 
+/*
 Control::~Control()
 {
 	al_unregister_event_source( EventQueue, &controlEventSource );
 	al_destroy_user_event_source( &controlEventSource );
-};
+}
+*/

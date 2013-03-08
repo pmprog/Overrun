@@ -1,18 +1,42 @@
 
-#include "button.h"
+#include "imagebutton.h"
 #include "mouse.h"
 
-Button::Button() // : Control()
+ImageButton::ImageButton( ALLEGRO_BITMAP* normal ) : Control()
 {
-	BorderHighlight = al_map_rgb( 255, 255, 255 );
-	BorderLowlight = al_map_rgb( 96, 96, 96 );
-	Background = al_map_rgb( 128, 128, 128 );
-	Foreground = al_map_rgb( 255, 255, 255 );
-	BorderWidth = 1;
+	ImageNormal = normal;
+	ImageDepressed = 0;
+	ImageDisabled = 0;
+	Size.X = al_get_bitmap_width( normal );
+	Size.Y = al_get_bitmap_height( normal );
 	Depressed = false;
+	UnloadImagesOnDelete = true;
 }
 
-bool Button::Event(ALLEGRO_EVENT *e)
+ImageButton::ImageButton( ALLEGRO_BITMAP* normal, ALLEGRO_BITMAP* depressed, ALLEGRO_BITMAP* disabled ) : Control()
+{
+	ImageNormal = normal;
+	ImageDepressed = depressed;
+	ImageDisabled = disabled;
+	Size.X = al_get_bitmap_width( normal );
+	Size.Y = al_get_bitmap_height( normal );
+	Depressed = false;
+	UnloadImagesOnDelete = true;
+}
+
+ImageButton::~ImageButton()
+{
+	if( UnloadImagesOnDelete )
+	{
+		al_destroy_bitmap( ImageNormal );
+		if( ImageDepressed != 0 )
+			al_destroy_bitmap( ImageDepressed );
+		if( ImageDisabled != 0 )
+			al_destroy_bitmap( ImageDisabled );
+	}
+}
+
+bool ImageButton::Event(ALLEGRO_EVENT *e)
 {
 	ALLEGRO_EVENT ev;
 
@@ -49,25 +73,30 @@ bool Button::Event(ALLEGRO_EVENT *e)
 	return false;
 }
 
-void Button::Render()
+void ImageButton::Render()
 {
 	if( !Visible )
 		return;
 
-	al_draw_filled_rectangle( Position.X, Position.Y, Position.X + Size.X, Position.Y + Size.Y, Background );
-	if( Depressed )
-		al_draw_filled_rectangle( Position.X, Position.Y, Position.X + Size.X, Position.Y + Size.Y, al_map_rgba( 0, 0, 0, 128 ) );
-
-	al_draw_line( Position.X, Position.Y, Position.X + Size.X, Position.Y, (Depressed ? BorderLowlight : BorderHighlight), BorderWidth );
-	al_draw_line( Position.X, Position.Y, Position.X, Position.Y + Size.Y, (Depressed ? BorderLowlight : BorderHighlight), BorderWidth );
-	al_draw_line( Position.X, Position.Y + Size.Y, Position.X + Size.X, Position.Y + Size.Y, (Depressed ? BorderHighlight : BorderLowlight), BorderWidth );
-	al_draw_line( Position.X + Size.X, Position.Y, Position.X + Size.X, Position.Y+ Size.Y, (Depressed ? BorderHighlight : BorderLowlight), BorderWidth );
-
-
-	al_draw_text( Fonts->GetFont( FontName, FontSize, FontFlags ), (Enabled ? Foreground : BorderLowlight), Position.X + (Size.X / 2) + (Depressed ? 2 : 0), Position.Y + (Size.Y / 2) - (FontSize / 2) + (Depressed ? 2 : 0), ALLEGRO_ALIGN_CENTRE, Text.c_str() );
-
+	if( !Enabled )
+	{
+		if( ImageDisabled != 0 )
+			al_draw_bitmap( ImageDisabled, Position.X, Position.Y, 0 );
+		else
+			al_draw_tinted_bitmap( ImageNormal, al_map_rgb( 64, 64, 64 ), Position.X, Position.Y, 0 );
+	} else if( Depressed ) {
+		if( ImageDepressed != 0 )
+		{
+			al_draw_bitmap( ImageDepressed, Position.X, Position.Y, 0 );
+		} else {
+			al_draw_bitmap( ImageNormal, Position.X, Position.Y, 0 );
+			al_draw_filled_rectangle( Position.X, Position.Y, Position.X + Size.X, Position.Y + Size.Y, al_map_rgba( 0, 0, 0, 128 ) );
+		}
+	} else {
+		al_draw_bitmap( ImageNormal, Position.X, Position.Y, 0 );
+	}
 }
 
-void Button::Update()
+void ImageButton::Update()
 {
 }

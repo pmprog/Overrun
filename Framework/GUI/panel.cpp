@@ -9,13 +9,11 @@ Panel::Panel() : Control()
 	Foreground = al_map_rgb( 255, 255, 255 );
 	HasTitle = false;
 	BorderWidth = 4;
-	CornerCut = 16;
+	CornerCut = 6;
 }
 
 bool Panel::Event(ALLEGRO_EVENT *e)
 {
-	ALLEGRO_EVENT ev;
-
 	switch( e->type )
 	{
 		case ALLEGRO_EVENT_MOUSEEX_DOWN:

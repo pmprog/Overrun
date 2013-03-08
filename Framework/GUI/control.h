@@ -19,7 +19,12 @@ class Control
 		int FontFlags;
 
 		Control();
-		~Control();
+
+		virtual ~Control()
+		{
+			al_unregister_event_source( EventQueue, &controlEventSource );
+			al_destroy_user_event_source( &controlEventSource );
+		};
 
 		virtual bool Event(ALLEGRO_EVENT *e) = 0;
 		virtual void Update() = 0;
