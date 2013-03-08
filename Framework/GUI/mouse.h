@@ -3,9 +3,20 @@
 
 #include "../Core/main.h"
 
-#define ALLEGRO_EVENT_MOUSE_CLICK					ALLEGRO_GET_EVENT_TYPE('M', 'c', 'c', 'k')
-#define ALLEGRO_EVENT_MOUSE_DOUBLECLICK		ALLEGRO_GET_EVENT_TYPE('M', 'c', 'd', 'b')
-#define ALLEGRO_EVENT_MOUSE_BOXED					ALLEGRO_GET_EVENT_TYPE('M', 'c', 'b', 'x')
+#define ALLEGRO_EVENT_MOUSEEX_MOVE					ALLEGRO_GET_EVENT_TYPE('M', 'c', 'm', 'v')
+#define ALLEGRO_EVENT_MOUSEEX_DOWN					ALLEGRO_GET_EVENT_TYPE('M', 'c', 'd', 'w')
+#define ALLEGRO_EVENT_MOUSEEX_UP						ALLEGRO_GET_EVENT_TYPE('M', 'c', 'u', 'p')
+#define ALLEGRO_EVENT_MOUSEEX_CLICK					ALLEGRO_GET_EVENT_TYPE('M', 'c', 'c', 'k')
+#define ALLEGRO_EVENT_MOUSEEX_DOUBLECLICK		ALLEGRO_GET_EVENT_TYPE('M', 'c', 'd', 'b')
+#define ALLEGRO_EVENT_MOUSEEX_BOXED					ALLEGRO_GET_EVENT_TYPE('M', 'c', 'b', 'x')
+
+/*
+	Mouse User Events:
+		data1 = Mouse*		: Cursor
+		data2 = Vector2*	: Position or Box.TopLeft
+		data3 = Vector2*	: Box.BottomRight
+		data4 = int				: Button Mask
+*/
 
 class Mouse
 {

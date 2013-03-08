@@ -1,5 +1,6 @@
 
 #include "panel.h"
+#include "mouse.h"
 
 Panel::Panel() : Control()
 {
@@ -13,6 +14,22 @@ Panel::Panel() : Control()
 
 bool Panel::Event(ALLEGRO_EVENT *e)
 {
+	ALLEGRO_EVENT ev;
+
+	switch( e->type )
+	{
+		case ALLEGRO_EVENT_MOUSEEX_DOWN:
+			if( Enabled && Visible && ((Vector2*)e->user.data2)->X >= Position.X && ((Vector2*)e->user.data2)->X < Position.X + Size.X && ((Vector2*)e->user.data2)->Y >= Position.Y && ((Vector2*)e->user.data2)->Y < Position.Y + Size.Y )
+			{
+				((Mouse*)e->user.data1)->CancelBoxing();
+				return true;
+			}
+			break;
+		case ALLEGRO_EVENT_MOUSEEX_UP:
+			if( Enabled && Visible && ((Vector2*)e->user.data2)->X >= Position.X && ((Vector2*)e->user.data2)->X < Position.X + Size.X && ((Vector2*)e->user.data2)->Y >= Position.Y && ((Vector2*)e->user.data2)->Y < Position.Y + Size.Y )
+				return true;
+			break;
+	}
 	return false;
 }
 

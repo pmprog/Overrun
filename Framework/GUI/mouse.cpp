@@ -41,6 +41,14 @@ void Mouse::Update()
 					isBoxing = true;
 				if( !AllowBoxing && isBoxing )
 					isBoxing = false;	// Cancel boxing if it has been disabled
+
+				ev.user.data1 = (intptr_t)this;
+				ev.user.data2 = (intptr_t)malloc( sizeof( Position ) );
+				memcpy( (void*)ev.user.data2, (void*)&Position, sizeof( Position ) );
+				ev.user.data3 = 0;
+				ev.user.data4 = e.mouse.button;
+				ev.type = ALLEGRO_EVENT_MOUSEEX_MOVE;
+				al_emit_user_event( &mouseEventSource, &ev, &Mouse::event_destructor );
 				break;
 			case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
 				Position.X = e.mouse.x;
@@ -48,27 +56,42 @@ void Mouse::Update()
 				mouseDownAt.X = e.mouse.x;
 				mouseDownAt.Y = e.mouse.y;
 				mouseDownButton = e.mouse.button;
+
+				ev.user.data1 = (intptr_t)this;
+				ev.user.data2 = (intptr_t)malloc( sizeof( Position ) );
+				memcpy( (void*)ev.user.data2, (void*)&Position, sizeof( Position ) );
+				ev.user.data3 = 0;
+				ev.user.data4 = e.mouse.button;
+				ev.type = ALLEGRO_EVENT_MOUSEEX_DOWN;
+				al_emit_user_event( &mouseEventSource, &ev, &Mouse::event_destructor );
 				break;
 			case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
 				blockBoxing = false;
 				Position.X = e.mouse.x;
 				Position.Y = e.mouse.y;
+
+				ev.user.data1 = (intptr_t)this;
+				ev.user.data2 = (intptr_t)malloc( sizeof( Position ) );
+				memcpy( (void*)ev.user.data2, (void*)&Position, sizeof( Position ) );
+				ev.user.data3 = 0;
+				ev.user.data4 = e.mouse.button;
+				ev.type = ALLEGRO_EVENT_MOUSEEX_UP;
+				al_emit_user_event( &mouseEventSource, &ev, &Mouse::event_destructor );
+
 				if( mouseDownButton == e.mouse.button )
 				{
 					if( abs( e.mouse.x - mouseDownAt.X ) < ClickFidelity && abs( e.mouse.y - mouseDownAt.Y ) < ClickFidelity )
 					{
-						ev.user.data1 = (intptr_t)malloc( sizeof( mouseDownAt ) );
-						memcpy( (void*)ev.user.data1, (void*)&mouseDownAt, sizeof( mouseDownAt ) );
-						ev.user.data2 = 0;
-						ev.user.data3 = e.mouse.button;
-						ev.type = ALLEGRO_EVENT_MOUSE_CLICK;
+						ev.user.data2 = (intptr_t)malloc( sizeof( mouseDownAt ) );
+						memcpy( (void*)ev.user.data2, (void*)&mouseDownAt, sizeof( mouseDownAt ) );
+						ev.type = ALLEGRO_EVENT_MOUSEEX_CLICK;
 						al_emit_user_event( &mouseEventSource, &ev, &Mouse::event_destructor );
 
 						if( al_get_time() - lastClickTime < DoubleClickFidelity && al_get_time() - lastDblClickTime > DoubleClickFidelity )
 						{
-							ev.user.data1 = (intptr_t)malloc( sizeof( mouseDownAt ) );
-							memcpy( (void*)ev.user.data1, (void*)&mouseDownAt, sizeof( mouseDownAt ) );
-							ev.type = ALLEGRO_EVENT_MOUSE_DOUBLECLICK;
+							ev.user.data2 = (intptr_t)malloc( sizeof( mouseDownAt ) );
+							memcpy( (void*)ev.user.data2, (void*)&mouseDownAt, sizeof( mouseDownAt ) );
+							ev.type = ALLEGRO_EVENT_MOUSEEX_DOUBLECLICK;
 							al_emit_user_event( &mouseEventSource, &ev, &Mouse::event_destructor );
 							lastDblClickTime = al_get_time();
 						}
@@ -77,14 +100,13 @@ void Mouse::Update()
 					}
 					if( isBoxing )
 					{
-						ev.user.data1 = (intptr_t)malloc( sizeof( mouseDownAt ) );
-						((Vector2*)ev.user.data1)->X = min(mouseDownAt.X, Position.X);
-						((Vector2*)ev.user.data1)->Y = min(mouseDownAt.Y, Position.Y);
 						ev.user.data2 = (intptr_t)malloc( sizeof( mouseDownAt ) );
 						((Vector2*)ev.user.data2)->X = min(mouseDownAt.X, Position.X);
 						((Vector2*)ev.user.data2)->Y = min(mouseDownAt.Y, Position.Y);
-						ev.user.data3 = e.mouse.button;
-						ev.type = ALLEGRO_EVENT_MOUSE_BOXED;
+						ev.user.data3 = (intptr_t)malloc( sizeof( mouseDownAt ) );
+						((Vector2*)ev.user.data3)->X = min(mouseDownAt.X, Position.X);
+						((Vector2*)ev.user.data3)->Y = min(mouseDownAt.Y, Position.Y);
+						ev.type = ALLEGRO_EVENT_MOUSEEX_BOXED;
 						al_emit_user_event( &mouseEventSource, &ev, &Mouse::event_destructor );
 						isBoxing = false;
 					}
@@ -117,9 +139,9 @@ void Mouse::Render()
 
 void Mouse::event_destructor(ALLEGRO_USER_EVENT* e)
 {
-	free( (void*)e->data1 );
-	if( e->data2 != 0 )
-		free( (void*)e->data2 );
+	free( (void*)e->data2 );
+	if( e->data3 != 0 )
+		free( (void*)e->data3 );
 }
 
 void Mouse::CancelBoxing()

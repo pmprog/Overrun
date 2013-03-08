@@ -18,19 +18,22 @@ bool Button::Event(ALLEGRO_EVENT *e)
 
 	switch( e->type )
 	{
-		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
-			if( Enabled && Visible && e->mouse.x >= Position.X && e->mouse.x < Position.X + Size.X && e->mouse.y >= Position.Y && e->mouse.y < Position.Y + Size.Y )
+		case ALLEGRO_EVENT_MOUSEEX_DOWN:
+			if( Enabled && Visible && ((Vector2*)e->user.data2)->X >= Position.X && ((Vector2*)e->user.data2)->X < Position.X + Size.X && ((Vector2*)e->user.data2)->Y >= Position.Y && ((Vector2*)e->user.data2)->Y < Position.Y + Size.Y )
 			{
+				((Mouse*)e->user.data1)->CancelBoxing();
 				Depressed = true;
 				return true;
 			}
 			break;
-		case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
+		case ALLEGRO_EVENT_MOUSEEX_UP:
 			if( Depressed )
 				Depressed = false;
+			if( Enabled && Visible && ((Vector2*)e->user.data2)->X >= Position.X && ((Vector2*)e->user.data2)->X < Position.X + Size.X && ((Vector2*)e->user.data2)->Y >= Position.Y && ((Vector2*)e->user.data2)->Y < Position.Y + Size.Y )
+				return true;
 			break;
-		case ALLEGRO_EVENT_MOUSE_CLICK:
-			if( Enabled && Visible && e->mouse.x >= Position.X && e->mouse.x < Position.X + Size.X && e->mouse.y >= Position.Y && e->mouse.y < Position.Y + Size.Y )
+		case ALLEGRO_EVENT_MOUSEEX_CLICK:
+			if( Enabled && Visible && ((Vector2*)e->user.data2)->X >= Position.X && ((Vector2*)e->user.data2)->X < Position.X + Size.X && ((Vector2*)e->user.data2)->Y >= Position.Y && ((Vector2*)e->user.data2)->Y < Position.Y + Size.Y )
 			{
 				ev.user.data1 = (intptr_t)this;
 				ev.type = ALLEGRO_EVENT_BUTTON_CLICK;
@@ -38,8 +41,8 @@ bool Button::Event(ALLEGRO_EVENT *e)
 				return true;
 			}
 			break;
-		case ALLEGRO_EVENT_MOUSE_DOUBLECLICK:
-			if( Enabled && Visible && e->mouse.x >= Position.X && e->mouse.x < Position.X + Size.X && e->mouse.y >= Position.Y && e->mouse.y < Position.Y + Size.Y )
+		case ALLEGRO_EVENT_MOUSEEX_DOUBLECLICK:
+			if( Enabled && Visible && ((Vector2*)e->user.data2)->X >= Position.X && ((Vector2*)e->user.data2)->X < Position.X + Size.X && ((Vector2*)e->user.data2)->Y >= Position.Y && ((Vector2*)e->user.data2)->Y < Position.Y + Size.Y )
 				return true;
 			break;
 	}

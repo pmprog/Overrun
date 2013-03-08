@@ -58,6 +58,10 @@ void BootUp::Event(ALLEGRO_EVENT *e)
 {
 	if( testButton->Event( e ) )
 		return;
+	if( testPanel->Event( e ) )
+		return;
+	if( testPanel2->Event( e ) )
+		return;
 	switch( e->type )
 	{
 		case ALLEGRO_EVENT_KEY_DOWN:

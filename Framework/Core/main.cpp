@@ -133,9 +133,12 @@ int main( int argc, char* argv[] )
 							case ALLEGRO_EVENT_NETWORK_RECEIVEPACKET:
 							case ALLEGRO_EVENT_NETWORK_DISCONNECTION:
 							case ALLEGRO_EVENT_BUTTON_CLICK:
-							case ALLEGRO_EVENT_MOUSE_CLICK:
-							case ALLEGRO_EVENT_MOUSE_DOUBLECLICK:
-							case ALLEGRO_EVENT_MOUSE_BOXED:
+							case ALLEGRO_EVENT_MOUSEEX_MOVE:
+							case ALLEGRO_EVENT_MOUSEEX_DOWN:
+							case ALLEGRO_EVENT_MOUSEEX_UP:
+							case ALLEGRO_EVENT_MOUSEEX_CLICK:
+							case ALLEGRO_EVENT_MOUSEEX_DOUBLECLICK:
+							case ALLEGRO_EVENT_MOUSEEX_BOXED:
 								al_unref_user_event( &e.user );
 								break;
 						}
