@@ -3,7 +3,6 @@
 
 #include "../consts.h"
 #include "stagestack.h"
-#include "vector2.h"
 
 #ifndef Configuration
 class Configuration;

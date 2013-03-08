@@ -5,6 +5,7 @@
 #include "../Resource/fontmanager.h"
 #include "../Resource/imagemanager.h"
 #include "../Resource/soundmanager.h"
+#include "../GUI/gui.h"
 
 int main( int argc, char* argv[] )
 {
@@ -118,7 +119,10 @@ int main( int argc, char* argv[] )
 						al_reconfigure_joysticks();
 						break;
 					case ALLEGRO_EVENT_TIMER:
-						framesToUpdate++;
+						if( e.timer.source == t )
+							framesToUpdate++;
+						else if( !GameStack->IsEmpty() )
+							GameStack->Current()->Event( &e );
 						break;
 					default:
 						if( !GameStack->IsEmpty() )
@@ -128,6 +132,10 @@ int main( int argc, char* argv[] )
 							case ALLEGRO_EVENT_NETWORK_CONNECTION:
 							case ALLEGRO_EVENT_NETWORK_RECEIVEPACKET:
 							case ALLEGRO_EVENT_NETWORK_DISCONNECTION:
+							case ALLEGRO_EVENT_BUTTON_CLICK:
+							case ALLEGRO_EVENT_MOUSE_CLICK:
+							case ALLEGRO_EVENT_MOUSE_DOUBLECLICK:
+							case ALLEGRO_EVENT_MOUSE_BOXED:
 								al_unref_user_event( &e.user );
 								break;
 						}

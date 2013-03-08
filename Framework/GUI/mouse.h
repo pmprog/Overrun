@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "../../Framework/Core/main.h"
+#include "../Core/main.h"
 
 #define ALLEGRO_EVENT_MOUSE_CLICK					ALLEGRO_GET_EVENT_TYPE('M', 'c', 'c', 'k')
 #define ALLEGRO_EVENT_MOUSE_DOUBLECLICK		ALLEGRO_GET_EVENT_TYPE('M', 'c', 'd', 'b')

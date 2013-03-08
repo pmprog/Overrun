@@ -7,6 +7,9 @@
 
 class Button : public Control
 {
+	private:
+		bool Depressed;
+
 	public:
 		ALLEGRO_COLOR BorderHighlight;
 		ALLEGRO_COLOR BorderLowlight;
@@ -16,7 +19,7 @@ class Button : public Control
 		int BorderWidth;
 
 		Button();
-		virtual void Event(ALLEGRO_EVENT *e);
+		virtual bool Event(ALLEGRO_EVENT *e);
 		virtual void Update();
 		virtual void Render();
 

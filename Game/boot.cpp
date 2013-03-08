@@ -10,22 +10,24 @@ void BootUp::Begin()
 	cursor->AllowBoxing = true;
 	r = 0;
 	testPanel = new Panel();
-	testPanel->Position.X = 60;
-	testPanel->Position.Y = 60;
-	testPanel->Size.X = 120;
-	testPanel->Size.Y = 80;
-	testPanel->HasTitle = false;
+	testPanel->Position.X = 50;
+	testPanel->Position.Y = 150;
+	testPanel->Size.X = 200;
+	testPanel->Size.Y = 60;
+	testPanel->HasTitle = true;
+	testPanel->Title = "Testing Panel";
+	testPanel->FontSize = 24;
 
 	testPanel2 = new Panel();
 	testPanel2->Position.X = 300;
 	testPanel2->Position.Y = 150;
 	testPanel2->Size.X = 200;
-	testPanel2->Size.Y = 600;
+	testPanel2->Size.Y = 60;
 	testPanel2->HasTitle = true;
 	testPanel2->Title = "Testing Panel";
 	testPanel2->Background = al_map_rgba( 128, 128, 255, 128 );
 	testPanel2->Border = al_map_rgb( 128, 128, 255 );
-	//testPanel2->CornerCut = 16;
+	testPanel2->CornerCut = 0;
 	testPanel2->FontSize = 24;
 
 
@@ -54,6 +56,8 @@ void BootUp::Finish()
 
 void BootUp::Event(ALLEGRO_EVENT *e)
 {
+	if( testButton->Event( e ) )
+		return;
 	switch( e->type )
 	{
 		case ALLEGRO_EVENT_KEY_DOWN:
@@ -66,14 +70,7 @@ void BootUp::Event(ALLEGRO_EVENT *e)
 			break;
 
 		case ALLEGRO_EVENT_MOUSE_DOUBLECLICK:
-			r = (r + 64) % 256;
-			al_unref_user_event( &e->user );
-			break;
-		case ALLEGRO_EVENT_MOUSE_BOXED:
-			al_unref_user_event( &e->user );
-			break;
-		case ALLEGRO_EVENT_MOUSE_CLICK:
-			al_unref_user_event( &e->user );
+			testPanel2->CornerCut = (testPanel2->CornerCut + 4) % 48;
 			break;
 	}
 }

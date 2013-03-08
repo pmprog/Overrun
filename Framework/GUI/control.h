@@ -1,28 +1,27 @@
 
 #pragma once
 
-#include "../../Framework/Core/main.h"
-
-#ifndef ControlHost
-class ControlHost;
-#endif
+#include "../Core/main.h"
 
 class Control
 {
+	protected:
+		ALLEGRO_EVENT_SOURCE	controlEventSource;
 
 	public:
 		Vector2 Position;
 		Vector2 Size;
 		bool Enabled;
 		bool Visible;
-		int Z;
-		ControlHost* Parent;
 
 		std::string FontName;
 		int FontSize;
 		int FontFlags;
 
-		virtual void Event(ALLEGRO_EVENT *e) = 0;
+		Control();
+		~Control();
+
+		virtual bool Event(ALLEGRO_EVENT *e) = 0;
 		virtual void Update() = 0;
 		virtual void Render() = 0;
 

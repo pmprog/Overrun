@@ -2,9 +2,7 @@
 #pragma once
 
 #include "../Framework/Core/main.h"
-#include "GUI/mouse.h"
-#include "GUI/panel.h"
-#include "GUI/button.h"
+#include "../Framework/GUI/gui.h"
 
 class BootUp : Stage
 {

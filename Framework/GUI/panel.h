@@ -15,7 +15,7 @@ class Panel : public Control
 		int CornerCut;
 
 		Panel();
-		virtual void Event(ALLEGRO_EVENT *e);
+		virtual bool Event(ALLEGRO_EVENT *e);
 		virtual void Update();
 		virtual void Render();
 

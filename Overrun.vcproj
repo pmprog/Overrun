@@ -177,11 +177,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Game\GUI\button.cpp"
+				RelativePath=".\Framework\GUI\button.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\Game\configure.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Framework\GUI\control.cpp"
 				>
 			</File>
 			<File
@@ -197,7 +201,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Game\GUI\mouse.cpp"
+				RelativePath=".\Framework\GUI\mouse.cpp"
 				>
 			</File>
 			<File
@@ -205,7 +209,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Game\GUI\panel.cpp"
+				RelativePath=".\Framework\GUI\panel.cpp"
 				>
 			</File>
 			<File
@@ -227,7 +231,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Game\GUI\button.h"
+				RelativePath=".\Framework\GUI\button.h"
 				>
 			</File>
 			<File
@@ -239,11 +243,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Game\GUI\control.h"
+				RelativePath=".\Framework\GUI\control.h"
 				>
 			</File>
 			<File
 				RelativePath=".\Framework\Resource\fontmanager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Framework\GUI\gui.h"
 				>
 			</File>
 			<File
@@ -255,7 +263,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Game\GUI\mouse.h"
+				RelativePath=".\Framework\GUI\mouse.h"
 				>
 			</File>
 			<File
@@ -263,7 +271,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Game\GUI\panel.h"
+				RelativePath=".\Framework\GUI\panel.h"
 				>
 			</File>
 			<File
