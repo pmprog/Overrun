@@ -69,7 +69,7 @@ void BootUp::Event(ALLEGRO_EVENT *e)
 			}
 			break;
 
-		case ALLEGRO_EVENT_MOUSE_DOUBLECLICK:
+		case ALLEGRO_EVENT_BUTTON_CLICK:
 			testPanel2->CornerCut = (testPanel2->CornerCut + 4) % 48;
 			break;
 	}

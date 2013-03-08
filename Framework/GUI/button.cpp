@@ -14,6 +14,8 @@ Button::Button() : Control()
 
 bool Button::Event(ALLEGRO_EVENT *e)
 {
+	ALLEGRO_EVENT ev;
+
 	switch( e->type )
 	{
 		case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
@@ -30,7 +32,9 @@ bool Button::Event(ALLEGRO_EVENT *e)
 		case ALLEGRO_EVENT_MOUSE_CLICK:
 			if( Enabled && Visible && e->mouse.x >= Position.X && e->mouse.x < Position.X + Size.X && e->mouse.y >= Position.Y && e->mouse.y < Position.Y + Size.Y )
 			{
-				// TODO Emit ButtonClick
+				ev.user.data1 = (intptr_t)this;
+				ev.type = ALLEGRO_EVENT_BUTTON_CLICK;
+				al_emit_user_event( &controlEventSource, &ev, 0 );
 				return true;
 			}
 			break;
