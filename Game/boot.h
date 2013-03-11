@@ -8,13 +8,10 @@ class BootUp : GuiStage // Stage
 {
 	private:
 		Mouse* cursor;
-		Panel* testPanel;
-		Panel* testPanel2;
-		Button* testButton;
-		Button* testButtonD;
-		ImageButton* testIBA;
-		ImageButton* testIBB;
-		int r;
+		Panel* panelMenu;
+		Button* buttonMapViewer;
+		Button* buttonSpriteViewer;
+		Button* buttonQuit;
   public:
     // Stage control
     void Begin();

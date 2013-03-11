@@ -36,4 +36,7 @@ class MapDisp : GuiStage // Stage
 
 		void InitialiseGui();
 		void UninitialiseGui();
+
+		int GetMapElement( int X, int Y );
+		void DrawGround( int X, int Y, Vector2 BasePoints[] );
 };

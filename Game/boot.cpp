@@ -6,7 +6,6 @@
 void BootUp::Begin()
 {
 	GuiStage::Begin();
-	//al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
 }
 
 void BootUp::Pause()
@@ -21,7 +20,6 @@ void BootUp::Resume()
 void BootUp::Finish()
 {
 	GuiStage::Finish();
-	delete cursor;
 }
 
 void BootUp::Event(ALLEGRO_EVENT *e)
@@ -42,16 +40,13 @@ void BootUp::Event(ALLEGRO_EVENT *e)
 			break;
 
 		case ALLEGRO_EVENT_BUTTON_CLICK:
-			if( e->user.data1 == (intptr_t)testButton )
-				testPanel2->CornerCut = (testPanel2->CornerCut + 4) % 48;
-			if( e->user.data1 == (intptr_t)testButtonD )
-			{
-				testButton->Enabled = !testButton->Enabled;
-				testIBA->Enabled = !testIBA->Enabled;
-				testIBB->Enabled = !testIBB->Enabled;
-			}
-			if( e->user.data1 == (intptr_t)testIBA )
+			if( e->user.data1 == (intptr_t)buttonQuit )
+				delete GameStack->Pop();
+			if( e->user.data1 == (intptr_t)buttonMapViewer )
 				GameStack->Push( (Stage*)new MapDisp );
+			if( e->user.data1 == (intptr_t)buttonSpriteViewer )
+				panelMenu->BorderWidth = (panelMenu->BorderWidth + 2) % 8;
+
 			break;
 	}
 }
@@ -75,83 +70,75 @@ void BootUp::InitialiseGui()
 {
 	cursor = new Mouse();
 	cursor->AllowBoxing = true;
-	r = 0;
-	testPanel = new Panel();
-	testPanel->Position.X = 50;
-	testPanel->Position.Y = 150;
-	testPanel->Size.X = 200;
-	testPanel->Size.Y = 60;
-	testPanel->HasTitle = true;
-	testPanel->Title = "Testing Panel";
-	testPanel->FontSize = 24;
-	Controls.push_back( testPanel );
 
-	testPanel2 = new Panel();
-	testPanel2->Position.X = 300;
-	testPanel2->Position.Y = 150;
-	testPanel2->Size.X = 200;
-	testPanel2->Size.Y = 60;
-	testPanel2->HasTitle = true;
-	testPanel2->Title = "Testing Panel";
-	testPanel2->Background = al_map_rgba( 128, 128, 255, 128 );
-	testPanel2->Border = al_map_rgb( 128, 128, 255 );
-	testPanel2->CornerCut = 0;
-	testPanel2->FontSize = 24;
-	Controls.push_back( testPanel2 );
+	panelMenu = new Panel();
+	panelMenu->Position.X = CurrentConfiguration->ScreenWidth / 2 - 100;
+	panelMenu->Position.Y = CurrentConfiguration->ScreenHeight / 2 - 200;
+	panelMenu->Size.X = 200;
+	panelMenu->Size.Y = 400;
+	panelMenu->HasTitle = true;
+	panelMenu->Title = "Overrun";
+	panelMenu->FontSize = 24;
+	panelMenu->Background = al_map_rgba( 128, 128, 255, 192 );
+	panelMenu->Border = al_map_rgb( 192, 192, 255 );
+	panelMenu->Foreground = al_map_rgb( 0, 0, 0 );
+	panelMenu->CornerCut = 16;
+	panelMenu->BorderWidth = 4;
+	Controls.push_back( panelMenu );
 
-	testButton = new Button();
-	testButton->Position.X = 500;
-	testButton->Position.Y = 100;
-	testButton->Size.X = 140;
-	testButton->Size.Y = 32;
-	testButton->Text = "Test Button";
-	testButton->FontSize = 16;
-	testButton->BorderWidth = 2;
-	Controls.push_back( testButton );
+	buttonMapViewer = new Button();
+	buttonMapViewer->Position.X = CurrentConfiguration->ScreenWidth / 2 - 80;
+	buttonMapViewer->Position.Y = CurrentConfiguration->ScreenHeight / 2 - 160;
+	buttonMapViewer->Size.X = 160;
+	buttonMapViewer->Size.Y = 32;
+	buttonMapViewer->Text = "Map Viewer";
+	buttonMapViewer->FontSize = 16;
+	buttonMapViewer->BorderWidth = 2;
+	buttonMapViewer->Background = al_map_rgb( 64, 64, 96 );
+	buttonMapViewer->BorderHighlight = al_map_rgb( 192, 192, 255 );
+	buttonMapViewer->BorderLowlight = al_map_rgb( 192, 192, 255 );
+	buttonMapViewer->Foreground = al_map_rgb( 255, 255, 255 );
+	Controls.push_back( buttonMapViewer );
 
-	testButtonD = new Button();
-	testButtonD->Position.X = 500;
-	testButtonD->Position.Y = 140;
-	testButtonD->Size.X = 140;
-	testButtonD->Size.Y = 32;
-	testButtonD->Text = "Toggle";
-	testButtonD->FontSize = 16;
-	testButtonD->BorderWidth = 2;
-	testButtonD->FontName = "Resource/forte.ttf";
-	testButtonD->Background = al_map_rgb( 0, 128, 255 );
-	testButtonD->BorderLowlight = al_map_rgb( 0, 24, 48 );
-	testButtonD->BorderHighlight = al_map_rgb( 64, 192, 255 );
-	Controls.push_back( testButtonD );
+	buttonSpriteViewer = new Button();
+	buttonSpriteViewer->Position.X = CurrentConfiguration->ScreenWidth / 2 - 80;
+	buttonSpriteViewer->Position.Y = CurrentConfiguration->ScreenHeight / 2 - 120;
+	buttonSpriteViewer->Size.X = 160;
+	buttonSpriteViewer->Size.Y = 32;
+	buttonSpriteViewer->Text = "Sprite Viewer";
+	buttonSpriteViewer->FontSize = 16;
+	buttonSpriteViewer->BorderWidth = 2;
+	buttonSpriteViewer->Background = al_map_rgb( 64, 64, 96 );
+	buttonSpriteViewer->BorderHighlight = al_map_rgb( 192, 192, 255 );
+	buttonSpriteViewer->BorderLowlight = al_map_rgb( 192, 192, 255 );
+	buttonSpriteViewer->Foreground = al_map_rgb( 255, 255, 255 );
+	Controls.push_back( buttonSpriteViewer );
 
-
-	testIBA = new ImageButton( al_load_bitmap( "Resource/button_normal.png" ) );
-	testIBA->Position.X = 10;
-	testIBA->Position.Y = 100;
-	Controls.push_back( testIBA );
-
-	testIBB = new ImageButton( al_load_bitmap( "Resource/button_normal.png" ), al_load_bitmap( "Resource/button_depress.png" ), al_load_bitmap( "Resource/button_disable.png" ) );
-	testIBB->Position.X = 10;
-	testIBB->Position.Y = 140;
-	Controls.push_back( testIBB );
+	buttonQuit = new Button();
+	buttonQuit->Position.X = CurrentConfiguration->ScreenWidth / 2 - 80;
+	buttonQuit->Position.Y = CurrentConfiguration->ScreenHeight / 2 + 160;
+	buttonQuit->Size.X = 160;
+	buttonQuit->Size.Y = 32;
+	buttonQuit->Text = "Quit";
+	buttonQuit->FontSize = 16;
+	buttonQuit->BorderWidth = 2;
+	buttonQuit->Background = al_map_rgb( 96, 64, 64 );
+	buttonQuit->BorderHighlight = al_map_rgb( 255, 192, 192 );
+	buttonQuit->BorderLowlight = al_map_rgb( 255, 192, 192 );
+	buttonQuit->Foreground = al_map_rgb( 255, 255, 255 );
+	Controls.push_back( buttonQuit );
 
 }
 
 void BootUp::UninitialiseGui()
 {
-	Controls.remove( testPanel );
-	delete testPanel;
-
-	Controls.remove( testPanel2 );
-	delete testPanel2;
-
-	Controls.remove( testButton );
-	delete testButton;
-	Controls.remove( testButtonD );
-	delete testButtonD;
-
-	Controls.remove( testIBA );
-	delete testIBA;
-	Controls.remove( testIBB );
-	delete testIBB;
-
+	Controls.remove( panelMenu );
+	delete panelMenu;
+	Controls.remove( buttonMapViewer );
+	delete buttonMapViewer;
+	Controls.remove( buttonSpriteViewer );
+	delete buttonSpriteViewer;
+	Controls.remove( buttonQuit );
+	delete buttonQuit;
+	delete cursor;
 }

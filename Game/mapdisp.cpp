@@ -24,11 +24,11 @@ void MapDisp::Begin()
 		0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0,
 		0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0,
 		0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0,
-		0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0,
-		0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-		0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+		0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 2, 0, 0,
+		0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0,
+		0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0,
+		0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0,
 		0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 		0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
 		0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
@@ -55,7 +55,6 @@ void MapDisp::Finish()
 {
 	free( MapData );
 	GuiStage::Finish();
-	delete cursor;
 }
 
 void MapDisp::Event(ALLEGRO_EVENT *e)
@@ -122,19 +121,19 @@ void MapDisp::Update()
 	if( CameraPositionDestination.X != CameraPosition.X )
 	{
 		camTravel = CameraPositionDestination.X - CameraPosition.X;
-		if( camTravel < -2 )
-			camTravel = -2;
-		if( camTravel > 2 )
-			camTravel = 2;
+		if( camTravel < -1 )
+			camTravel = -1;
+		if( camTravel > 1 )
+			camTravel = 1;
 		CameraPosition.X += camTravel;
 	}
 	if( CameraPositionDestination.Y != CameraPosition.Y )
 	{
 		camTravel = CameraPositionDestination.Y - CameraPosition.Y;
-		if( camTravel < -2 )
-			camTravel = -2;
-		if( camTravel > 2 )
-			camTravel = 2;
+		if( camTravel < -1 )
+			camTravel = -1;
+		if( camTravel > 1 )
+			camTravel = 1;
 		CameraPosition.Y += camTravel;
 	}
 	if( CameraZoomDestination != CameraZoom )
@@ -154,6 +153,17 @@ void MapDisp::Update()
 		if( rotDist > 1.0 )
 			rotDist = 1.0;
 		CameraRotation += rotDist;
+	} else {
+		if( CameraRotation < 0 )
+		{
+			CameraRotation += 360.0;
+			CameraRotationDestination += 360.0;
+		}
+		if( CameraRotation > 360.0 )
+		{
+			CameraRotation -= 360.0;
+			CameraRotationDestination -= 360.0;
+		}
 	}
 	GuiStage::Update();
 	cursor->Update();
@@ -163,7 +173,7 @@ void MapDisp::Render()
 {
 	Vector2 pts[4];
 
-	al_clear_to_color( al_map_rgb( 48, 48, 48 ) );
+	al_clear_to_color( al_map_rgb( 0, 0, 0 ) );
 
 	int RotOffX = (MapWidth * TILE_SIZE * CameraZoom) / 2;
 	int RotOffY = (MapHeight * TILE_SIZE * CameraZoom) / 2;
@@ -179,23 +189,12 @@ void MapDisp::Render()
 			double rotSin = sin(CameraRotation * (ALLEGRO_PI/180.0));
 			double rotCos = cos(CameraRotation * (ALLEGRO_PI/180.0));
 
-			//pts[0].X = (tXu*rotCos) - (tYu*rotSin) + (CurrentConfiguration->ScreenWidth / 2) + CameraPosition.X;
-			//pts[0].Y = (tYu*rotCos) + (tXu*rotSin) + (CurrentConfiguration->ScreenHeight / 2) + CameraPosition.Y;
-			RotateVector( tXu, tYu, CameraRotation, &pts[0] );
-			RotateVector( tXu, tYl, CameraRotation, &pts[1] );
-			RotateVector( tXl, tYu, CameraRotation, &pts[2] );
-			RotateVector( tXl, tYl, CameraRotation, &pts[3] );
-			//pts[1].X = (tXu*rotCos) - (tYl*rotSin) + (CurrentConfiguration->ScreenWidth / 2) + CameraPosition.X;
-			//pts[1].Y = (tYl*rotCos) + (tXu*rotSin) + (CurrentConfiguration->ScreenHeight / 2) + CameraPosition.Y;
-			//pts[2].X = (tXu*rotCos) - (tYl*rotSin) + (CurrentConfiguration->ScreenWidth / 2) + CameraPosition.X;
-			//pts[2].Y = (tYl*rotCos) + (tXu*rotSin) + (CurrentConfiguration->ScreenHeight / 2) + CameraPosition.Y;
-			//pts[3].X = (tXl*rotCos) - (tYl*rotSin) + (CurrentConfiguration->ScreenWidth / 2) + CameraPosition.X;
-			//pts[3].Y = (tYl*rotCos) + (tXl*rotSin) + (CurrentConfiguration->ScreenHeight / 2) + CameraPosition.Y;
-			
-			al_draw_line( pts[0].X + (CurrentConfiguration->ScreenWidth / 2) + CameraPosition.X, pts[0].Y + (CurrentConfiguration->ScreenHeight / 2) + CameraPosition.Y, pts[1].X + (CurrentConfiguration->ScreenWidth / 2) + CameraPosition.X, pts[1].Y + (CurrentConfiguration->ScreenHeight / 2) + CameraPosition.Y, al_map_rgb(128,128,128), 1 );
-			al_draw_line( pts[0].X + (CurrentConfiguration->ScreenWidth / 2) + CameraPosition.X, pts[0].Y + (CurrentConfiguration->ScreenHeight / 2) + CameraPosition.Y, pts[2].X + (CurrentConfiguration->ScreenWidth / 2) + CameraPosition.X, pts[2].Y + (CurrentConfiguration->ScreenHeight / 2) + CameraPosition.Y, al_map_rgb(128,128,128), 1 );
-			al_draw_line( pts[3].X + (CurrentConfiguration->ScreenWidth / 2) + CameraPosition.X, pts[3].Y + (CurrentConfiguration->ScreenHeight / 2) + CameraPosition.Y, pts[1].X + (CurrentConfiguration->ScreenWidth / 2) + CameraPosition.X, pts[1].Y + (CurrentConfiguration->ScreenHeight / 2) + CameraPosition.Y, al_map_rgb(128,128,128), 1 );
-			al_draw_line( pts[2].X + (CurrentConfiguration->ScreenWidth / 2) + CameraPosition.X, pts[2].Y + (CurrentConfiguration->ScreenHeight / 2) + CameraPosition.Y, pts[3].X + (CurrentConfiguration->ScreenWidth / 2) + CameraPosition.X, pts[3].Y + (CurrentConfiguration->ScreenHeight / 2) + CameraPosition.Y, al_map_rgb(128,128,128), 1 );
+			RotateVector( tXu, tYu, CameraRotation, &pts[0], (CurrentConfiguration->ScreenWidth / 2) + CameraPosition.X, (CurrentConfiguration->ScreenHeight / 2) + CameraPosition.Y );
+			RotateVector( tXu, tYl, CameraRotation, &pts[1], (CurrentConfiguration->ScreenWidth / 2) + CameraPosition.X, (CurrentConfiguration->ScreenHeight / 2) + CameraPosition.Y );
+			RotateVector( tXl, tYu, CameraRotation, &pts[2], (CurrentConfiguration->ScreenWidth / 2) + CameraPosition.X, (CurrentConfiguration->ScreenHeight / 2) + CameraPosition.Y );
+			RotateVector( tXl, tYl, CameraRotation, &pts[3], (CurrentConfiguration->ScreenWidth / 2) + CameraPosition.X, (CurrentConfiguration->ScreenHeight / 2) + CameraPosition.Y );
+
+			DrawGround( x, y, (Vector2*)&pts );
 		}
 	}
 
@@ -224,4 +223,44 @@ void MapDisp::UninitialiseGui()
 {
 	Controls.remove( testButton );
 	delete testButton;
+
+	delete cursor;
+}
+
+
+int MapDisp::GetMapElement( int X, int Y )
+{
+	if( X < 0 || Y < 0 || X >= MapWidth || Y >= MapHeight )
+		return -1;
+	return MapData[(Y * MapWidth) + X];
+}
+
+void MapDisp::DrawGround( int X, int Y, Vector2 BasePoints[] )
+{
+
+	float polyverts[8] = {
+		BasePoints[2].X, BasePoints[2].Y,
+		BasePoints[0].X, BasePoints[0].Y,
+		BasePoints[1].X, BasePoints[1].Y,
+		BasePoints[3].X, BasePoints[3].Y
+	};
+
+	switch( MapData[(Y * MapWidth) + X] )
+	{
+		case 0:	// buildable
+			al_draw_filled_polygon( (float*)&polyverts, 4, al_map_rgb( 64, 128, 64 ) );
+			break;
+		case 1:
+			al_draw_filled_polygon( (float*)&polyverts, 4, al_map_rgb( 64, 64, 64 ) );
+			break;
+		case 2:
+			al_draw_filled_polygon( (float*)&polyverts, 4, al_map_rgb( 64, 64, 128 ) );
+			break;
+	}
+
+	al_draw_line( BasePoints[0].X, BasePoints[0].Y, BasePoints[1].X, BasePoints[1].Y, al_map_rgb(128,128,128), 1 );
+	al_draw_line( BasePoints[0].X, BasePoints[0].Y, BasePoints[2].X, BasePoints[2].Y, al_map_rgb(128,128,128), 1 );
+	al_draw_line( BasePoints[3].X, BasePoints[3].Y, BasePoints[1].X, BasePoints[1].Y, al_map_rgb(128,128,128), 1 );
+	al_draw_line( BasePoints[2].X, BasePoints[2].Y, BasePoints[3].X, BasePoints[3].Y, al_map_rgb(128,128,128), 1 );
+
 }
