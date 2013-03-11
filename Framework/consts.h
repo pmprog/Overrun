@@ -24,6 +24,7 @@
 #include <allegro5/allegro_acodec.h>
 #include <list>
 #include <string>
+#include <math.h>
 #include "Core/vector2.h"
 #include "Resource/fontmanager.h"
 #include "Resource/imagemanager.h"

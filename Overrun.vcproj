@@ -205,6 +205,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Game\mapdisp.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Framework\GUI\mouse.cpp"
 				>
 			</File>
@@ -222,6 +226,10 @@
 			</File>
 			<File
 				RelativePath=".\Framework\Core\stagestack.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Framework\Core\vector2.cpp"
 				>
 			</File>
 		</Filter>
@@ -272,6 +280,10 @@
 			</File>
 			<File
 				RelativePath=".\Framework\Core\main.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Game\mapdisp.h"
 				>
 			</File>
 			<File

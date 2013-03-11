@@ -1,6 +1,7 @@
 
 #include "boot.h"
 #include "configure.h"
+#include "mapdisp.h"
 
 void BootUp::Begin()
 {
@@ -49,6 +50,8 @@ void BootUp::Event(ALLEGRO_EVENT *e)
 				testIBA->Enabled = !testIBA->Enabled;
 				testIBB->Enabled = !testIBB->Enabled;
 			}
+			if( e->user.data1 == (intptr_t)testIBA )
+				GameStack->Push( (Stage*)new MapDisp );
 			break;
 	}
 }
@@ -65,14 +68,6 @@ void BootUp::Render()
 
 	GuiStage::Render();
 
-	al_draw_text( Fonts->GetFont("Resource/forte.ttf", 24, 0), al_map_rgb( 255, 255, 255 ), 100, 300, 0, "RTesting Text dsvnjsdvnsjdvindivn uivnsduvin sduvndu sivn" );
-
-
-	al_draw_filled_circle( 40, 60, 40, al_map_rgb( 128, 128, 128 ) );
-
-	testPanel->Render();
-	testPanel2->Render();
-	testButton->Render();
 	cursor->Render();
 }
 
@@ -105,7 +100,7 @@ void BootUp::InitialiseGui()
 	Controls.push_back( testPanel2 );
 
 	testButton = new Button();
-	testButton->Position.X = 600;
+	testButton->Position.X = 500;
 	testButton->Position.Y = 100;
 	testButton->Size.X = 140;
 	testButton->Size.Y = 32;
@@ -115,7 +110,7 @@ void BootUp::InitialiseGui()
 	Controls.push_back( testButton );
 
 	testButtonD = new Button();
-	testButtonD->Position.X = 600;
+	testButtonD->Position.X = 500;
 	testButtonD->Position.Y = 140;
 	testButtonD->Size.X = 140;
 	testButtonD->Size.Y = 32;
@@ -130,12 +125,12 @@ void BootUp::InitialiseGui()
 
 
 	testIBA = new ImageButton( al_load_bitmap( "Resource/button_normal.png" ) );
-	testIBA->Position.X = 800;
+	testIBA->Position.X = 10;
 	testIBA->Position.Y = 100;
 	Controls.push_back( testIBA );
 
 	testIBB = new ImageButton( al_load_bitmap( "Resource/button_normal.png" ), al_load_bitmap( "Resource/button_depress.png" ), al_load_bitmap( "Resource/button_disable.png" ) );
-	testIBB->Position.X = 800;
+	testIBB->Position.X = 10;
 	testIBB->Position.Y = 140;
 	Controls.push_back( testIBB );
 
@@ -151,10 +146,11 @@ void BootUp::UninitialiseGui()
 
 	Controls.remove( testButton );
 	delete testButton;
+	Controls.remove( testButtonD );
+	delete testButtonD;
 
 	Controls.remove( testIBA );
 	delete testIBA;
-
 	Controls.remove( testIBB );
 	delete testIBB;
 

@@ -10,8 +10,11 @@ Mouse::Mouse() : AllowBoxing(false), ClickFidelity(3), isBoxing(false), DoubleCl
 	al_init_user_event_source( &mouseEventSource );
 	al_register_event_source( EventQueue, &mouseEventSource );
 
-	Position.X = 0;
-	Position.Y = 0;
+	ALLEGRO_MOUSE_STATE state;
+	al_get_mouse_state( &state );
+	
+	Position.X = state.x;
+	Position.Y = state.y;
 	mouseDownAt.X = 0;
 	mouseDownAt.Y = 0;
 	mouseDownButton = 0;
