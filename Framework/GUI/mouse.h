@@ -9,6 +9,7 @@
 #define ALLEGRO_EVENT_MOUSEEX_CLICK					ALLEGRO_GET_EVENT_TYPE('M', 'c', 'c', 'k')
 #define ALLEGRO_EVENT_MOUSEEX_DOUBLECLICK		ALLEGRO_GET_EVENT_TYPE('M', 'c', 'd', 'b')
 #define ALLEGRO_EVENT_MOUSEEX_BOXED					ALLEGRO_GET_EVENT_TYPE('M', 'c', 'b', 'x')
+#define ALLEGRO_EVENT_MOUSEEX_WHEEL					ALLEGRO_GET_EVENT_TYPE('M', 'c', 'w', 'h')
 
 /*
 	Mouse User Events:

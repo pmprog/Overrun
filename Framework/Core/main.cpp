@@ -139,6 +139,7 @@ int main( int argc, char* argv[] )
 							case ALLEGRO_EVENT_MOUSEEX_CLICK:
 							case ALLEGRO_EVENT_MOUSEEX_DOUBLECLICK:
 							case ALLEGRO_EVENT_MOUSEEX_BOXED:
+							case ALLEGRO_EVENT_MOUSEEX_WHEEL:
 								al_unref_user_event( &e.user );
 								break;
 						}

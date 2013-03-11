@@ -91,7 +91,7 @@ void MapDisp::Event(ALLEGRO_EVENT *e)
 					break;
 				case ALLEGRO_KEY_A:
 					if( CameraZoomDestination < 4.9 )
-					CameraZoomDestination += 0.1;
+						CameraZoomDestination += 0.1;
 					break;
 				case ALLEGRO_KEY_Z:
 					if( CameraZoomDestination > 0.3 )
@@ -113,6 +113,14 @@ void MapDisp::Event(ALLEGRO_EVENT *e)
 		case ALLEGRO_EVENT_BUTTON_CLICK:
 			if( e->user.data1 == (intptr_t)testButton )
 				delete GameStack->Pop();
+			break;
+
+		case ALLEGRO_EVENT_MOUSEEX_WHEEL:
+			CameraZoomDestination += (double)e->user.data4 / 10;
+			if( CameraZoomDestination > 5.0 )
+				CameraZoomDestination = 5.0;
+			if( CameraZoomDestination < 0.01 )
+				CameraZoomDestination = 0.01;
 			break;
 	}
 }

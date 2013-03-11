@@ -45,13 +45,26 @@ void Mouse::Update()
 				if( !AllowBoxing && isBoxing )
 					isBoxing = false;	// Cancel boxing if it has been disabled
 
-				ev.user.data1 = (intptr_t)this;
-				ev.user.data2 = (intptr_t)malloc( sizeof( Position ) );
-				memcpy( (void*)ev.user.data2, (void*)&Position, sizeof( Position ) );
-				ev.user.data3 = 0;
-				ev.user.data4 = e.mouse.button;
-				ev.type = ALLEGRO_EVENT_MOUSEEX_MOVE;
-				al_emit_user_event( &mouseEventSource, &ev, &Mouse::event_destructor );
+				if( e.mouse.dx != 0 || e.mouse.dy != 0 )
+				{
+					ev.user.data1 = (intptr_t)this;
+					ev.user.data2 = (intptr_t)malloc( sizeof( Position ) );
+					memcpy( (void*)ev.user.data2, (void*)&Position, sizeof( Position ) );
+					ev.user.data3 = 0;
+					ev.user.data4 = e.mouse.button;
+					ev.type = ALLEGRO_EVENT_MOUSEEX_MOVE;
+					al_emit_user_event( &mouseEventSource, &ev, &Mouse::event_destructor );
+				}
+				if( e.mouse.dz != 0 )
+				{
+					ev.user.data1 = (intptr_t)this;
+					ev.user.data2 = (intptr_t)malloc( sizeof( Position ) );
+					memcpy( (void*)ev.user.data2, (void*)&Position, sizeof( Position ) );
+					ev.user.data3 = 0;
+					ev.user.data4 = e.mouse.dz;
+					ev.type = ALLEGRO_EVENT_MOUSEEX_WHEEL;
+					al_emit_user_event( &mouseEventSource, &ev, &Mouse::event_destructor );
+				}
 				break;
 			case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
 				Position.X = e.mouse.x;
