@@ -41,7 +41,7 @@ void Panel::Render()
 		Position.X,																												Position.Y + Size.Y,
 		Position.X + Size.X,																							Position.Y + Size.Y,
 		Position.X + Size.X,																							min( Position.Y + CornerCut, Position.Y + Size.Y ),
-		min( Position.X + Size.X - CornerCut, Position.X + Size.X ),			Position.Y,
+		max( Position.X + Size.X - CornerCut, Position.X ),								Position.Y,
 		Position.X + BorderWidth,																					min( Position.Y + max( CornerCut, FontSize + BorderWidth ) + BorderWidth, Position.Y + Size.Y ),
 		Position.X + Size.X - BorderWidth,																min( Position.Y + max( CornerCut, FontSize + BorderWidth ) + BorderWidth, Position.Y + Size.Y - BorderWidth ),
 		Position.X + Size.X - BorderWidth,																Position.Y + Size.Y - BorderWidth,

@@ -30,9 +30,6 @@ void Configuration::InitSettings()
 		FullScreen = false;
 	}
 
-	ScreenWidth = 640;
-	ScreenHeight = 480;
-
 	WasLoaded = true;
 }
 

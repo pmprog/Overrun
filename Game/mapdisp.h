@@ -20,11 +20,13 @@ class MapDisp : GuiStage // Stage
 		double CameraZoomDestination;
 		double CameraRotation;
 		double CameraRotationDestination;
+		bool CameraDrag;
 
 		int MapWidth;
 		int MapHeight;
 
 		int frameIndex;
+		
 
   public:
     // Stage control

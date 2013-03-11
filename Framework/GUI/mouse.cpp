@@ -50,7 +50,9 @@ void Mouse::Update()
 					ev.user.data1 = (intptr_t)this;
 					ev.user.data2 = (intptr_t)malloc( sizeof( Position ) );
 					memcpy( (void*)ev.user.data2, (void*)&Position, sizeof( Position ) );
-					ev.user.data3 = 0;
+					ev.user.data3 = (intptr_t)malloc( sizeof( Position ) );
+					((Vector2*)ev.user.data3)->X = e.mouse.dx;
+					((Vector2*)ev.user.data3)->Y = e.mouse.dy;
 					ev.user.data4 = e.mouse.button;
 					ev.type = ALLEGRO_EVENT_MOUSEEX_MOVE;
 					al_emit_user_event( &mouseEventSource, &ev, &Mouse::event_destructor );

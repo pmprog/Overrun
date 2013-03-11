@@ -76,6 +76,8 @@ int main( int argc, char* argv[] )
 		Screen = al_create_display( CurrentConfiguration->ScreenWidth, CurrentConfiguration->ScreenHeight );
 	} else {
 		Screen = al_create_display( fallbackW, fallbackH );
+		CurrentConfiguration->ScreenWidth = fallbackW;
+		CurrentConfiguration->ScreenHeight = fallbackH;
 	}
 
 	al_hide_mouse_cursor( Screen );

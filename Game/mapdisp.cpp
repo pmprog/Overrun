@@ -12,6 +12,7 @@ void MapDisp::Begin()
 	CameraZoomDestination = 1.0;
 	CameraRotation = 0.0;
 	CameraRotationDestination = 0.0;
+	CameraDrag = false;
 
 	MapWidth = 15;
 	MapHeight = 16;
@@ -74,38 +75,28 @@ void MapDisp::Event(ALLEGRO_EVENT *e)
 					GameStack->Pop();
 					break;
 				case ALLEGRO_KEY_UP:
-					//CameraPosition.X -= sin( CameraRotation ) / CameraZoom;
 					CameraPositionDestination.Y += 10; // cos( CameraRotation ) / CameraZoom;
 					break;
 				case ALLEGRO_KEY_DOWN:
-					//CameraPosition.X += sin( CameraRotation ) / CameraZoom;
 					CameraPositionDestination.Y -= 10; // cos( CameraRotation ) / CameraZoom;
 					break;
 				case ALLEGRO_KEY_LEFT:
 					CameraPositionDestination.X += 10; // cos( CameraRotation ) / CameraZoom;
-					//CameraPosition.Y -= sin( CameraRotation ) / CameraZoom;
 					break;
 				case ALLEGRO_KEY_RIGHT:
 					CameraPositionDestination.X -= 10;
-					//CameraPosition.Y = sin( CameraRotation ) / CameraZoom;
 					break;
 				case ALLEGRO_KEY_A:
-					if( CameraZoomDestination < 4.9 )
-						CameraZoomDestination += 0.1;
+					CameraZoomDestination += 0.1;
 					break;
 				case ALLEGRO_KEY_Z:
-					if( CameraZoomDestination > 0.3 )
-						CameraZoomDestination -= 0.1;
+					CameraZoomDestination -= 0.1;
 					break;
 				case ALLEGRO_KEY_S:
 					CameraRotationDestination += 10.0;
-					//if( CameraRotation > 360.0 )
-					//	CameraRotation -= 360.0;
 					break;
 				case ALLEGRO_KEY_X:
 					CameraRotationDestination -= 10.0;
-					//if( CameraRotation < 0.0 )
-					//	CameraRotation += 360.0;
 					break;
 			}
 			break;
@@ -117,10 +108,32 @@ void MapDisp::Event(ALLEGRO_EVENT *e)
 
 		case ALLEGRO_EVENT_MOUSEEX_WHEEL:
 			CameraZoomDestination += (double)e->user.data4 / 10;
-			if( CameraZoomDestination > 5.0 )
-				CameraZoomDestination = 5.0;
-			if( CameraZoomDestination < 0.01 )
-				CameraZoomDestination = 0.01;
+			break;
+
+		case ALLEGRO_EVENT_MOUSEEX_DOWN:
+			if( e->user.data4 > 1 )
+			{
+				cursor->CancelBoxing();
+				CameraDrag = true;
+			}
+			break;
+		case ALLEGRO_EVENT_MOUSEEX_UP:
+			if( e->user.data4 > 1 )
+				CameraDrag = false;
+			break;
+		case ALLEGRO_EVENT_MOUSEEX_MOVE:
+			if( CameraDrag )
+			{
+				int maxMapDim = ((max(MapWidth, MapHeight) * TILE_SIZE) / 2);
+				CameraPositionDestination.X += ((Vector2*)e->user.data3)->X / CameraZoom;
+				CameraPositionDestination.Y += ((Vector2*)e->user.data3)->Y / CameraZoom;
+				if( abs( CameraPositionDestination.X ) > maxMapDim )
+					CameraPositionDestination.X = max(-maxMapDim, min(maxMapDim, CameraPositionDestination.X));
+				if( abs( CameraPositionDestination.Y ) > maxMapDim )
+					CameraPositionDestination.Y = max(-maxMapDim, min(maxMapDim, CameraPositionDestination.Y));
+				CameraPosition.X = CameraPositionDestination.X;
+				CameraPosition.Y = CameraPositionDestination.Y;
+			}
 			break;
 	}
 }
@@ -161,8 +174,11 @@ void MapDisp::Update()
 
 
 	int camTravel;
+	int maxMapDim = ((max(MapWidth, MapHeight) * TILE_SIZE) / 2);
 	if( CameraPositionDestination.X != CameraPosition.X )
 	{
+		if( abs( CameraPositionDestination.X ) > maxMapDim )
+			CameraPositionDestination.X = max(-maxMapDim, min(maxMapDim, CameraPositionDestination.X));
 		camTravel = CameraPositionDestination.X - CameraPosition.X;
 		if( camTravel < -2 )
 			camTravel = -2;
@@ -172,6 +188,8 @@ void MapDisp::Update()
 	}
 	if( CameraPositionDestination.Y != CameraPosition.Y )
 	{
+		if( abs( CameraPositionDestination.Y ) > maxMapDim )
+			CameraPositionDestination.Y = max(-maxMapDim, min(maxMapDim, CameraPositionDestination.Y));
 		camTravel = CameraPositionDestination.Y - CameraPosition.Y;
 		if( camTravel < -2 )
 			camTravel = -2;
@@ -181,6 +199,10 @@ void MapDisp::Update()
 	}
 	if( CameraZoomDestination != CameraZoom )
 	{
+		if( CameraZoomDestination > 5.0 )
+			CameraZoomDestination = 5.0;
+		if( CameraZoomDestination < 0.3 )
+			CameraZoomDestination = 0.3;
 		double zomDist = CameraZoomDestination - CameraZoom;
 		if( zomDist < -0.01 )
 			zomDist = -0.01;
@@ -196,18 +218,30 @@ void MapDisp::Update()
 		if( rotDist > 1.0 )
 			rotDist = 1.0;
 		CameraRotation += rotDist;
-	} else {
-		if( CameraRotation < 0 )
-		{
-			CameraRotation += 360.0;
-			CameraRotationDestination += 360.0;
-		}
-		if( CameraRotation > 360.0 )
-		{
-			CameraRotation -= 360.0;
-			CameraRotationDestination -= 360.0;
-		}
 	}
+
+	if( CameraRotation < 0 )
+	{
+		CameraRotation += 360.0;
+		CameraRotationDestination += 360.0;
+	}
+	if( CameraRotation > 360.0 )
+	{
+		CameraRotation -= 360.0;
+		CameraRotationDestination -= 360.0;
+	}
+
+	if( abs( CameraPosition.X ) > maxMapDim )
+		CameraPosition.X = max(-maxMapDim, min(maxMapDim, CameraPosition.X));
+	if( abs( CameraPosition.Y ) > maxMapDim )
+		CameraPosition.Y = max(-maxMapDim, min(maxMapDim, CameraPosition.Y));
+
+	if( CameraZoom > 5.0 )
+		CameraZoom = 5.0;
+	if( CameraZoom < 0.3 )
+		CameraZoom = 0.3;
+
+
 	GuiStage::Update();
 	cursor->Update();
 }
