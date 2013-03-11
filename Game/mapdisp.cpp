@@ -40,6 +40,8 @@ void MapDisp::Begin()
 	memcpy( (void*)MapData, (void*)&sourceMapData, MapWidth * MapHeight * sizeof( uint8_t ) );
 
 	GuiStage::Begin();
+
+	frameIndex = 0;
 }
 
 void MapDisp::Pause()
@@ -117,23 +119,56 @@ void MapDisp::Event(ALLEGRO_EVENT *e)
 
 void MapDisp::Update()
 {
+	frameIndex++;
+	switch( frameIndex )
+	{
+		case 1:
+			CameraPositionDestination.X = -CurrentConfiguration->ScreenWidth / 2;
+			CameraPositionDestination.Y = CurrentConfiguration->ScreenHeight / 2;
+			CameraZoomDestination = 0.1;
+			break;
+		case 90:
+			CameraPositionDestination.Y = -CurrentConfiguration->ScreenHeight / 4;
+			CameraRotationDestination = 90;
+			break;
+		case 120:
+			CameraZoomDestination = 0.7;
+			break;
+		case 250:
+			CameraPositionDestination.X = CurrentConfiguration->ScreenWidth / 2;
+			CameraPositionDestination.Y = 0;
+			CameraRotationDestination = 220;
+			CameraZoomDestination = 2.0;
+			break;
+		case 340:
+			CameraZoomDestination = 0.7;
+			break;
+		case 500:
+			CameraPositionDestination.X = 0;
+			CameraPositionDestination.Y = 0;
+			CameraRotationDestination = 360;
+			CameraZoomDestination = 1.0;
+			break;
+	}
+
+
 	int camTravel;
 	if( CameraPositionDestination.X != CameraPosition.X )
 	{
 		camTravel = CameraPositionDestination.X - CameraPosition.X;
-		if( camTravel < -1 )
-			camTravel = -1;
-		if( camTravel > 1 )
-			camTravel = 1;
+		if( camTravel < -2 )
+			camTravel = -2;
+		if( camTravel > 2 )
+			camTravel = 2;
 		CameraPosition.X += camTravel;
 	}
 	if( CameraPositionDestination.Y != CameraPosition.Y )
 	{
 		camTravel = CameraPositionDestination.Y - CameraPosition.Y;
-		if( camTravel < -1 )
-			camTravel = -1;
-		if( camTravel > 1 )
-			camTravel = 1;
+		if( camTravel < -2 )
+			camTravel = -2;
+		if( camTravel > 2 )
+			camTravel = 2;
 		CameraPosition.Y += camTravel;
 	}
 	if( CameraZoomDestination != CameraZoom )
@@ -189,10 +224,10 @@ void MapDisp::Render()
 			double rotSin = sin(CameraRotation * (ALLEGRO_PI/180.0));
 			double rotCos = cos(CameraRotation * (ALLEGRO_PI/180.0));
 
-			RotateVector( tXu, tYu, CameraRotation, &pts[0], (CurrentConfiguration->ScreenWidth / 2) + CameraPosition.X, (CurrentConfiguration->ScreenHeight / 2) + CameraPosition.Y );
-			RotateVector( tXu, tYl, CameraRotation, &pts[1], (CurrentConfiguration->ScreenWidth / 2) + CameraPosition.X, (CurrentConfiguration->ScreenHeight / 2) + CameraPosition.Y );
-			RotateVector( tXl, tYu, CameraRotation, &pts[2], (CurrentConfiguration->ScreenWidth / 2) + CameraPosition.X, (CurrentConfiguration->ScreenHeight / 2) + CameraPosition.Y );
-			RotateVector( tXl, tYl, CameraRotation, &pts[3], (CurrentConfiguration->ScreenWidth / 2) + CameraPosition.X, (CurrentConfiguration->ScreenHeight / 2) + CameraPosition.Y );
+			RotateVector( tXu, tYu, CameraRotation, &pts[0], (CurrentConfiguration->ScreenWidth / 2) + (CameraPosition.X * CameraZoom), (CurrentConfiguration->ScreenHeight / 2) + (CameraPosition.Y * CameraZoom) );
+			RotateVector( tXu, tYl, CameraRotation, &pts[1], (CurrentConfiguration->ScreenWidth / 2) + (CameraPosition.X * CameraZoom), (CurrentConfiguration->ScreenHeight / 2) + (CameraPosition.Y * CameraZoom) );
+			RotateVector( tXl, tYu, CameraRotation, &pts[2], (CurrentConfiguration->ScreenWidth / 2) + (CameraPosition.X * CameraZoom), (CurrentConfiguration->ScreenHeight / 2) + (CameraPosition.Y * CameraZoom) );
+			RotateVector( tXl, tYl, CameraRotation, &pts[3], (CurrentConfiguration->ScreenWidth / 2) + (CameraPosition.X * CameraZoom), (CurrentConfiguration->ScreenHeight / 2) + (CameraPosition.Y * CameraZoom) );
 
 			DrawGround( x, y, (Vector2*)&pts );
 		}

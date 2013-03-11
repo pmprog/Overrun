@@ -24,6 +24,8 @@ class MapDisp : GuiStage // Stage
 		int MapWidth;
 		int MapHeight;
 
+		int frameIndex;
+
   public:
     // Stage control
     void Begin();
