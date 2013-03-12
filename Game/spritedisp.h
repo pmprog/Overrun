@@ -13,8 +13,11 @@ class SpriteDisp : GuiStage // Stage
 	private:
 		Mouse* cursor;
 		Button* testButton;
+		double ScreenRot;
 
 		VectorSprite* circ;
+		VectorSprite* wave;
+		
 
   public:
     // Stage control

@@ -9,7 +9,10 @@ void SpriteDisp::Begin()
 
 	GuiStage::Begin();
 
+	ScreenRot = 0.0;
+
 	circ = new VectorSprite();
+	wave = new VectorSprite();
 
 	for( int y = -24; y < 24; y += 6 )
 	{
@@ -21,17 +24,19 @@ void SpriteDisp::Begin()
 		v[8] = 24; v[9] = y;
 		vc = new VectorComponent( VECTORSPRITE_COMPONENT_POLYLINE, al_map_rgb( 255, 128, 128 ), v, 5 );
 		vc->RotationPerFrame = 0.8;
-		circ->Components.push_back( vc );
+		wave->Components.push_back( vc );
 		free(v);
 	}
 	
 	v = (float*)malloc(sizeof(float) * 4);
 	v[0] = 0; v[1] = 0;
 	v[2] = 24; v[3] = 12;
-	vc = new VectorComponent( VECTORSPRITE_COMPONENT_CIRCLE_FILLED, al_map_rgba( 128, 192, 220, 128 ), v, 2 );
+	vc = new VectorComponent( VECTORSPRITE_COMPONENT_CIRCLE, al_map_rgba( 128, 192, 220, 128 ), v, 2 );
+	vc->DrawThickness = 2;
 	circ->Components.push_back( vc );
 	free(v);
 
+	/*
 	v = (float*)malloc(sizeof(float) * 8);
 	v[0] = -12; v[1] = -12;
 	v[2] = 12; v[3] = -12;
@@ -42,7 +47,27 @@ void SpriteDisp::Begin()
 	vc->DrawThickness = 4;
 	circ->Components.push_back( vc );
 	free(v);
+	*/
+	v = (float*)malloc(sizeof(float) * 4);
+	v[0] = 0; v[1] = 0;
+	v[2] = 18; v[3] = 18;
+	vc = new VectorComponent( VECTORSPRITE_COMPONENT_CIRCLE, al_map_rgb( 0, 220, 96), v, 2 );
+	vc->DrawThickness = 4;
+	circ->Components.push_back( vc );
+	free(v);
 
+	for( int i = 0; i < 360; i += 20 )
+	{
+		v = (float*)malloc(sizeof(float) * 4);
+		v[0] = 0; v[1] = -18;
+		v[2] = 0; v[3] = -12;
+		vc = new VectorComponent( VECTORSPRITE_COMPONENT_POLYLINE, al_map_rgb( 0, 220, 96), v, 2 );
+		vc->DrawThickness = 2;
+		vc->Rotation = i;
+		vc->RotationPerFrame = 1.0;
+		circ->Components.push_back( vc );
+		free(v);
+	}
 
 
 }
@@ -60,6 +85,7 @@ void SpriteDisp::Finish()
 {
 	GuiStage::Finish();
 	delete circ;
+	delete wave;
 }
 
 void SpriteDisp::Event(ALLEGRO_EVENT *e)
@@ -76,7 +102,23 @@ void SpriteDisp::Event(ALLEGRO_EVENT *e)
 				case ALLEGRO_KEY_ESCAPE:
 					GameStack->Pop();
 					break;
+				case ALLEGRO_KEY_LEFT:
+					ScreenRot -= 10.0;
+					break;
+				case ALLEGRO_KEY_RIGHT:
+					ScreenRot += 10.0;
+					break;
+				case ALLEGRO_KEY_UP:
+					ScreenRot -= 30.0;
+					break;
+				case ALLEGRO_KEY_DOWN:
+					ScreenRot += 30.0;
+					break;
 			}
+			if( ScreenRot < 0.0 )
+				ScreenRot += 360.0;
+			if( ScreenRot >= 360.0 )
+				ScreenRot -= 360.0;
 			break;
 
 		case ALLEGRO_EVENT_BUTTON_CLICK:
@@ -89,6 +131,7 @@ void SpriteDisp::Event(ALLEGRO_EVENT *e)
 void SpriteDisp::Update()
 {
 	circ->Update();
+	wave->Update();
 	GuiStage::Update();
 	cursor->Update();
 }
@@ -101,7 +144,10 @@ void SpriteDisp::Render()
 
 	pos.X = 200;
 	pos.Y = 200;
-	circ->Render( &pos, 0, 0.4 );
+	circ->Render( &pos, ScreenRot, 1.9 );
+	pos.X = 350;
+	pos.Y = 200;
+	wave->Render( &pos, ScreenRot, 1.9 );
 
 	GuiStage::Render();
 	cursor->Render();
