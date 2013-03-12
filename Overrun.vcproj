@@ -232,6 +232,14 @@
 				RelativePath=".\Framework\Core\vector2.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\Game\Sprites\vectorcomponent.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Game\Sprites\vectorsprite.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -312,6 +320,14 @@
 			</File>
 			<File
 				RelativePath=".\Framework\Core\vector2.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Game\Sprites\vectorcomponent.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Game\Sprites\vectorsprite.h"
 				>
 			</File>
 		</Filter>

@@ -140,39 +140,6 @@ void MapDisp::Event(ALLEGRO_EVENT *e)
 
 void MapDisp::Update()
 {
-	frameIndex++;
-	switch( frameIndex )
-	{
-		case 1:
-			CameraPositionDestination.X = -CurrentConfiguration->ScreenWidth / 2;
-			CameraPositionDestination.Y = CurrentConfiguration->ScreenHeight / 2;
-			CameraZoomDestination = 0.1;
-			break;
-		case 90:
-			CameraPositionDestination.Y = -CurrentConfiguration->ScreenHeight / 4;
-			CameraRotationDestination = 90;
-			break;
-		case 120:
-			CameraZoomDestination = 0.7;
-			break;
-		case 250:
-			CameraPositionDestination.X = CurrentConfiguration->ScreenWidth / 2;
-			CameraPositionDestination.Y = 0;
-			CameraRotationDestination = 220;
-			CameraZoomDestination = 2.0;
-			break;
-		case 340:
-			CameraZoomDestination = 0.7;
-			break;
-		case 500:
-			CameraPositionDestination.X = 0;
-			CameraPositionDestination.Y = 0;
-			CameraRotationDestination = 360;
-			CameraZoomDestination = 1.0;
-			break;
-	}
-
-
 	int camTravel;
 	int maxMapDim = ((max(MapWidth, MapHeight) * TILE_SIZE) / 2);
 	if( CameraPositionDestination.X != CameraPosition.X )
