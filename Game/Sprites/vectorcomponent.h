@@ -26,5 +26,5 @@ class VectorComponent
 		VectorComponent( int Type, ALLEGRO_COLOR Colour, std::list<Vector2*> Verticies );
 		~VectorComponent();
 		void Update();
-		void Render( Vector2* Position, double ScreenRotation );
+		void Render( Vector2* Position, double ScreenRotation, double Zoom );
 };

@@ -11,24 +11,6 @@ void SpriteDisp::Begin()
 
 	circ = new VectorSprite();
 
-	
-	v = (float*)malloc(sizeof(float) * 4);
-	v[0] = 0; v[1] = 0;
-	v[2] = 24; v[3] = 12;
-	vc = new VectorComponent( VECTORSPRITE_COMPONENT_CIRCLE, al_map_rgb( 128, 192, 220 ), v, 2 );
-	circ->Components.push_back( vc );
-	free(v);
-
-	v = (float*)malloc(sizeof(float) * 8);
-	v[0] = -12; v[1] = -12;
-	v[2] = 12; v[3] = -12;
-	v[4] = 12; v[5] = 12;
-	v[6] = -12; v[7] = 12;
-	vc = new VectorComponent( VECTORSPRITE_COMPONENT_POLYGON, al_map_rgb( 128, 128, 128 ), v, 4 );
-	vc->RotationPerFrame = 2.0;
-	circ->Components.push_back( vc );
-	free(v);
-
 	for( int y = -24; y < 24; y += 6 )
 	{
 		v = (float*)malloc(sizeof(float) * 10);
@@ -42,6 +24,26 @@ void SpriteDisp::Begin()
 		circ->Components.push_back( vc );
 		free(v);
 	}
+	
+	v = (float*)malloc(sizeof(float) * 4);
+	v[0] = 0; v[1] = 0;
+	v[2] = 24; v[3] = 12;
+	vc = new VectorComponent( VECTORSPRITE_COMPONENT_CIRCLE_FILLED, al_map_rgba( 128, 192, 220, 128 ), v, 2 );
+	circ->Components.push_back( vc );
+	free(v);
+
+	v = (float*)malloc(sizeof(float) * 8);
+	v[0] = -12; v[1] = -12;
+	v[2] = 12; v[3] = -12;
+	v[4] = 12; v[5] = 12;
+	v[6] = -12; v[7] = 12;
+	vc = new VectorComponent( VECTORSPRITE_COMPONENT_POLYGON, al_map_rgb( 128, 128, 128 ), v, 4 );
+	vc->RotationPerFrame = 2.0;
+	vc->DrawThickness = 4;
+	circ->Components.push_back( vc );
+	free(v);
+
+
 
 }
 
@@ -99,7 +101,7 @@ void SpriteDisp::Render()
 
 	pos.X = 200;
 	pos.Y = 200;
-	circ->Render( &pos, 0 );
+	circ->Render( &pos, 0, 0.4 );
 
 	GuiStage::Render();
 	cursor->Render();

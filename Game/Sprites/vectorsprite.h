@@ -15,6 +15,6 @@ class VectorSprite
 		std::list<VectorComponent*> Components;
 
 		void Update();
-		void Render( Vector2* Position, double ScreenRotation );
+		void Render( Vector2* Position, double ScreenRotation, double Zoom );
 
 };
