@@ -2,6 +2,7 @@
 #include "boot.h"
 #include "configure.h"
 #include "mapdisp.h"
+#include "spritedisp.h"
 
 void BootUp::Begin()
 {
@@ -45,7 +46,7 @@ void BootUp::Event(ALLEGRO_EVENT *e)
 			if( e->user.data1 == (intptr_t)buttonMapViewer )
 				GameStack->Push( (Stage*)new MapDisp );
 			if( e->user.data1 == (intptr_t)buttonSpriteViewer )
-				panelMenu->BorderWidth = (panelMenu->BorderWidth + 2) % 8;
+				GameStack->Push( (Stage*)new SpriteDisp );
 
 			break;
 	}

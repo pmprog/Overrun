@@ -225,6 +225,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Game\spritedisp.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Framework\Core\stagestack.cpp"
 				>
 			</File>
@@ -308,6 +312,10 @@
 			</File>
 			<File
 				RelativePath=".\Framework\Resource\soundmanager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Game\spritedisp.h"
 				>
 			</File>
 			<File

@@ -11,15 +11,20 @@
 
 class VectorComponent
 {
+	private:
+		int PointCount;
+		float* Points;
+
 	public:
 		int ComponentType;
 		ALLEGRO_COLOR DrawColour;
 		int DrawThickness;
 		double Rotation;
-		int RotationPerFrame;
-		std::list<Vector2*> Points;
+		double RotationPerFrame;
 
+		VectorComponent( int Type, ALLEGRO_COLOR Colour, float* Verticies, int VertexCount );
 		VectorComponent( int Type, ALLEGRO_COLOR Colour, std::list<Vector2*> Verticies );
+		~VectorComponent();
 		void Update();
 		void Render( Vector2* Position, double ScreenRotation );
 };
