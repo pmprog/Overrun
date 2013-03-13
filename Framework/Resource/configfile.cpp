@@ -84,7 +84,7 @@ bool ConfigFile::Save( std::string Filename )
 				}
 			}
 
-			document.append( " ];\n" );
+			document.append( " ]\n" );
 		} else {
 			document.append( " = " );
 			dataNum = IsNumber( *cd->Contents->front() );
@@ -98,7 +98,7 @@ bool ConfigFile::Save( std::string Filename )
 			} else {
 				document.append( cd->Contents->front()->c_str() );
 			}
-			document.append( ";\n" );
+			document.append( "\n" );
 		}
 
 	}
@@ -170,6 +170,7 @@ void ConfigFile::ParseFile( std::string TextContents )
 
 	cd = (ConfigData*)malloc( sizeof( ConfigData ) );
 	cd->Contents = new std::list<std::string*>();
+	cd->IsArray = false;
 
 	while( charPos < TextContents.size() )
 	{
@@ -182,10 +183,10 @@ void ConfigFile::ParseFile( std::string TextContents )
 
 			case ' ':
 			case '\t':
-			case '\r':
-			case '\n':
 			case ',':
-			case ']':
+			case '\n':
+			case '\r':
+			// case ']':
 				if( charQuoted )
 				{
 					token.append( TextContents.substr( charPos, 1 ) );
@@ -204,24 +205,21 @@ void ConfigFile::ParseFile( std::string TextContents )
 							TokenStep++;
 							break;
 						case 2:
-							cd->Contents->push_back( new std::string(token) );
+							if( token != "]" )
+								cd->Contents->push_back( new std::string(token) );
 							break;
+					}
+					if( (!cd->IsArray && (TextContents.at( charPos ) == '\n' || TextContents.at( charPos ) == '\r')) || token == "]" )
+					{
+						Contents.push_back( cd );
+						cd = (ConfigData*)malloc( sizeof( ConfigData ) );
+						cd->Contents = new std::list<std::string*>();
+						cd->IsArray = false;
+						TokenStep = 0;
 					}
 					token.clear();
 					wasQuoted = false;
-
 				}
-				break;
-
-			case ';':
-				if( token.size() > 0 || wasQuoted )
-					cd->Contents->push_back( new std::string(token) );
-				Contents.push_back( cd );
-				cd = (ConfigData*)malloc( sizeof( ConfigData ) );
-				cd->Contents = new std::list<std::string*>();
-				wasQuoted = false;
-				TokenStep = 0;
-				token.clear();
 				break;
 
 			case '\\':

@@ -1,16 +1,16 @@
 
 # Test Comment Line
 
-Name	= "Nature's Path";
-Money	= 1000;
-Interest = 3;
+Name	= "Nature's Path"
+Money	= 1000
+Interest = 3
 
-CameraPosX = 7;
-CameraPosY = 8;
-CameraZoom = 1.0;
+CameraPosX = 7
+CameraPosY = 8
+CameraZoom = 1.0
 
-Width	= 15;
-Height	= 16;
+Width	= 15
+Height	= 16
 Map	[
 	0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -28,9 +28,9 @@ Map	[
 	0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-	];
+	]
 
-Paths	= 2;
+Paths	= 2
 Path1	[	2, -1,
 		2, 0,
 		2, 1,
@@ -55,7 +55,7 @@ Path1	[	2, -1,
 		9, 13,
 		10, 13,
 		11, 13
-	];
+	]
 Path2	[	5, -1,
 		5, 0,
 		5, 1,
@@ -74,17 +74,17 @@ Path2	[	5, -1,
 		9, 10,
 		10, 10,
 		11, 10
-	];
+	]
 
-StartingStructures	[ "Base" ];
-StartingStrutPosX	[ 11 ];
-StartingStrutPosY	[ 10 ];
+StartingStructures	[ "Base" ]
+StartingStrutPosX	[ 11 ]
+StartingStrutPosY	[ 10 ]
 
-WaveTypes		[ "Spinner", "Blocky" ];
-WaveCounts		[  30,  30 ];
-WaveDelays		[  60,  60 ];
-WaveSpawnTime		[ 0.4, 0.4 ];
-WaveHealthMulipliers	[ 0.5, 1.0 ];
-WaveKillCash		[  10,  15 ];
+WaveTypes		[ "Spinner", "Blocky" ]
+WaveCounts		[  30,  30 ]
+WaveDelays		[  60,  60 ]
+WaveSpawnTime		[ 0.4, 0.4 ]
+WaveHealthMulipliers	[ 0.5, 1.0 ]
+WaveKillCash		[  10,  15 ]
 
 
