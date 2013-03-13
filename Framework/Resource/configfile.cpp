@@ -122,7 +122,7 @@ void ConfigFile::ParseFile( std::string TextContents )
 			case '\r':
 			case '\n':
 			case ',':
-			case ';':
+			case ']':
 				if( charQuoted )
 				{
 					token.append( TextContents.substr( charPos, 1 ) );
@@ -147,15 +147,25 @@ void ConfigFile::ParseFile( std::string TextContents )
 					token.clear();
 					wasQuoted = false;
 
-					if( TextContents.at( charPos ) == ';' )
-					{
-						// TODO: End of Packet
-						Contents.push_back( cd );
-						cd = (ConfigData*)malloc( sizeof( ConfigData ) );
-						cd->Contents = new std::list<std::string*>();
-						wasQuoted = false;
-						TokenStep = 0;
-					}
+				}
+				break;
+
+			case ';':
+				if( token.size() > 0 || wasQuoted )
+					cd->Contents->push_back( new std::string(token) );
+				Contents.push_back( cd );
+				cd = (ConfigData*)malloc( sizeof( ConfigData ) );
+				cd->Contents = new std::list<std::string*>();
+				wasQuoted = false;
+				TokenStep = 0;
+				token.clear();
+				break;
+
+			case '\\':
+				if( charQuoted )
+				{
+					token.append( TextContents.substr( charPos + 1, 1 ) );
+					charPos++;
 				}
 				break;
 
@@ -165,10 +175,6 @@ void ConfigFile::ParseFile( std::string TextContents )
 					charQuoted = !charQuoted;
 					wasQuoted = true;
 				}
-				break;
-
-			case ']':
-				// End of Array
 				break;
 
 			default:
