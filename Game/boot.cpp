@@ -3,17 +3,10 @@
 #include "configure.h"
 #include "mapdisp.h"
 #include "spritedisp.h"
-#include "../Framework/Resource/configfile.h"
 
 void BootUp::Begin()
 {
 	GuiStage::Begin();
-
-
-	ConfigFile* cfg;
-	cfg = new ConfigFile("Resource/NaturePath.txt");
-	cfg->Save("Resource/NaturePath_save.txt");
-	delete cfg;
 }
 
 void BootUp::Pause()
@@ -54,6 +47,8 @@ void BootUp::Event(ALLEGRO_EVENT *e)
 				GameStack->Push( (Stage*)new MapDisp );
 			if( e->user.data1 == (intptr_t)buttonSpriteViewer )
 				GameStack->Push( (Stage*)new SpriteDisp );
+			if( e->user.data1 == (intptr_t)buttonSaveSettings )
+				CurrentConfiguration->SaveSettings();
 
 			break;
 	}
@@ -122,6 +117,20 @@ void BootUp::InitialiseGui()
 	buttonSpriteViewer->Foreground = al_map_rgb( 255, 255, 255 );
 	Controls.push_back( buttonSpriteViewer );
 
+	buttonSaveSettings = new Button();
+	buttonSaveSettings->Position.X = CurrentConfiguration->ScreenWidth / 2 - 80;
+	buttonSaveSettings->Position.Y = CurrentConfiguration->ScreenHeight / 2 + 120;
+	buttonSaveSettings->Size.X = 160;
+	buttonSaveSettings->Size.Y = 32;
+	buttonSaveSettings->Text = "Save Settings";
+	buttonSaveSettings->FontSize = 16;
+	buttonSaveSettings->BorderWidth = 2;
+	buttonSaveSettings->Background = al_map_rgb( 96, 64, 64 );
+	buttonSaveSettings->BorderHighlight = al_map_rgb( 255, 192, 192 );
+	buttonSaveSettings->BorderLowlight = al_map_rgb( 255, 192, 192 );
+	buttonSaveSettings->Foreground = al_map_rgb( 255, 255, 255 );
+	Controls.push_back( buttonSaveSettings );
+
 	buttonQuit = new Button();
 	buttonQuit->Position.X = CurrentConfiguration->ScreenWidth / 2 - 80;
 	buttonQuit->Position.Y = CurrentConfiguration->ScreenHeight / 2 + 160;
@@ -146,6 +155,8 @@ void BootUp::UninitialiseGui()
 	delete buttonMapViewer;
 	Controls.remove( buttonSpriteViewer );
 	delete buttonSpriteViewer;
+	Controls.remove( buttonSaveSettings );
+	delete buttonSaveSettings;
 	Controls.remove( buttonQuit );
 	delete buttonQuit;
 	delete cursor;

@@ -63,7 +63,7 @@ bool ConfigFile::Save( std::string Filename )
 			document.append( " [ " );
 
 			bool isFirst = true;
-			for( std::list<std::string*>::iterator s = cd->Contents->begin(); s != cd->Contents->end(); s++ )
+			for( std::vector<std::string*>::iterator s = cd->Contents->begin(); s != cd->Contents->end(); s++ )
 			{
 				if( isFirst )
 					isFirst = false;
@@ -109,54 +109,27 @@ bool ConfigFile::Save( std::string Filename )
 	return true;
 }
 
-bool ConfigFile::IsKeyAnArray( std::string Key )
+bool ConfigFile::KeyExists( std::string Key )
 {
+	if( GetData( Key ) != 0 )
+		return true;
 	return false;
+}
+
+bool ConfigFile::KeyIsArray( std::string Key )
+{
+	ConfigData* cd = GetData( Key );
+	if( cd == 0 )
+		return false;
+	return cd->IsArray;
 }
 
 int ConfigFile::GetArraySize( std::string Key )
 {
-	return 0;
-}
-
-bool ConfigFile::GetBooleanValue( std::string Key )
-{
-	return false;
-}
-
-bool ConfigFile::GetBooleanValue( std::string Key, int ArrayIndex )
-{
-	return false;
-}
-
-int ConfigFile::GetIntegerValue( std::string Key )
-{
-	return 0;
-}
-
-int ConfigFile::GetIntegerValue( std::string Key, int ArrayIndex )
-{
-	return 0;
-}
-
-float ConfigFile::GetFloatValue( std::string Key )
-{
-	return 0.0;
-}
-
-float ConfigFile::GetFloatValue( std::string Key, int ArrayIndex )
-{
-	return 0.0;
-}
-
-std::string ConfigFile::GetStringValue( std::string Key )
-{
-	return "";
-}
-
-std::string ConfigFile::GetStringValue( std::string Key, int ArrayIndex )
-{
-	return "";
+	ConfigData* cd = GetData( Key );
+	if( cd == 0 )
+		return 0;
+	return cd->Contents->size();
 }
 
 void ConfigFile::ParseFile( std::string TextContents )
@@ -169,7 +142,7 @@ void ConfigFile::ParseFile( std::string TextContents )
 	int TokenStep = 0;
 
 	cd = (ConfigData*)malloc( sizeof( ConfigData ) );
-	cd->Contents = new std::list<std::string*>();
+	cd->Contents = new std::vector<std::string*>();
 	cd->IsArray = false;
 
 	while( charPos < TextContents.size() )
@@ -213,7 +186,7 @@ void ConfigFile::ParseFile( std::string TextContents )
 					{
 						Contents.push_back( cd );
 						cd = (ConfigData*)malloc( sizeof( ConfigData ) );
-						cd->Contents = new std::list<std::string*>();
+						cd->Contents = new std::vector<std::string*>();
 						cd->IsArray = false;
 						TokenStep = 0;
 					}
@@ -274,3 +247,207 @@ std::string* ConfigFile::EscapeString( std::string s )
 	}
 	return out;
 }
+
+
+ConfigData* ConfigFile::GetData( std::string Key )
+{
+	for( std::list<ConfigData*>::iterator i = Contents.begin(); i != Contents.end(); i++ )
+	{
+		ConfigData* cd = (ConfigData*)(*i);
+		if( cd->Key->compare( Key ) == 0 )
+			return cd;
+	}
+	return 0;
+}
+
+bool ConfigFile::GetBooleanValue( std::string Key, bool* Value )
+{
+	return GetBooleanValue( Key, 0, Value );
+}
+
+bool ConfigFile::GetBooleanValue( std::string Key, int ArrayIndex, bool* Value )
+{
+	ConfigData* cd = GetData( Key );
+	if( cd == 0 )
+		return false;
+	if( Value == 0 )
+		return false;
+	if( ArrayIndex < 0 || cd->Contents->size() < ArrayIndex )
+		return false;
+
+	switch( ((std::string*)cd->Contents->at( ArrayIndex ))->at( 0 ) )
+	{
+		case 'T':
+		case 't':
+		case 'Y':
+		case 'y':
+			*Value = true;
+			break;
+		case 'F':
+		case 'f':
+		case 'N':
+		case 'n':
+			*Value = false;
+			break;
+		default:
+			return false;
+			break;
+	}
+	return true;
+}
+
+bool ConfigFile::GetIntegerValue( std::string Key, int* Value )
+{
+	return GetIntegerValue( Key, 0, Value );
+}
+bool ConfigFile::GetIntegerValue( std::string Key, int ArrayIndex, int* Value )
+{
+	ConfigData* cd = GetData( Key );
+	if( cd == 0 )
+		return false;
+	if( Value == 0 )
+		return false;
+	if( ArrayIndex < 0 || cd->Contents->size() < ArrayIndex )
+		return false;
+
+	*Value = atoi( cd->Contents->at( ArrayIndex )->c_str() );
+	return true;
+}
+
+bool ConfigFile::GetFloatValue( std::string Key, float* Value )
+{
+	return GetFloatValue( Key, 0, Value );
+}
+
+bool ConfigFile::GetFloatValue( std::string Key, int ArrayIndex, float* Value )
+{
+	ConfigData* cd = GetData( Key );
+	if( cd == 0 )
+		return false;
+	if( Value == 0 )
+		return false;
+	if( ArrayIndex < 0 || cd->Contents->size() < ArrayIndex )
+		return false;
+
+	*Value = (float)atof( cd->Contents->at( ArrayIndex )->c_str() );
+	return true;
+}
+
+bool ConfigFile::GetStringValue( std::string Key, std::string* Value )
+{
+	return GetStringValue( Key, 0, Value );
+}
+
+bool ConfigFile::GetStringValue( std::string Key, int ArrayIndex, std::string* Value )
+{
+	ConfigData* cd = GetData( Key );
+	if( cd == 0 )
+		return false;
+	if( Value == 0 )
+		return false;
+	if( ArrayIndex < 0 || cd->Contents->size() < ArrayIndex )
+		return false;
+
+	Value->clear();
+	Value->append( *(cd->Contents->at( ArrayIndex )) );
+	return true;
+}
+
+bool ConfigFile::SetBooleanValue( std::string Key, bool Value )
+{
+	std::string* s = new std::string(( Value ? "True" : "False" ));
+	bool r = SetStringValue( Key, s );
+	return r;
+}
+
+bool ConfigFile::SetBooleanValue( std::string Key, int ArrayIndex, bool Value )
+{
+	std::string* s = new std::string(( Value ? "True" : "False" ));
+	bool r = SetStringValue( Key, ArrayIndex, s );
+	return r;
+}
+
+bool ConfigFile::SetIntegerValue( std::string Key, int Value )
+{
+	char val[200];
+	sprintf( (char*)&val, "%d", Value );
+	std::string* s = new std::string( val );
+	bool r = SetStringValue( Key, s );
+	return r;
+}
+
+bool ConfigFile::SetIntegerValue( std::string Key, int ArrayIndex, int Value )
+{
+	char val[200];
+	sprintf( (char*)&val, "%d", Value );
+	std::string* s = new std::string( val );
+	bool r = SetStringValue( Key, ArrayIndex, s );
+	return r;
+}
+
+bool ConfigFile::SetFloatValue( std::string Key, float Value )
+{
+	char val[200];
+	sprintf( (char*)&val, "%f", Value );
+	std::string* s = new std::string( val );
+	bool r = SetStringValue( Key, s );
+	return r;
+}
+
+bool ConfigFile::SetFloatValue( std::string Key, int ArrayIndex, float Value )
+{
+	char val[200];
+	sprintf( (char*)&val, "%f", Value );
+	std::string* s = new std::string( val );
+	bool r = SetStringValue( Key, ArrayIndex, s );
+	return r;
+}
+
+bool ConfigFile::SetStringValue( std::string Key, std::string* Value )
+{
+	ConfigData* cd = GetData( Key );
+	if( cd == 0 )
+	{
+		cd = (ConfigData*)malloc( sizeof(ConfigData) );
+		cd->Key = new std::string( Key );
+		cd->IsArray = false;
+		cd->Contents = new std::vector<std::string*>();
+		Contents.push_back( cd );
+	}
+	if( cd->Contents->empty() )
+	{
+		cd->Contents->push_back( Value );
+	} else {
+		std::string* s = cd->Contents->at( 0 );
+		s->clear();
+		s->append( *Value );
+	}
+	return true;
+}
+
+bool ConfigFile::SetStringValue( std::string Key, int ArrayIndex, std::string* Value )
+{
+	ConfigData* cd = GetData( Key );
+	if( cd == 0 )
+	{
+		cd = (ConfigData*)malloc( sizeof(ConfigData) );
+		cd->Key = new std::string( Key );
+		cd->IsArray = true;
+		cd->Contents = new std::vector<std::string*>();
+		Contents.push_back( cd );
+	}
+	if( cd->Contents->size() < ArrayIndex )
+	{
+		while( cd->Contents->size() < ArrayIndex )
+		{
+			cd->Contents->push_back( new std::string() );
+		}
+		cd->Contents->push_back( Value );
+	} else {
+		std::string* s = cd->Contents->at( ArrayIndex );
+		s->clear();
+		s->append( *Value );
+	}
+	return true;
+}
+

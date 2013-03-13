@@ -11,6 +11,7 @@ class BootUp : GuiStage // Stage
 		Panel* panelMenu;
 		Button* buttonMapViewer;
 		Button* buttonSpriteViewer;
+		Button* buttonSaveSettings;
 		Button* buttonQuit;
   public:
     // Stage control

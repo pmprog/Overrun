@@ -9,6 +9,7 @@ void SpriteDisp::Begin()
 
 	GuiStage::Begin();
 
+	ScreenZoom = 1.0;
 	ScreenRot = 0.0;
 
 	circ = new VectorSprite();
@@ -114,6 +115,14 @@ void SpriteDisp::Event(ALLEGRO_EVENT *e)
 				case ALLEGRO_KEY_DOWN:
 					ScreenRot += 30.0;
 					break;
+				case ALLEGRO_KEY_A:
+					if( ScreenZoom > 0.1 )
+						ScreenZoom -= 0.1;
+					break;
+				case ALLEGRO_KEY_Z:
+					if( ScreenZoom < 4.0 )
+						ScreenZoom += 0.1;
+					break;
 			}
 			if( ScreenRot < 0.0 )
 				ScreenRot += 360.0;
@@ -144,10 +153,10 @@ void SpriteDisp::Render()
 
 	pos.X = 200;
 	pos.Y = 200;
-	circ->Render( &pos, ScreenRot, 1.9 );
+	circ->Render( &pos, ScreenRot, ScreenZoom );
 	pos.X = 350;
 	pos.Y = 200;
-	wave->Render( &pos, ScreenRot, 1.9 );
+	wave->Render( &pos, ScreenRot, ScreenZoom );
 
 	GuiStage::Render();
 	cursor->Render();

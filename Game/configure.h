@@ -3,6 +3,7 @@
 
 #define _config
 #include "../Framework/Core/main.h"
+#include "../Framework/Resource/configfile.h"
 
 class Configuration : Stage
 {

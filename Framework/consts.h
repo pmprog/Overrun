@@ -7,6 +7,7 @@
 #define NETWORK_SUPPORT								1
 #define NETWORK_ALLOWMULTICLIENT			0
 
+#define _CRT_SECURE_NO_WARNINGS
 
 #if NETWORK_SUPPORT != 0
 // For some reason this has to be defined before any other include
@@ -14,6 +15,7 @@
 #endif
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_font.h>
@@ -23,6 +25,7 @@
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
 #include <list>
+#include <vector>
 #include <string>
 #include <math.h>
 #include "Core/vector2.h"

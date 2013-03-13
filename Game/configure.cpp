@@ -29,21 +29,37 @@ void Configuration::InitSettings()
 		ScreenHeight = 600;
 		FullScreen = false;
 	}
-
-	ScreenWidth = 640;
-	ScreenHeight = 480;
-
-	WasLoaded = true;
 }
 
 void Configuration::LoadSettings()
 {
-	// TODO: Check if file exists, then load, otherwise Init
-	InitSettings();
+	ALLEGRO_FILE* fileHnd;
+
+	fileHnd = al_fopen( "settings.cfg", "r" );
+	if( fileHnd == 0 )
+	{
+		InitSettings();
+	} else {
+		al_fclose( fileHnd );
+		ConfigFile* cfg;
+		cfg = new ConfigFile( "settings.cfg" );
+		cfg->GetIntegerValue( "ScreenWidth", &ScreenWidth );
+		cfg->GetIntegerValue( "ScreenHeight", &ScreenHeight );
+		cfg->GetBooleanValue( "Fullscreen", &FullScreen );
+		delete cfg;
+		WasLoaded = true;
+	}
 }
 
 void Configuration::SaveSettings()
 {
+	ConfigFile* cfg;
+	cfg = new ConfigFile();
+	cfg->SetIntegerValue( "ScreenWidth", ScreenWidth );
+	cfg->SetIntegerValue( "ScreenHeight", ScreenHeight );
+	cfg->SetBooleanValue( "Fullscreen", FullScreen );
+	cfg->Save( "settings.cfg" );
+	delete cfg;
 }
 
 

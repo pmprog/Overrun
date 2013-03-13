@@ -14,6 +14,7 @@ class SpriteDisp : GuiStage // Stage
 		Mouse* cursor;
 		Button* testButton;
 		double ScreenRot;
+		double ScreenZoom;
 
 		VectorSprite* circ;
 		VectorSprite* wave;
