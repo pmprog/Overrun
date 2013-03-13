@@ -12,6 +12,7 @@ void BootUp::Begin()
 
 	ConfigFile* cfg;
 	cfg = new ConfigFile("Resource/NaturePath.txt");
+	cfg->Save("Resource/NaturePath_save.txt");
 	delete cfg;
 }
 

@@ -17,6 +17,8 @@ class ConfigFile
 		std::list<ConfigData*> Contents;
 
 		void ParseFile( std::string TextContents );
+		bool IsNumber( std::string s );
+		std::string* EscapeString( std::string s );
 
 	public:
 		ConfigFile();

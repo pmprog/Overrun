@@ -1,5 +1,6 @@
 
 #include "configfile.h"
+#include <ctype.h>
 
 ConfigFile::ConfigFile()
 {
@@ -43,7 +44,69 @@ ConfigFile::~ConfigFile()
 
 bool ConfigFile::Save( std::string Filename )
 {
-	return false;
+	ALLEGRO_FILE* fileHnd;
+	std::string document;
+	bool dataNum;
+	std::string* escstr;
+
+	fileHnd = al_fopen( Filename.c_str(), "w" );
+	if( fileHnd == 0 )
+		return false;
+
+	document.clear();
+	for( std::list<ConfigData*>::iterator i = Contents.begin(); i != Contents.end(); i++ )
+	{
+		ConfigData* cd = (ConfigData*)(*i);
+		document.append( cd->Key->c_str() );
+		if( cd->IsArray )
+		{
+			document.append( " [ " );
+
+			bool isFirst = true;
+			for( std::list<std::string*>::iterator s = cd->Contents->begin(); s != cd->Contents->end(); s++ )
+			{
+				if( isFirst )
+					isFirst = false;
+				else
+					document.append( ", " );
+
+				std::string* cs = (std::string*)(*s);
+				dataNum = IsNumber( *cs );
+				if( !dataNum )
+				{
+					document.append( "\"" );
+					escstr = EscapeString(*cs);
+					document.append( escstr->c_str() );
+					delete escstr;
+					document.append( "\"" );
+				} else {
+					document.append( cs->c_str() );
+				}
+			}
+
+			document.append( " ];\n" );
+		} else {
+			document.append( " = " );
+			dataNum = IsNumber( *cd->Contents->front() );
+			if( !dataNum )
+			{
+				document.append( "\"" );
+				escstr = EscapeString(*cd->Contents->front());
+				document.append( escstr->c_str() );
+				delete escstr;
+				document.append( "\"" );
+			} else {
+				document.append( cd->Contents->front()->c_str() );
+			}
+			document.append( ";\n" );
+		}
+
+	}
+
+	al_fputs( fileHnd, document.c_str() );
+	al_fclose( fileHnd );
+	
+	return true;
 }
 
 bool ConfigFile::IsKeyAnArray( std::string Key )
@@ -185,4 +248,31 @@ void ConfigFile::ParseFile( std::string TextContents )
 	}
 	free( cd );
 
+}
+
+bool ConfigFile::IsNumber(std::string s)
+{
+	if( s.empty() )
+		return false;
+	for( std::string::iterator i = s.begin(); i != s.end(); i++ )
+	{
+		if( !isdigit(*i) && (*i) != '.' && (*i) != '+' && (*i) != '-' )
+			return false;
+	}
+	return true;
+}
+
+std::string* ConfigFile::EscapeString( std::string s )
+{
+	std::string* out = new std::string();
+	if( !s.empty() )
+	{
+		for( int i = 0; i < s.size(); i++ )
+		{
+			if( s.at(i) == '\\' || s.at(i) == '\"' )
+				out->append( "\\" );
+			out->append( s.substr( i, 1 ) );
+		}
+	}
+	return out;
 }
