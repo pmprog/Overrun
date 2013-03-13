@@ -181,6 +181,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Framework\Resource\configfile.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Game\configure.cpp"
 				>
 			</File>
@@ -256,6 +260,10 @@
 			</File>
 			<File
 				RelativePath=".\Framework\GUI\button.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Framework\Resource\configfile.h"
 				>
 			</File>
 			<File
