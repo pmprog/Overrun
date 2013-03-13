@@ -3,10 +3,16 @@
 #include "configure.h"
 #include "mapdisp.h"
 #include "spritedisp.h"
+#include "../Framework/Resource/configfile.h"
 
 void BootUp::Begin()
 {
 	GuiStage::Begin();
+
+
+	ConfigFile* cfg;
+	cfg = new ConfigFile("Resource/NaturePath.txt");
+	delete cfg;
 }
 
 void BootUp::Pause()

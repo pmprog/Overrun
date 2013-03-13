@@ -1,17 +1,27 @@
 
 #pragma once
 
-#include <list>
-#include <string>
+#include "../consts.h"
+
+typedef struct ConfigData
+{
+	std::string* Key;
+	bool IsArray;
+	std::list<std::string*>* Contents;
+} ConfigData;
+
 
 class ConfigFile
 {
 	private:
-		
+		std::list<ConfigData*> Contents;
+
+		void ParseFile( std::string TextContents );
 
 	public:
 		ConfigFile();
 		ConfigFile( std::string Filename );
+		~ConfigFile();
 		bool Save( std::string Filename );
 
 		bool IsKeyAnArray( std::string Key );
