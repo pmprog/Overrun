@@ -45,6 +45,7 @@ void Configuration::LoadSettings()
 		cfg = new ConfigFile( "settings.cfg" );
 		cfg->GetIntegerValue( "ScreenWidth", &ScreenWidth );
 		cfg->GetIntegerValue( "ScreenHeight", &ScreenHeight );
+		cfg->GetBooleanValue( "ForceResolution", &ForceResolution );
 		cfg->GetBooleanValue( "Fullscreen", &FullScreen );
 		delete cfg;
 		WasLoaded = true;
@@ -57,6 +58,7 @@ void Configuration::SaveSettings()
 	cfg = new ConfigFile();
 	cfg->SetIntegerValue( "ScreenWidth", ScreenWidth );
 	cfg->SetIntegerValue( "ScreenHeight", ScreenHeight );
+	cfg->SetBooleanValue( "ForceResolution", &ForceResolution );
 	cfg->SetBooleanValue( "Fullscreen", FullScreen );
 	cfg->Save( "settings.cfg" );
 	delete cfg;

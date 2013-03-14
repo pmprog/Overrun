@@ -8,8 +8,9 @@
 class MapDisp : GuiStage // Stage
 {
 	private:
-		Mouse* cursor;
+		Mouse*  cursor;
 		Button* testButton;
+		Panel*  nextWave;
 
 		Camera* Cam;
 		bool CameraDrag;

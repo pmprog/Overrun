@@ -63,7 +63,7 @@ void Panel::Render()
 		{
 			al_draw_filled_polygon_with_holes( (float*)&pts, 9, (int*)&holes, 2, Border );
 			al_draw_filled_rectangle( pts[10], pts[11], pts[14], pts[15], Background );
-			al_draw_text( Fonts->GetFont( FontName, FontSize, FontFlags ), Foreground, Position.X + BorderWidth, Position.Y + BorderWidth, 0, Title.c_str() );
+			al_draw_text( Fonts->GetFont( FontName, FontSize, FontFlags ), Foreground, Position.X + (BorderWidth * 2), Position.Y + BorderWidth, 0, Title.c_str() );
 		} else {
 			al_draw_filled_polygon( (float*)&pts, 5, Background );
 			al_draw_polygon( (float*)&pts, 5, ALLEGRO_LINE_JOIN_MITER, Border, BorderWidth, 2 );

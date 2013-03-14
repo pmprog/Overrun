@@ -18,6 +18,7 @@ class Configuration : Stage
 		int ScreenWidth;
 		int ScreenHeight;
 		bool FullScreen;
+		bool ForceResolution;
 		bool WasLoaded;
 
 

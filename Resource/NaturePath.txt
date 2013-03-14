@@ -7,7 +7,7 @@ Interest = 3
 
 CameraPosX = 7
 CameraPosY = 8
-CameraZoom = 1.0
+CameraZoom = 0.6
 
 Width	= 15
 Height	= 16

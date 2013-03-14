@@ -51,25 +51,30 @@ int main( int argc, char* argv[] )
 		al_set_new_display_flags( ALLEGRO_FULLSCREEN );
 
 	bool foundMode = false;
-	int fallbackW = 800;
+	int fallbackW = 640;
 	int fallbackH = 480;
-	for( int modeIdx = 0; modeIdx < al_get_num_display_modes(); modeIdx++ )
+
+	if( CurrentConfiguration->ForceResolution )
 	{
-		if( al_get_display_mode( modeIdx, &ScreenMode ) != NULL )
+		foundMode = true;
+	} else {
+		for( int modeIdx = 0; modeIdx < al_get_num_display_modes(); modeIdx++ )
 		{
-			if( ScreenMode.width == CurrentConfiguration->ScreenWidth && ScreenMode.height == CurrentConfiguration->ScreenHeight )
+			if( al_get_display_mode( modeIdx, &ScreenMode ) != NULL )
 			{
-				foundMode = true;
-			} else {
-				fallbackW = ScreenMode.width;
-				fallbackH = ScreenMode.height;
+				if( ScreenMode.width == CurrentConfiguration->ScreenWidth && ScreenMode.height == CurrentConfiguration->ScreenHeight )
+				{
+					foundMode = true;
+				} else {
+					fallbackW = ScreenMode.width;
+					fallbackH = ScreenMode.height;
+				}
 			}
+
+			if( foundMode )
+				break;
 		}
-
-		if( foundMode )
-			break;
 	}
-
 
 	if( foundMode )
 	{

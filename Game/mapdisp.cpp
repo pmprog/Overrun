@@ -25,6 +25,15 @@ void MapDisp::Begin()
 			MapData[(y * MapWidth) + x] = (uint8_t)t;
 		}
 	}
+
+	int pos;
+	float zm;
+	MapConfig->GetIntegerValue( "CameraPosX", &pos );
+	Cam->Position.X = pos * TileSize;
+	MapConfig->GetIntegerValue( "CameraPosY", &pos );
+	Cam->Position.Y = pos * TileSize;
+	MapConfig->GetFloatValue( "CameraZoom", &zm );
+	Cam->Zoom = zm;
 	
 	delete MapConfig;
 
@@ -53,6 +62,9 @@ void MapDisp::Finish()
 void MapDisp::Event(ALLEGRO_EVENT *e)
 {
 	Vector2 v;
+
+	if( e->type == ALLEGRO_EVENT_MOUSEEX_UP && CameraDrag )
+		CameraDrag = false;
 
 	GuiStage::Event( e );
 	if( e->any.timestamp == -1 )
@@ -89,6 +101,33 @@ void MapDisp::Event(ALLEGRO_EVENT *e)
 			if( e->user.data1 == (intptr_t)testButton )
 				delete GameStack->Pop();
 			break;
+
+		case ALLEGRO_EVENT_MOUSEEX_DOWN:
+			if( e->user.data4 > 1 )
+			{
+				cursor->CancelBoxing();
+				CameraDrag = true;
+			}
+			break;
+		case ALLEGRO_EVENT_MOUSEEX_UP:
+			if( CameraDrag )
+				CameraDrag = false;
+			break;
+
+		case ALLEGRO_EVENT_MOUSEEX_WHEEL:
+			Cam->ZoomTo( max( 0.4, min( 4.0, Cam->Zoom + (double)e->user.data4 / 10 ) ), 0.01 );
+			break;
+
+		case ALLEGRO_EVENT_MOUSEEX_MOVE:
+			if( CameraDrag )
+			{
+				Vector2* d = (Vector2*)e->user.data3;
+				d->X = Cam->Position.X - (d->X / Cam->Zoom);
+				d->Y = Cam->Position.Y - (d->Y / Cam->Zoom);
+				Cam->MoveTo( d, 1000.0 );
+			}
+			break;
+
 	}
 }
 
@@ -143,10 +182,25 @@ void MapDisp::InitialiseGui()
 	testButton->FontSize = 16;
 	testButton->BorderWidth = 2;
 	Controls.push_back( testButton );
+
+	nextWave = new Panel();
+	nextWave->Position.X = CurrentConfiguration->ScreenWidth - 224;
+	nextWave->Position.Y = 4;
+	nextWave->Size.X = 220;
+	nextWave->Size.Y = 96;
+	nextWave->Background = al_map_rgba( 64, 128, 64, 128 );
+	nextWave->Border = al_map_rgb( 96, 192, 96 );
+	nextWave->BorderWidth = 2;
+	nextWave->Title = "Next Wave";
+	nextWave->HasTitle = true;
+	Controls.push_back( nextWave );
 }
 
 void MapDisp::UninitialiseGui()
 {
+	Controls.remove( nextWave );
+	delete nextWave;
+
 	Controls.remove( testButton );
 	delete testButton;
 
