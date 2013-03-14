@@ -107,6 +107,12 @@ void MapDisp::Event(ALLEGRO_EVENT *e)
 			{
 				cursor->CancelBoxing();
 				CameraDrag = true;
+			} else {
+
+				Vector2 absPos;
+				Cam->CameraOffsetToAbsolute( ((Vector2*)e->user.data2), &absPos );
+
+				absPos.X++;
 			}
 			break;
 		case ALLEGRO_EVENT_MOUSEEX_UP:

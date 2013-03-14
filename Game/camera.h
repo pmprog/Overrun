@@ -24,6 +24,9 @@ class Camera
 		void MoveTo( Vector2* Destination, double Speed );
 		void RotateTo( double Destination, double Speed );
 		void ZoomTo( double Destination, double Speed );
+
 		void AbsoluteToCameraOffset( Vector2* Absolute, Vector2* Out );
+		void CameraOffsetToAbsolute( Vector2* Offset, Vector2* Out );
+
 		void Update();
 };

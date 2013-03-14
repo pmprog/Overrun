@@ -65,6 +65,29 @@ void Camera::AbsoluteToCameraOffset( Vector2* Absolute, Vector2* Out )
 	Out->Y += CurrentConfiguration->ScreenHeight / 2;
 }
 
+void Camera::CameraOffsetToAbsolute( Vector2* Offset, Vector2* Out )
+{
+	// Camera Position is centre of the screen
+	Vector2 Temp;
+
+	// Remove screen centre
+	Temp.X = Offset->X - CurrentConfiguration->ScreenWidth / 2;
+	Temp.Y = Offset->Y - CurrentConfiguration->ScreenHeight / 2;
+
+	// UnZoom
+	Temp.X /= Zoom;
+	Temp.Y /= Zoom;
+
+	// Move camera on position
+	Temp.X += Position.X;
+	Temp.Y += Position.Y;
+
+	// UnRotate Position based on RotateOrigin
+	Temp.X -= RotateOrigin.X;
+	Temp.Y -= RotateOrigin.Y;
+	RotateVector( &Temp, -Rotation, Out, RotateOrigin.X, RotateOrigin.Y );
+}
+
 void Camera::Update()
 {
 	double TravelDistance;
