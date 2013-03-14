@@ -13,6 +13,11 @@ VectorComponent::VectorComponent( int Type, ALLEGRO_COLOR Colour, float* Vertici
 	PointCount = VertexCount;
 	Points = (float*)malloc( VertexCount * sizeof( float ) * 2 );
 	memcpy( (void*)Points, (void*)Verticies, VertexCount * sizeof( float ) * 2 );
+
+	ColourChangePerFrame.a = 0;
+	ColourChangePerFrame.r = 0;
+	ColourChangePerFrame.g = 0;
+	ColourChangePerFrame.b = 0;
 }
 
 VectorComponent::VectorComponent( int Type, ALLEGRO_COLOR Colour, std::list<Vector2*> Verticies ) : Points(0)
@@ -48,6 +53,15 @@ void VectorComponent::Update()
 		Rotation -= 360.0;
 	if( Rotation < 0.0 )
 		Rotation += 360.0;
+
+	DrawColour.a += ColourChangePerFrame.a;
+	DrawColour.a = max( 0.0, min(DrawColour.a, 1.0) );
+	DrawColour.r += ColourChangePerFrame.r;
+	DrawColour.r = max( 0.0, min(DrawColour.r, 1.0) );
+	DrawColour.g += ColourChangePerFrame.g;
+	DrawColour.g = max( 0.0, min(DrawColour.g, 1.0) );
+	DrawColour.b += ColourChangePerFrame.b;
+	DrawColour.b = max( 0.0, min(DrawColour.b, 1.0) );
 };
 
 void VectorComponent::Render( Vector2* Position, double ScreenRotation, double Zoom )
@@ -55,35 +69,41 @@ void VectorComponent::Render( Vector2* Position, double ScreenRotation, double Z
 	Vector2 vx;
 	float* pts;
 
-	pts = (float*)malloc( PointCount * sizeof( float ) * 2 );
-	for( int p = 0; p < PointCount; p++ )
+	// If invisible, don't bother
+	if( DrawColour.a != 0.0 )
 	{
-		Vector2 v;
-		v.X = Points[p * 2];
-		v.Y = Points[(p * 2) + 1];
-		RotateVector( &v, Rotation + ScreenRotation, &vx );
-		pts[p * 2] = (vx.X * Zoom) + Position->X;
-		pts[(p * 2) + 1] = (vx.Y * Zoom) + Position->Y;
-	}
 
-	switch( ComponentType )
-	{
-		case VECTORSPRITE_COMPONENT_POLYLINE:
-			al_draw_polyline( pts, PointCount, ALLEGRO_LINE_JOIN_ROUND, ALLEGRO_LINE_CAP_ROUND, DrawColour, DrawThickness, 0 );
-			break;
-		case VECTORSPRITE_COMPONENT_CIRCLE:
-			al_draw_circle( pts[0], pts[1], Points[2] * Zoom, DrawColour, DrawThickness );
-			break;
-		case VECTORSPRITE_COMPONENT_POLYGON:
-			al_draw_polygon( pts, PointCount, ALLEGRO_LINE_JOIN_ROUND, DrawColour, DrawThickness, 0 );
-			break;
-		case VECTORSPRITE_COMPONENT_CIRCLE_FILLED:
-			al_draw_filled_circle( pts[0], pts[1], Points[2] * Zoom, DrawColour );
-			break;
-		case VECTORSPRITE_COMPONENT_POLYGON_FILLED:
-			al_draw_filled_polygon( pts, PointCount, DrawColour );
-			break;
-	}
+		pts = (float*)malloc( PointCount * sizeof( float ) * 2 );
+		for( int p = 0; p < PointCount; p++ )
+		{
+			Vector2 v;
+			v.X = Points[p * 2];
+			v.Y = Points[(p * 2) + 1];
+			RotateVector( &v, Rotation + ScreenRotation, &vx );
+			pts[p * 2] = (vx.X * Zoom) + Position->X;
+			pts[(p * 2) + 1] = (vx.Y * Zoom) + Position->Y;
+		}
 
-	free( (void*)pts );
+		switch( ComponentType )
+		{
+			case VECTORSPRITE_COMPONENT_POLYLINE:
+				al_draw_polyline( pts, PointCount, ALLEGRO_LINE_JOIN_ROUND, ALLEGRO_LINE_CAP_ROUND, DrawColour, DrawThickness, 0 );
+				break;
+			case VECTORSPRITE_COMPONENT_CIRCLE:
+				al_draw_circle( pts[0], pts[1], Points[2] * Zoom, DrawColour, DrawThickness );
+				break;
+			case VECTORSPRITE_COMPONENT_POLYGON:
+				al_draw_polygon( pts, PointCount, ALLEGRO_LINE_JOIN_ROUND, DrawColour, DrawThickness, 0 );
+				break;
+			case VECTORSPRITE_COMPONENT_CIRCLE_FILLED:
+				al_draw_filled_circle( pts[0], pts[1], Points[2] * Zoom, DrawColour );
+				break;
+			case VECTORSPRITE_COMPONENT_POLYGON_FILLED:
+				al_draw_filled_polygon( pts, PointCount, DrawColour );
+				break;
+		}
+
+		free( (void*)pts );
+	}
+	
 };

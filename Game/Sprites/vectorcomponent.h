@@ -18,6 +18,7 @@ class VectorComponent
 	public:
 		int ComponentType;
 		ALLEGRO_COLOR DrawColour;
+		ALLEGRO_COLOR ColourChangePerFrame;
 		int DrawThickness;
 		double Rotation;
 		double RotationPerFrame;

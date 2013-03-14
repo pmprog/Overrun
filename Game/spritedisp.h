@@ -18,6 +18,7 @@ class SpriteDisp : GuiStage // Stage
 
 		VectorSprite* circ;
 		VectorSprite* wave;
+		VectorComponent* circShield;
 		
 
   public:

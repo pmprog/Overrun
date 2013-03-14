@@ -32,9 +32,9 @@ void SpriteDisp::Begin()
 	v = (float*)malloc(sizeof(float) * 4);
 	v[0] = 0; v[1] = 0;
 	v[2] = 24; v[3] = 12;
-	vc = new VectorComponent( VECTORSPRITE_COMPONENT_CIRCLE, al_map_rgba( 128, 192, 220, 128 ), v, 2 );
-	vc->DrawThickness = 2;
-	circ->Components.push_back( vc );
+	circShield = new VectorComponent( VECTORSPRITE_COMPONENT_CIRCLE, al_map_rgba( 128, 192, 220, 128 ), v, 2 );
+	circShield->DrawThickness = 2;
+	circ->Components.push_back( circShield );
 	free(v);
 
 	/*
@@ -122,6 +122,15 @@ void SpriteDisp::Event(ALLEGRO_EVENT *e)
 				case ALLEGRO_KEY_Z:
 					if( ScreenZoom < 4.0 )
 						ScreenZoom += 0.1;
+					break;
+				case ALLEGRO_KEY_W:
+					circShield->ColourChangePerFrame.a = -0.1;
+					break;
+				case ALLEGRO_KEY_S:
+					circShield->ColourChangePerFrame.a = 0.0;
+					break;
+				case ALLEGRO_KEY_X:
+					circShield->ColourChangePerFrame.a = +0.1;
 					break;
 			}
 			if( ScreenRot < 0.0 )
