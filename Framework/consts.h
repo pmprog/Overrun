@@ -29,6 +29,7 @@
 #include <string>
 #include <math.h>
 #include "Core/vector2.h"
+#include "Resource/configfile.h"
 #include "Resource/fontmanager.h"
 #include "Resource/imagemanager.h"
 #include "Resource/soundmanager.h"

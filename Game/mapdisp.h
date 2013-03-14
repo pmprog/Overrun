@@ -3,8 +3,7 @@
 
 #include "../Framework/Core/main.h"
 #include "../Framework/GUI/gui.h"
-
-#define TILE_SIZE			48
+#include "camera.h"
 
 class MapDisp : GuiStage // Stage
 {
@@ -12,21 +11,13 @@ class MapDisp : GuiStage // Stage
 		Mouse* cursor;
 		Button* testButton;
 
-		uint8_t* MapData;
-
-		Vector2 CameraPosition;
-		Vector2 CameraPositionDestination;
-		double CameraZoom;
-		double CameraZoomDestination;
-		double CameraRotation;
-		double CameraRotationDestination;
+		Camera* Cam;
 		bool CameraDrag;
+		int TileSize;
 
 		int MapWidth;
 		int MapHeight;
-
-		int frameIndex;
-		
+		uint8_t* MapData;
 
   public:
     // Stage control

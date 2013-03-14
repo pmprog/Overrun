@@ -3,11 +3,13 @@
 
 #include "../Sprites/vectorcomponent.h"
 #include "../Sprites/vectorsprite.h"
+#include "../camera.h"
 
 class Unit
 {
 	protected:
 		VectorSprite* sprite;
+		VectorComponent* circShield;
 
 	public:
 		Vector2 AbsolutePosition;
@@ -17,27 +19,8 @@ class Unit
 		double Shields;
 		int Cash;
 
-		Unit()
-		{
-			AbsolutePosition.X = 0;
-			AbsolutePosition.Y = 0;
-			CurrentPathIndex = 0;
-			sprite = new VectorSprite();
-			Health = 0;
-			Shields = 0;
-			Cash = 0;
-		};
-
-		~Unit()
-		{
-			if( sprite != 0 )
-				delete sprite;
-		};
-
-		virtual void Update() = 0;
-		virtual void Render( double ScreenRotation, double ScreenZoom )
-		{
-			if( sprite != 0 )
-				sprite->Render( &AbsolutePosition, ScreenRotation, ScreenZoom );
-		};
+		Unit( double StartHealth, double StartShields, int CashReward );
+		~Unit();
+		virtual void Update();
+		virtual void Render( int TileSize, Camera* camera );
 };

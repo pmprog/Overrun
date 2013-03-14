@@ -181,6 +181,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Game\camera.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Framework\Resource\configfile.cpp"
 				>
 			</File>
@@ -241,6 +245,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Game\Units\unit.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Framework\Core\vector2.cpp"
 				>
 			</File>
@@ -264,6 +272,10 @@
 			</File>
 			<File
 				RelativePath=".\Framework\GUI\button.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Game\camera.h"
 				>
 			</File>
 			<File
