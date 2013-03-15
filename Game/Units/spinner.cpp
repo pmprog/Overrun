@@ -17,7 +17,7 @@ Spinner::Spinner( Vector2* StartPosition, float HealthMultiplier, float ShieldMu
 	sprite->Components.push_back( vc );
 	free(v);
 
-	for( int i = 0; i < 360; i += 20 )
+	for( int i = 0; i < 360; i += 60 )
 	{
 		v = (float*)malloc(sizeof(float) * 4);
 		v[0] = 0; v[1] = -18;

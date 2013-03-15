@@ -1,9 +1,9 @@
 
-#include "mapdisp.h"
+#include "game.h"
 #include "configure.h"
 #include "Units/unit.h"
 
-void MapDisp::Begin()
+void Game::Begin()
 {
 	Cam = new Camera();
 	CameraDrag = false;
@@ -43,23 +43,23 @@ void MapDisp::Begin()
 	GuiStage::Begin();
 }
 
-void MapDisp::Pause()
+void Game::Pause()
 {
 }
 
-void MapDisp::Resume()
+void Game::Resume()
 {
 
 }
 
-void MapDisp::Finish()
+void Game::Finish()
 {
 	free( MapData );
 	GuiStage::Finish();
 	delete Cam;
 }
 
-void MapDisp::Event(ALLEGRO_EVENT *e)
+void Game::Event(ALLEGRO_EVENT *e)
 {
 	Vector2 v;
 
@@ -137,14 +137,14 @@ void MapDisp::Event(ALLEGRO_EVENT *e)
 	}
 }
 
-void MapDisp::Update()
+void Game::Update()
 {
 	Cam->Update();
 	GuiStage::Update();
 	cursor->Update();
 }
 
-void MapDisp::Render()
+void Game::Render()
 {
 	Vector2 pts[4];
 
@@ -174,7 +174,7 @@ void MapDisp::Render()
 	cursor->Render();
 }
 
-void MapDisp::InitialiseGui()
+void Game::InitialiseGui()
 {
 	cursor = new Mouse();
 	cursor->AllowBoxing = true;
@@ -202,7 +202,7 @@ void MapDisp::InitialiseGui()
 	Controls.push_back( nextWave );
 }
 
-void MapDisp::UninitialiseGui()
+void Game::UninitialiseGui()
 {
 	Controls.remove( nextWave );
 	delete nextWave;
@@ -214,14 +214,14 @@ void MapDisp::UninitialiseGui()
 }
 
 
-int MapDisp::GetMapElement( int X, int Y )
+int Game::GetMapElement( int X, int Y )
 {
 	if( X < 0 || Y < 0 || X >= MapWidth || Y >= MapHeight )
 		return -1;
 	return MapData[(Y * MapWidth) + X];
 }
 
-void MapDisp::DrawGround( int X, int Y, Vector2 BasePoints[] )
+void Game::DrawGround( int X, int Y, Vector2 BasePoints[] )
 {
 
 	float polyverts[8] = {

@@ -117,6 +117,20 @@ void BootUp::InitialiseGui()
 	buttonSpriteViewer->Foreground = al_map_rgb( 255, 255, 255 );
 	Controls.push_back( buttonSpriteViewer );
 
+	buttonGame = new Button();
+	buttonGame->Position.X = CurrentConfiguration->ScreenWidth / 2 - 80;
+	buttonGame->Position.Y = CurrentConfiguration->ScreenHeight / 2 - 80;
+	buttonGame->Size.X = 160;
+	buttonGame->Size.Y = 32;
+	buttonGame->Text = "Play Wave";
+	buttonGame->FontSize = 16;
+	buttonGame->BorderWidth = 2;
+	buttonGame->Background = al_map_rgb( 64, 64, 96 );
+	buttonGame->BorderHighlight = al_map_rgb( 192, 192, 255 );
+	buttonGame->BorderLowlight = al_map_rgb( 192, 192, 255 );
+	buttonGame->Foreground = al_map_rgb( 255, 255, 255 );
+	Controls.push_back( buttonGame );
+
 	buttonSaveSettings = new Button();
 	buttonSaveSettings->Position.X = CurrentConfiguration->ScreenWidth / 2 - 80;
 	buttonSaveSettings->Position.Y = CurrentConfiguration->ScreenHeight / 2 + 120;
@@ -155,6 +169,8 @@ void BootUp::UninitialiseGui()
 	delete buttonMapViewer;
 	Controls.remove( buttonSpriteViewer );
 	delete buttonSpriteViewer;
+	Controls.remove( buttonGame );
+	delete buttonGame;
 	Controls.remove( buttonSaveSettings );
 	delete buttonSaveSettings;
 	Controls.remove( buttonQuit );

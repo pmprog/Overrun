@@ -173,7 +173,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\Game\Structures\base.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Game\boot.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Game\Structures\building.cpp"
 				>
 			</File>
 			<File
@@ -198,6 +206,10 @@
 			</File>
 			<File
 				RelativePath=".\Framework\Resource\fontmanager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Game\game.cpp"
 				>
 			</File>
 			<File
@@ -267,7 +279,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\Game\Structures\base.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Game\boot.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Game\Structures\building.h"
 				>
 			</File>
 			<File
@@ -296,6 +316,10 @@
 			</File>
 			<File
 				RelativePath=".\Framework\Resource\fontmanager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Game\game.h"
 				>
 			</File>
 			<File
