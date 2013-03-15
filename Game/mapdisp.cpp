@@ -1,7 +1,7 @@
 
 #include "mapdisp.h"
 #include "configure.h"
-#include "Units/unit.h"
+#include "Game/unit.h"
 
 void MapDisp::Begin()
 {

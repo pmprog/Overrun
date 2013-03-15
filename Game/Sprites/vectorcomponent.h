@@ -14,6 +14,7 @@ class VectorComponent
 	private:
 		int PointCount;
 		float* Points;
+		double GrowthModifier;
 
 	public:
 		int ComponentType;
@@ -22,6 +23,7 @@ class VectorComponent
 		int DrawThickness;
 		double Rotation;
 		double RotationPerFrame;
+		double GrowthPerFrame;
 
 		VectorComponent( int Type, ALLEGRO_COLOR Colour, float* Verticies, int VertexCount );
 		VectorComponent( int Type, ALLEGRO_COLOR Colour, std::list<Vector2*> Verticies );

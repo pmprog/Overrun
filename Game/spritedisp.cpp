@@ -132,6 +132,10 @@ void SpriteDisp::Event(ALLEGRO_EVENT *e)
 				case ALLEGRO_KEY_X:
 					circShield->ColourChangePerFrame.a = +0.1;
 					break;
+				case ALLEGRO_KEY_Q:
+					circShield->GrowthPerFrame = 0.1;
+					circShield->ColourChangePerFrame.a = -0.1;
+					break;
 			}
 			if( ScreenRot < 0.0 )
 				ScreenRot += 360.0;

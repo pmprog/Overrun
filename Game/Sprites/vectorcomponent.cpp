@@ -18,6 +18,9 @@ VectorComponent::VectorComponent( int Type, ALLEGRO_COLOR Colour, float* Vertici
 	ColourChangePerFrame.r = 0;
 	ColourChangePerFrame.g = 0;
 	ColourChangePerFrame.b = 0;
+
+	GrowthModifier = 1.0;
+	GrowthPerFrame = 0.0;
 }
 
 VectorComponent::VectorComponent( int Type, ALLEGRO_COLOR Colour, std::list<Vector2*> Verticies ) : Points(0)
@@ -62,6 +65,8 @@ void VectorComponent::Update()
 	DrawColour.g = max( 0.0, min(DrawColour.g, 1.0) );
 	DrawColour.b += ColourChangePerFrame.b;
 	DrawColour.b = max( 0.0, min(DrawColour.b, 1.0) );
+
+	GrowthModifier += GrowthPerFrame;
 };
 
 void VectorComponent::Render( Vector2* Position, double ScreenRotation, double Zoom )
@@ -80,8 +85,8 @@ void VectorComponent::Render( Vector2* Position, double ScreenRotation, double Z
 			v.X = Points[p * 2];
 			v.Y = Points[(p * 2) + 1];
 			RotateVector( &v, Rotation + ScreenRotation, &vx );
-			pts[p * 2] = (vx.X * Zoom) + Position->X;
-			pts[(p * 2) + 1] = (vx.Y * Zoom) + Position->Y;
+			pts[p * 2] = (vx.X * Zoom * GrowthModifier) + Position->X;
+			pts[(p * 2) + 1] = (vx.Y * Zoom * GrowthModifier) + Position->Y;
 		}
 
 		switch( ComponentType )
@@ -90,13 +95,13 @@ void VectorComponent::Render( Vector2* Position, double ScreenRotation, double Z
 				al_draw_polyline( pts, PointCount, ALLEGRO_LINE_JOIN_ROUND, ALLEGRO_LINE_CAP_ROUND, DrawColour, DrawThickness, 0 );
 				break;
 			case VECTORSPRITE_COMPONENT_CIRCLE:
-				al_draw_circle( pts[0], pts[1], Points[2] * Zoom, DrawColour, DrawThickness );
+				al_draw_circle( pts[0], pts[1], Points[2] * Zoom * GrowthModifier, DrawColour, DrawThickness );
 				break;
 			case VECTORSPRITE_COMPONENT_POLYGON:
 				al_draw_polygon( pts, PointCount, ALLEGRO_LINE_JOIN_ROUND, DrawColour, DrawThickness, 0 );
 				break;
 			case VECTORSPRITE_COMPONENT_CIRCLE_FILLED:
-				al_draw_filled_circle( pts[0], pts[1], Points[2] * Zoom, DrawColour );
+				al_draw_filled_circle( pts[0], pts[1], Points[2] * Zoom * GrowthModifier, DrawColour );
 				break;
 			case VECTORSPRITE_COMPONENT_POLYGON_FILLED:
 				al_draw_filled_polygon( pts, PointCount, DrawColour );
