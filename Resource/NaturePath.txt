@@ -80,12 +80,4 @@ StartingStructures	[ "Base" ]
 StartingStrutPosX	[ 11 ]
 StartingStrutPosY	[ 10 ]
 
-WaveTypes		[ "Spinner", "Blocky" ]
-WaveCounts		[  30,  30 ]
-WaveDelays		[  60,  60 ]
-WaveSpawnTime		[ 0.4, 0.4 ]
-WaveHealthMulipliers	[ 0.5, 1.0 ]
-WaveShieldMulipliers	[ 1.0, 1.0 ]
-WaveKillCash		[  10,  15 ]
-
-
+Waves			[ "Spinner1", "Spinner2" ]

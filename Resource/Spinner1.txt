@@ -1,0 +1,10 @@
+
+# Spinner1 Wave
+
+UnitClass = "Spinner"
+
+Health = 100
+DamageToBase = 5
+
+Shields = 50
+ShieldRegenRate = 0.1
