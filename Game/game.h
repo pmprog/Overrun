@@ -4,13 +4,20 @@
 #include "../Framework/Core/main.h"
 #include "../Framework/GUI/gui.h"
 #include "Game/camera.h"
+#include "Game/map.h"
+#include "Game/wave.h"
 
 class Game : GuiStage // Stage
 {
 	private:
-		Camera* view;
 		Mouse*  cursor;
-		Button* testButton;
+
+		Camera* view;
+		bool viewDrag;
+		
+
+		Map* Level;
+		std::list<Wave*> Waves;
 
   public:
     // Stage control

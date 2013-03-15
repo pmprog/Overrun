@@ -5,9 +5,9 @@ Name	= "Nature's Path"
 Money	= 1000
 Interest = 3
 
-CameraPosX = 7
-CameraPosY = 8
-CameraZoom = 0.6
+CameraPosX = 12
+CameraPosY = 11
+CameraZoom = 1.4
 
 Width	= 15
 Height	= 16

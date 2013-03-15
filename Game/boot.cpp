@@ -3,6 +3,7 @@
 #include "configure.h"
 #include "mapdisp.h"
 #include "spritedisp.h"
+#include "game.h"
 
 void BootUp::Begin()
 {
@@ -49,6 +50,8 @@ void BootUp::Event(ALLEGRO_EVENT *e)
 				GameStack->Push( (Stage*)new SpriteDisp );
 			if( e->user.data1 == (intptr_t)buttonSaveSettings )
 				CurrentConfiguration->SaveSettings();
+			if( e->user.data1 == (intptr_t)buttonGame )
+				GameStack->Push( (Stage*)new Game );
 
 			break;
 	}
