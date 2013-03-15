@@ -3,7 +3,7 @@
 
 #include "../Framework/Core/main.h"
 #include "../Framework/GUI/gui.h"
-#include "camera.h"
+#include "Game/camera.h"
 
 class MapDisp : GuiStage // Stage
 {

@@ -189,7 +189,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Game\camera.cpp"
+				RelativePath=".\Game\Game\camera.cpp"
 				>
 			</File>
 			<File
@@ -222,6 +222,10 @@
 			</File>
 			<File
 				RelativePath=".\Framework\Core\main.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Game\Game\map.cpp"
 				>
 			</File>
 			<File
@@ -272,6 +276,10 @@
 				RelativePath=".\Game\Sprites\vectorsprite.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\Game\Game\wave.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -295,7 +303,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Game\camera.h"
+				RelativePath=".\Game\Game\camera.h"
 				>
 			</File>
 			<File
@@ -340,6 +348,10 @@
 			</File>
 			<File
 				RelativePath=".\Framework\Core\main.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Game\Game\map.h"
 				>
 			</File>
 			<File
@@ -392,6 +404,10 @@
 			</File>
 			<File
 				RelativePath=".\Game\Sprites\vectorsprite.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Game\Game\wave.h"
 				>
 			</File>
 		</Filter>

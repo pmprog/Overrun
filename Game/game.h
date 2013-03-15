@@ -3,22 +3,14 @@
 
 #include "../Framework/Core/main.h"
 #include "../Framework/GUI/gui.h"
-#include "camera.h"
+#include "Game/camera.h"
 
 class Game : GuiStage // Stage
 {
 	private:
+		Camera* view;
 		Mouse*  cursor;
 		Button* testButton;
-		Panel*  nextWave;
-
-		Camera* Cam;
-		bool CameraDrag;
-		int TileSize;
-
-		int MapWidth;
-		int MapHeight;
-		uint8_t* MapData;
 
   public:
     // Stage control
@@ -32,7 +24,4 @@ class Game : GuiStage // Stage
 
 		void InitialiseGui();
 		void UninitialiseGui();
-
-		int GetMapElement( int X, int Y );
-		void DrawGround( int X, int Y, Vector2 BasePoints[] );
 };

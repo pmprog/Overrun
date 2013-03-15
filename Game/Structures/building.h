@@ -3,8 +3,11 @@
 
 #include "../Sprites/vectorcomponent.h"
 #include "../Sprites/vectorsprite.h"
-#include "../camera.h"
-#include "../game.h"
+#include "../Game/camera.h"
+
+#ifndef Game
+class Game;
+#endif
 
 class Building
 {
@@ -12,9 +15,10 @@ class Building
 		VectorSprite* sprite;
 
 	public:
-		Game* GameStage;
+		Game* CurGame;
 
 		Vector2 AbsolutePosition;
+		Vector2 GridPosition;
 
 		bool Buildable;
 		int  BuildingCost;
@@ -28,5 +32,5 @@ class Building
 		Building( Game* CurrentGame );
 		~Building();
 		virtual void Update();
-		virtual void Render( int TileSize, Camera* camera );
+		virtual void Render( Camera* View );
 };

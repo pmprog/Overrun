@@ -17,12 +17,31 @@ Camera::Camera()
 	DestSpeedRotation = 0.0;
 	DestZoom = 1.0;
 	DestSpeedZoom = 0.0;
+
+	PixelsPerUnit = min( CurrentConfiguration->ScreenWidth / 12, CurrentConfiguration->ScreenHeight / 12 );
+
+	HasMinPos = false;
+	MinimumPosition.X = -1;
+	MinimumPosition.Y = -1;
+	HasMaxPos = false;
+	MaximumPosition.X = -1;
+	MaximumPosition.Y = -1;
 }
 
 void Camera::MoveTo( Vector2* Destination, double Speed )
 {
 	DestPosition.X = Destination->X;
+	if( HasMinPos && DestPosition.X < MinimumPosition.X )
+		DestPosition.X = MinimumPosition.X;
+	if( HasMaxPos && DestPosition.X > MaximumPosition.X )
+		DestPosition.X = MaximumPosition.X;
+
 	DestPosition.Y = Destination->Y;
+	if( HasMinPos && DestPosition.Y < MinimumPosition.Y )
+		DestPosition.Y = MinimumPosition.Y;
+	if( HasMaxPos && DestPosition.Y > MaximumPosition.Y )
+		DestPosition.Y = MaximumPosition.Y;
+
 	DestSpeedPosition = Speed;
 }
 
@@ -127,8 +146,28 @@ void Camera::Update()
 	// Update Camera Zoom
 	if( DestZoom != Zoom )
 	{
-		// TODO: Fix zoom scaling
 		TravelDistance = max( -DestSpeedZoom, min( DestSpeedZoom, DestZoom - Zoom ) );
 		Zoom += TravelDistance;
 	}
 }
+
+void Camera::SetCameraBounds( Vector2* MinRange, Vector2* MaxRange )
+{
+	SetCameraMinBounds( MinRange );
+	SetCameraMaxBounds( MaxRange );
+}
+
+void Camera::SetCameraMinBounds( Vector2* MinRange )
+{
+	HasMinPos = true;
+	MinimumPosition.X = MinRange->X;
+	MinimumPosition.Y = MinRange->Y;
+}
+
+void Camera::SetCameraMaxBounds( Vector2* MaxRange )
+{
+	HasMaxPos = true;
+	MaximumPosition.X = MaxRange->X;
+	MaximumPosition.Y = MaxRange->Y;
+}
+

@@ -3,7 +3,7 @@
 
 #include "../Sprites/vectorcomponent.h"
 #include "../Sprites/vectorsprite.h"
-#include "../camera.h"
+#include "../Game/camera.h"
 
 class Unit
 {
@@ -22,5 +22,5 @@ class Unit
 		Unit( double StartHealth, double StartShields, int CashReward );
 		~Unit();
 		virtual void Update();
-		virtual void Render( int TileSize, Camera* camera );
+		virtual void Render( Camera* View );
 };

@@ -39,9 +39,9 @@ void Unit::Update()
 		circShield->ColourChangePerFrame.a = -0.05;
 }
 
-void Unit::Render( int TileSize, Camera* camera )
+void Unit::Render( Camera* View )
 {
 	Vector2 screenPos;
-	camera->AbsoluteToCameraOffset( &AbsolutePosition, &screenPos );
-	sprite->Render( &screenPos, camera->Rotation, (double)TileSize * camera->Zoom );
+	View->AbsoluteToCameraOffset( &AbsolutePosition, &screenPos );
+	sprite->Render( &screenPos, View->Rotation, View->PixelsPerUnit * View->Zoom );
 }

@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include "../Framework/Core/main.h"
-#include "configure.h"
+#include "../../Framework/Core/main.h"
+#include "../configure.h"
 
 class Camera
 {
@@ -14,11 +14,18 @@ class Camera
 		double  DestZoom;
 		double  DestSpeedZoom;
 
+		bool HasMinPos;
+		Vector2 MinimumPosition;
+		bool HasMaxPos;
+		Vector2 MaximumPosition;
+
 	public:
 		Vector2 Position;
 		Vector2 RotateOrigin;
 		double  Rotation;
 		double  Zoom;
+		double	PixelsPerUnit;
+
 
 		Camera();
 		void MoveTo( Vector2* Destination, double Speed );
@@ -27,6 +34,10 @@ class Camera
 
 		void AbsoluteToCameraOffset( Vector2* Absolute, Vector2* Out );
 		void CameraOffsetToAbsolute( Vector2* Offset, Vector2* Out );
+
+		void SetCameraBounds( Vector2* MinRange, Vector2* MaxRange );
+		void SetCameraMinBounds( Vector2* MinRange );
+		void SetCameraMaxBounds( Vector2* MaxRange );
 
 		void Update();
 };
