@@ -1,13 +1,10 @@
 
 #include "spinner.h"
 
-Spinner::Spinner( ConfigFile* UnitConfig ) : Unit( UnitConfig )
+Spinner::Spinner( ConfigFile* UnitConfig, Vector2* StartPosition ) : Unit( UnitConfig, StartPosition )
 {
 	float* v;
 	VectorComponent* vc;
-
-	AbsolutePosition.X = StartPosition->X;
-	AbsolutePosition.Y = StartPosition->Y;
 
 	v = (float*)malloc(sizeof(float) * 4);
 	v[0] = 0; v[1] = 0;

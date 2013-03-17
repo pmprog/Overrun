@@ -4,7 +4,7 @@
 #include "../Sprites/vectorcomponent.h"
 #include "../Sprites/vectorsprite.h"
 #include "../Game/camera.h"
-#include "../Framework/Resource/configfile.h"
+#include "../../Framework/Resource/configfile.h"
 
 class Unit
 {
@@ -20,7 +20,7 @@ class Unit
 		double Shields;
 		int Cash;
 
-		Unit( ConfigFile* UnitConfig );
+		Unit( ConfigFile* UnitConfig, Vector2* StartPosition );
 		~Unit();
 		virtual void Update();
 		virtual void Render( Camera* View );
