@@ -10,18 +10,32 @@ Unit::Unit( ConfigFile* UnitConfig, Path* MapPath )
 	AbsolutePosition.X = MapPath->GetPathDestination( 0 )->X;
 	AbsolutePosition.Y = MapPath->GetPathDestination( 0 )->Y;
 	nextPathIndex = 1;
-	sprite = new VectorSprite();
-	Health = 0;
-	Shields = 0;
-	Cash = 0;
 
-	if( Shields > 0.0 )
+	UnitConfig->GetFloatValue( "Health", &HealthMax );
+	HealthCurrent = HealthMax;
+	UnitConfig->GetFloatValue( "Shields", &ShieldsMax );
+	ShieldsCurrent = ShieldsMax;
+	UnitConfig->GetFloatValue( "ShieldRegenRate", &ShieldsRegen );
+
+	UnitConfig->GetIntegerValue( "Reward", &Reward );
+	UnitConfig->GetIntegerValue( "DamageToBase", &DamageToBase );
+
+	SpeedCurrent = 0;
+	UnitConfig->GetFloatValue( "MaxNormalSpeed", &SpeedMaxNormal );
+	UnitConfig->GetFloatValue( "MaxSlowSpeed", &SpeedMaxRestricted );
+	UnitConfig->GetFloatValue( "Acceleration", &SpeedAcceleration );
+	UnitConfig->GetFloatValue( "Deceleration", &SpeedDeceleration );
+
+	sprite = new VectorSprite();
+	ShieldColour = al_map_rgba( 128, 192, 220, 220 );
+
+	if( ShieldsMax > 0.0 )
 	{
 		v = (float*)malloc(sizeof(float) * 4);
 		v[0] = 0; v[1] = 0;
 		v[2] = 1.0; v[3] = 1.0;
-		circShield = new VectorComponent( VECTORSPRITE_COMPONENT_CIRCLE, al_map_rgba( 128, 192, 220, 128 ), v, 2 );
-		circShield->DrawThickness = 2;
+		circShield = new VectorComponent( VECTORSPRITE_COMPONENT_CIRCLE, ShieldColour, v, 2 );
+		circShield->LineThickness = 2;
 		sprite->Components.push_back( circShield );
 		free(v);
 	} else {
@@ -37,13 +51,27 @@ Unit::~Unit()
 
 void Unit::Update()
 {
-	if( Shields == 0.0 && circShield != 0 )
-		circShield->ColourChangePerFrame.a = -0.05;
+	sprite->Update();
+	if( circShield != 0 )
+	{
+		ShieldsCurrent += ShieldsRegen;
+		if( ShieldsCurrent <= 0.0 )
+		{
+			ALLEGRO_COLOR fadeout = al_map_rgba( ShieldColour.r, ShieldColour.g, ShieldColour.b, 0 );
+			circShield->AnimateColourTo( &fadeout, 0.01 );
+			circShield->AnimateScaleTo( 0.1, 0.01 );
+		} else if ( circShield->Colour.a <= 0.0 ) {
+			circShield->AnimateColourTo( &ShieldColour, 0.01 );
+			circShield->AnimateScaleTo( 1.0, 0.01 );
+		}
+	}
+
+	// TODO: Process movement
 }
 
 void Unit::Render( Camera* View )
 {
 	Vector2 screenPos;
 	View->AbsoluteToCameraOffset( &AbsolutePosition, &screenPos );
-	sprite->Render( &screenPos, View->Rotation, View->PixelsPerUnit * View->Zoom );
+	sprite->Render( &screenPos, View->Rotation, (View->PixelsPerUnit / 2) * View->Zoom );
 }

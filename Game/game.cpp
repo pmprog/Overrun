@@ -14,14 +14,13 @@ void Game::Begin()
 
 	Vector2 camStart;
 	float camZoom;
-	MapConfig->GetIntegerValue( "CameraPosX", &camStart.X );
-	MapConfig->GetIntegerValue( "CameraPosY", &camStart.Y );
+	MapConfig->GetFloatValue( "CameraPosX", &camStart.X );
+	MapConfig->GetFloatValue( "CameraPosY", &camStart.Y );
 	MapConfig->GetFloatValue( "CameraZoom", &camZoom );
 	camStart.X *= view->PixelsPerUnit;
 	camStart.Y *= view->PixelsPerUnit;
 	view->MoveTo( &camStart, 12.0 );
 	view->ZoomTo( (double)camZoom, 0.04 );
-
 
 	// Load Wave Data
 	int WaveCount;
@@ -73,6 +72,9 @@ void Game::Event(ALLEGRO_EVENT *e)
 				case ALLEGRO_KEY_ESCAPE:
 					GameStack->Pop();
 					break;
+				case ALLEGRO_KEY_S:
+					Units.push_back( Waves.front()->SpawnUnit( Level->Paths.front() ) );
+					break;
 			}
 			break;
 
@@ -112,6 +114,12 @@ void Game::Event(ALLEGRO_EVENT *e)
 
 void Game::Update()
 {
+	for( std::vector<Unit*>::iterator i = Units.begin(); i != Units.end(); i++ )
+	{
+		Unit* u = (*i);
+		u->Update();
+	}
+
 	GuiStage::Update();
 	cursor->Update();
 	view->Update();
@@ -122,6 +130,11 @@ void Game::Render()
 	al_clear_to_color( al_map_rgb( 0, 0, 0 ) );
 
 	Level->Render( view );
+	for( std::vector<Unit*>::iterator i = Units.begin(); i != Units.end(); i++ )
+	{
+		Unit* u = (*i);
+		u->Render( view );
+	}
 
 	GuiStage::Render();
 	cursor->Render();

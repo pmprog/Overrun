@@ -3,11 +3,11 @@
 
 typedef struct Vector2
 {
-	int X;
-	int Y;
+	float X;
+	float Y;
 } Vector2;
 
-void RotateVector( Vector2* ToRotate, int AngleDegrees, Vector2* Output );
-void RotateVector( int ToRotateX, int ToRotateY, int AngleDegrees, Vector2* Output );
-void RotateVector( Vector2* ToRotate, int AngleDegrees, Vector2* Output, double AddXOffset, double AddYOffset );
-void RotateVector( int ToRotateX, int ToRotateY, int AngleDegrees, Vector2* Output, double AddXOffset, double AddYOffset );
+void RotateVector( Vector2* ToRotate, double AngleDegrees, Vector2* Output );
+void RotateVector( double ToRotateX, double ToRotateY, double AngleDegrees, Vector2* Output );
+void RotateVector( Vector2* ToRotate, double AngleDegrees, Vector2* Output, double AddXOffset, double AddYOffset );
+void RotateVector( double ToRotateX, double ToRotateY, double AngleDegrees, Vector2* Output, double AddXOffset, double AddYOffset );

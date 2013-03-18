@@ -19,10 +19,10 @@ class Map
 		int MapHeight;
 		uint8_t* MapData;
 
+	public:
 		std::list<Building*> Buildings;
 		std::vector<Path*> Paths;
 
-	public:
 		Map( Game* CurrentGame, ConfigFile* LevelData );
 		~Map();
 

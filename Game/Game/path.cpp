@@ -13,8 +13,8 @@ Path::Path( ConfigFile* LevelData, int PathNumber )
 	for( int i = 0; i < maxlength; i += 2 )
 	{
 		pnt = (Vector2*)malloc( sizeof( Vector2 ) );
-		LevelData->GetIntegerValue( (char*)&key, i, &pnt->X );
-		LevelData->GetIntegerValue( (char*)&key, i + 1, &pnt->Y );
+		LevelData->GetFloatValue( (char*)&key, i, &pnt->X );
+		LevelData->GetFloatValue( (char*)&key, i + 1, &pnt->Y );
 		points.push_back( pnt );
 	}
 	

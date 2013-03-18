@@ -18,9 +18,22 @@ class Unit
 	public:
 		Vector2 AbsolutePosition;
 
-		double Health;
-		double Shields;
-		int Cash;
+		ALLEGRO_COLOR ShieldColour;
+
+		float HealthMax;
+		float HealthCurrent;
+		float ShieldsMax;
+		float ShieldsCurrent;
+		float ShieldsRegen;
+
+		int Reward;
+		int DamageToBase;
+
+		float SpeedCurrent;
+		float SpeedMaxNormal;
+		float SpeedMaxRestricted;
+		float SpeedAcceleration;
+		float SpeedDeceleration;
 
 		Unit( ConfigFile* UnitConfig, Path* MapPath );
 		~Unit();

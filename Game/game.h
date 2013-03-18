@@ -17,6 +17,7 @@ class Game : GuiStage // Stage
 
 		Map* Level;
 		std::list<Wave*> Waves;
+		std::vector<Unit*> Units;
 
   public:
 		int TileSize;

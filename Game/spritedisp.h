@@ -3,23 +3,22 @@
 
 #include "../Framework/Core/main.h"
 #include "../Framework/GUI/gui.h"
-#include "Sprites/vectorsprite.h"
-#include "Sprites/vectorcomponent.h"
+#include "Game/wave.h"
+#include "Units/spinner.h"
 
 #define TILE_SIZE			48
 
 class SpriteDisp : GuiStage // Stage
 {
 	private:
+		Camera* cam;
 		Mouse* cursor;
 		Button* testButton;
 		double ScreenRot;
 		double ScreenZoom;
 
-		VectorSprite* circ;
-		VectorSprite* wave;
-		VectorComponent* circShield;
-		
+		Wave* spWave;
+		Spinner* spUnit;
 
   public:
     // Stage control

@@ -1,5 +1,6 @@
 
 #include "wave.h"
+#include "../Units/spinner.h"
 
 Wave::Wave( ConfigFile* WaveData )
 {
@@ -37,9 +38,10 @@ Wave::Wave( ConfigFile* WaveData )
 
 Wave::~Wave()
 {
+	delete UnitSpec;
 }
 
 Unit* Wave::SpawnUnit( Path* FollowPath )
 {
-	return new Unit( UnitSpec, FollowPath );
+	return new Spinner( UnitSpec, FollowPath );
 }

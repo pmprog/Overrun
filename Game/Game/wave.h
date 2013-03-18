@@ -2,7 +2,6 @@
 #pragma once
 
 #include "../../Framework/Core/main.h"
-#include "camera.h"
 #include "unit.h"
 
 #ifndef Game
