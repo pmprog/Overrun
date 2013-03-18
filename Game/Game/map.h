@@ -4,6 +4,7 @@
 #include "../../Framework/Core/main.h"
 #include "camera.h"
 #include "../Structures/building.h"
+#include "path.h"
 
 #ifndef Game
 class Game;
@@ -19,6 +20,7 @@ class Map
 		uint8_t* MapData;
 
 		std::list<Building*> Buildings;
+		std::vector<Path*> Paths;
 
 	public:
 		Map( Game* CurrentGame, ConfigFile* LevelData );

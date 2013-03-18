@@ -1,13 +1,15 @@
 
 #include "unit.h"
 
-Unit::Unit( ConfigFile* UnitConfig, Vector2* StartPosition )
+Unit::Unit( ConfigFile* UnitConfig, Path* MapPath )
 {
 	float* v;
 
-	AbsolutePosition.X = StartPosition->X;
-	AbsolutePosition.Y = StartPosition->Y;
-	CurrentPathIndex = 0;
+	path = MapPath;
+
+	AbsolutePosition.X = MapPath->GetPathDestination( 0 )->X;
+	AbsolutePosition.Y = MapPath->GetPathDestination( 0 )->Y;
+	nextPathIndex = 1;
 	sprite = new VectorSprite();
 	Health = 0;
 	Shields = 0;

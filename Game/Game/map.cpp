@@ -1,5 +1,6 @@
 
 #include "map.h"
+#include "../game.h"
 
 Map::Map( Game* CurrentGame, ConfigFile* LevelData )
 {
@@ -16,6 +17,13 @@ Map::Map( Game* CurrentGame, ConfigFile* LevelData )
 			LevelData->GetIntegerValue( "Map", (y * MapWidth) + x, &t );
 			MapData[(y * MapWidth) + x] = (uint8_t)t;
 		}
+	}
+
+	int pathcount;
+	LevelData->GetIntegerValue( "Paths", &pathcount );
+	for( int p = 1; p <= pathcount; p++ )
+	{
+		Paths.push_back( new Path( LevelData, p ) );
 	}
 }
 
@@ -61,14 +69,14 @@ void Map::Render( Camera* View )
 	{
 		for( int x = 0; x < MapWidth; x++ )
 		{
-			pts[0].X = x * View->PixelsPerUnit;
-			pts[1].X = x * View->PixelsPerUnit;
-			pts[2].X = (x + 1) * View->PixelsPerUnit;
-			pts[3].X = (x + 1) * View->PixelsPerUnit;
-			pts[0].Y = y * View->PixelsPerUnit;
-			pts[1].Y = (y + 1) * View->PixelsPerUnit;
-			pts[2].Y = y * View->PixelsPerUnit;
-			pts[3].Y = (y + 1) * View->PixelsPerUnit;
+			pts[0].X = x * CurGame->TileSize;
+			pts[1].X = x * CurGame->TileSize;
+			pts[2].X = (x + 1) * CurGame->TileSize;
+			pts[3].X = (x + 1) * CurGame->TileSize;
+			pts[0].Y = y * CurGame->TileSize;
+			pts[1].Y = (y + 1) * CurGame->TileSize;
+			pts[2].Y = y * CurGame->TileSize;
+			pts[3].Y = (y + 1) * CurGame->TileSize;
 			View->AbsoluteToCameraOffset( &pts[0], &pts[0] );
 			View->AbsoluteToCameraOffset( &pts[1], &pts[1] );
 			View->AbsoluteToCameraOffset( &pts[2], &pts[2] );

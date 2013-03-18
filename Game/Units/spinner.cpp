@@ -1,7 +1,7 @@
 
 #include "spinner.h"
 
-Spinner::Spinner( ConfigFile* UnitConfig, Vector2* StartPosition ) : Unit( UnitConfig, StartPosition )
+Spinner::Spinner( ConfigFile* UnitConfig, Path* MapPath ) : Unit( UnitConfig, MapPath )
 {
 	float* v;
 	VectorComponent* vc;

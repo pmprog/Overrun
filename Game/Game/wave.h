@@ -3,6 +3,7 @@
 
 #include "../../Framework/Core/main.h"
 #include "camera.h"
+#include "unit.h"
 
 #ifndef Game
 class Game;
@@ -11,12 +12,17 @@ class Game;
 class Wave
 {
 	private:
-		Game* CurGame;
+		std::string UnitClass;
+		ConfigFile* UnitSpec;
 
 	public:
-		Wave( Game* CurrentGame, ConfigFile* LevelData, int WaveNumber );
+		int WaveDelay;
+		float SpawnDelay;
+		int UnitCount;
+
+		Wave( ConfigFile* WaveData );
 		~Wave();
 
-		void InitialiseWave();
+		Unit* SpawnUnit( Path* FollowPath );
 
 };

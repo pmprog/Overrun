@@ -14,12 +14,13 @@ class Game : GuiStage // Stage
 
 		Camera* view;
 		bool viewDrag;
-		
 
 		Map* Level;
 		std::list<Wave*> Waves;
 
   public:
+		int TileSize;
+
     // Stage control
     void Begin();
     void Pause();

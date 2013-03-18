@@ -6,5 +6,5 @@
 class Spinner : public Unit
 {
 	public:
-		Spinner( ConfigFile* UnitConfig, Vector2* StartPosition );
+		Spinner( ConfigFile* UnitConfig, Path* MapPath );
 };

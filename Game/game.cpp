@@ -25,10 +25,18 @@ void Game::Begin()
 
 	// Load Wave Data
 	int WaveCount;
-	WaveCount = MapConfig->GetArraySize( "WaveTypes" );
+	WaveCount = MapConfig->GetArraySize( "Waves" );
 	for( int wc = 1; wc <= WaveCount; wc++ )
 	{
-		Waves.push_back( new Wave( this, MapConfig, wc - 1 ) );
+		char wavePath[255];
+		std::string waveName;
+
+		MapConfig->GetStringValue( "Waves", wc - 1, &waveName );
+		sprintf( (char*)&wavePath, "Resource/%s.txt", waveName.c_str() );
+
+		ConfigFile* waveCfg = new ConfigFile( (char*)&wavePath );
+		Waves.push_back( new Wave( waveCfg ) );
+		delete waveCfg;
 	}
 
 	delete MapConfig;
@@ -122,6 +130,7 @@ void Game::Render()
 void Game::InitialiseGui()
 {
 	view = new Camera();
+	TileSize = view->PixelsPerUnit;
 	viewDrag = false;
 
 	cursor = new Mouse();
