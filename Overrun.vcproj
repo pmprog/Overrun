@@ -181,7 +181,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Game\Structures\building.cpp"
+				RelativePath=".\Game\Game\building.cpp"
 				>
 			</File>
 			<File
@@ -299,7 +299,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Game\Structures\building.h"
+				RelativePath=".\Game\Game\building.h"
 				>
 			</File>
 			<File

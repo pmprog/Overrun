@@ -19,6 +19,7 @@ class Unit
 		Vector2 AbsolutePosition;
 
 		ALLEGRO_COLOR ShieldColour;
+		ALLEGRO_COLOR ShieldColourFaded;
 
 		float HealthMax;
 		float HealthCurrent;

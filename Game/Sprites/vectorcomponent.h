@@ -43,7 +43,7 @@ class VectorComponent
 		void Render( Vector2* Position, double ScreenRotation, double Zoom );
 
 		void AnimateColourTo( ALLEGRO_COLOR* Destination, double Speed );
-		void AnimateScaleTo( double Scale, double Speed );
+		void AnimateScaleTo( double Destination, double Speed );
 		void AnimateThicknessTo( int Thickness );
 		void AnimateRotationTo( double Angle, double Speed );
 		void AnimateRotation( double Speed );

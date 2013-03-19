@@ -36,10 +36,10 @@ void Building::Render( Camera* View )
 	if( PlacedOnMap )
 	{
 		View->AbsoluteToCameraOffset( &AbsolutePosition, &screenPos );
-		sprite->Render( &screenPos, View->Rotation, View->PixelsPerUnit * View->Zoom );
+		sprite->Render( &screenPos, View );
 	} else {
 		screenPos.X = AbsolutePosition.X + (View->PixelsPerUnit * (TilesWide / 2));
 		screenPos.Y = AbsolutePosition.Y + (View->PixelsPerUnit * (TilesHigh / 2));
-		sprite->Render( &screenPos, View->Rotation, View->PixelsPerUnit * View->Zoom );
+		sprite->Render( &screenPos, View );
 	}
 }

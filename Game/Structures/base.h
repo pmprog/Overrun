@@ -1,5 +1,5 @@
 
-#include "building.h"
+#include "../Game/building.h"
 
 class Base : public Building
 {

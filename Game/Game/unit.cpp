@@ -28,14 +28,16 @@ Unit::Unit( ConfigFile* UnitConfig, Path* MapPath )
 
 	sprite = new VectorSprite();
 	ShieldColour = al_map_rgba( 128, 192, 220, 220 );
+	ShieldColourFaded = al_map_rgba( 128, 192, 220, 0 );
 
 	if( ShieldsMax > 0.0 )
 	{
 		v = (float*)malloc(sizeof(float) * 4);
 		v[0] = 0; v[1] = 0;
-		v[2] = 1.0; v[3] = 1.0;
-		circShield = new VectorComponent( VECTORSPRITE_COMPONENT_CIRCLE, ShieldColour, v, 2 );
-		circShield->LineThickness = 2;
+		v[2] = 0.95; v[3] = 0.95;
+		circShield = new VectorComponent( VECTORSPRITE_COMPONENT_CIRCLE, ShieldColourFaded, v, 2 );
+		circShield->AnimateThicknessTo( 2 );
+		circShield->AnimateColourTo( &ShieldColour, 0.1 );
 		sprite->Components.push_back( circShield );
 		free(v);
 	} else {
@@ -55,23 +57,34 @@ void Unit::Update()
 	if( circShield != 0 )
 	{
 		ShieldsCurrent += ShieldsRegen;
-		if( ShieldsCurrent <= 0.0 )
+		if( ShieldsCurrent <= 0.0 && circShield->Colour.a > 0.0 )
 		{
-			ALLEGRO_COLOR fadeout = al_map_rgba( ShieldColour.r, ShieldColour.g, ShieldColour.b, 0 );
-			circShield->AnimateColourTo( &fadeout, 0.01 );
+			circShield->AnimateColourTo( &ShieldColourFaded, 0.02 );
 			circShield->AnimateScaleTo( 0.1, 0.01 );
 		} else if ( circShield->Colour.a <= 0.0 ) {
-			circShield->AnimateColourTo( &ShieldColour, 0.01 );
-			circShield->AnimateScaleTo( 1.0, 0.01 );
+			circShield->AnimateColourTo( &ShieldColour, 0.02 );
+			circShield->AnimateScaleTo( 1.0, 2.0 );
 		}
 	}
 
 	// TODO: Process movement
+	Vector2* nextPoint = path->GetPathDestination( nextPathIndex );
+	if( nextPoint != 0 )
+	{
+		SpeedCurrent = 0.1;
+		AbsolutePosition.X += ( abs(SpeedCurrent) < abs(nextPoint->X - AbsolutePosition.X) ? (nextPoint->X > AbsolutePosition.X ? SpeedCurrent : -SpeedCurrent) : nextPoint->X - AbsolutePosition.X );
+		AbsolutePosition.Y += ( abs(SpeedCurrent) < abs(nextPoint->Y - AbsolutePosition.Y) ? (nextPoint->Y > AbsolutePosition.Y ? SpeedCurrent : -SpeedCurrent) : nextPoint->Y - AbsolutePosition.Y );
+
+		if( (int)AbsolutePosition.X == (int)nextPoint->X && (int)AbsolutePosition.Y == (int)nextPoint->Y )
+			nextPathIndex++;
+	}
 }
 
 void Unit::Render( Camera* View )
 {
 	Vector2 screenPos;
-	View->AbsoluteToCameraOffset( &AbsolutePosition, &screenPos );
-	sprite->Render( &screenPos, View->Rotation, (View->PixelsPerUnit / 2) * View->Zoom );
+	screenPos.X = AbsolutePosition.X; screenPos.Y = AbsolutePosition.Y;
+	MultiplyVector( &screenPos, View->PixelsPerUnit );
+	View->AbsoluteToCameraOffset( &screenPos, &screenPos );
+	sprite->Render( &screenPos, View );
 }

@@ -24,3 +24,9 @@ void RotateVector( double ToRotateX, double ToRotateY, double AngleDegrees, Vect
 	Output->X = (ToRotateX * rotCos) - (ToRotateY * rotSin) + AddXOffset;
 	Output->Y = (ToRotateY * rotCos) + (ToRotateX * rotSin) + AddYOffset;
 }
+
+void MultiplyVector( Vector2* ToMultiply, double Value )
+{
+	ToMultiply->X *= Value;
+	ToMultiply->Y *= Value;
+}

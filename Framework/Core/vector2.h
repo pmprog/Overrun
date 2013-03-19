@@ -11,3 +11,4 @@ void RotateVector( Vector2* ToRotate, double AngleDegrees, Vector2* Output );
 void RotateVector( double ToRotateX, double ToRotateY, double AngleDegrees, Vector2* Output );
 void RotateVector( Vector2* ToRotate, double AngleDegrees, Vector2* Output, double AddXOffset, double AddYOffset );
 void RotateVector( double ToRotateX, double ToRotateY, double AngleDegrees, Vector2* Output, double AddXOffset, double AddYOffset );
+void MultiplyVector( Vector2* ToMultiply, double Value );

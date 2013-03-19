@@ -3,6 +3,7 @@
 
 #include <list>
 #include "../../Framework/Core/vector2.h"
+#include "../Game/camera.h"
 
 #ifndef VectorComponent
 class VectorComponent;
@@ -17,6 +18,6 @@ class VectorSprite
 		~VectorSprite();
 
 		void Update();
-		void Render( Vector2* Position, double ScreenRotation, double Zoom );
+		void Render( Vector2* Position, Camera* View );
 
 };

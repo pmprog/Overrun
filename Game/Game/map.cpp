@@ -44,7 +44,7 @@ bool Map::CanBuildOnTile( int X, int Y )
 	if( GetElement( X, Y ) != 0 )
 		return false;
 
-	for(std::list<Building*>::iterator i = Buildings.begin(); i != Buildings.end(); i++ )
+	for(std::vector<Building*>::iterator i = Buildings.begin(); i != Buildings.end(); i++ )
 	{
 		Building* b = (Building*)(*i);
 		if( X < b->GridPosition.X + b->TilesWide && X > b->GridPosition.X - b->TilesWide && Y < b->GridPosition.Y + b->TilesHigh && Y > b->GridPosition.Y - b->TilesHigh )
@@ -55,9 +55,10 @@ bool Map::CanBuildOnTile( int X, int Y )
 
 void Map::Update()
 {
-	for(std::list<Building*>::iterator i = Buildings.begin(); i != Buildings.end(); i++ )
+	for(std::vector<Building*>::iterator i = Buildings.begin(); i != Buildings.end(); i++ )
 	{
 		Building* b = (Building*)(*i);
+		b->Update();
 		// TODO: Process buildings - Base take damage, Turrets firing
 	}
 }
@@ -84,7 +85,7 @@ void Map::Render( Camera* View )
 			RenderGround( x, y, (Vector2*)&pts );
 		}
 	}
-	for(std::list<Building*>::iterator i = Buildings.begin(); i != Buildings.end(); i++ )
+	for(std::vector<Building*>::iterator i = Buildings.begin(); i != Buildings.end(); i++ )
 	{
 		Building* b = (Building*)(*i);
 		b->Render( View );

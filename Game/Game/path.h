@@ -12,5 +12,6 @@ class Path
 		Path( ConfigFile* LevelData, int PathNumber );
 		~Path();
 
+		int GetPathLength();
 		Vector2* GetPathDestination( int Index );
 };

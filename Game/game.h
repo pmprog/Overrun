@@ -16,8 +16,8 @@ class Game : GuiStage // Stage
 		bool viewDrag;
 
 		Map* Level;
-		std::list<Wave*> Waves;
-		std::vector<Unit*> Units;
+		std::list<Wave*>				Waves;
+		std::vector<Unit*>			Units;
 
   public:
 		int TileSize;

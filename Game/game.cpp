@@ -72,8 +72,13 @@ void Game::Event(ALLEGRO_EVENT *e)
 				case ALLEGRO_KEY_ESCAPE:
 					GameStack->Pop();
 					break;
+
+
 				case ALLEGRO_KEY_S:
 					Units.push_back( Waves.front()->SpawnUnit( Level->Paths.front() ) );
+					break;
+				case ALLEGRO_KEY_A:
+					Units.front()->ShieldsCurrent *= -1.0;
 					break;
 			}
 			break;
@@ -119,6 +124,7 @@ void Game::Update()
 		Unit* u = (*i);
 		u->Update();
 	}
+	Level->Update();
 
 	GuiStage::Update();
 	cursor->Update();
@@ -134,6 +140,11 @@ void Game::Render()
 	{
 		Unit* u = (*i);
 		u->Render( view );
+	}
+	for( std::vector<Building*>::iterator i = Level->Buildings.begin(); i != Level->Buildings.end(); i++ )
+	{
+		Building* b = (*i);
+		b->Render( view );
 	}
 
 	GuiStage::Render();

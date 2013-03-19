@@ -20,11 +20,11 @@ void VectorSprite::Update()
 	}
 }
 
-void VectorSprite::Render( Vector2* Position, double ScreenRotation, double Zoom )
+void VectorSprite::Render( Vector2* Position, Camera* View )
 {
 	for( std::list<VectorComponent*>::iterator i = Components.begin(); i != Components.end(); i++ )
 	{
 		VectorComponent* c = (VectorComponent*)(*i);
-		c->Render( Position, ScreenRotation, Zoom );
+		c->Render( Position, View->Rotation, View->Zoom * (View->PixelsPerUnit / 2) );
 	}
 }

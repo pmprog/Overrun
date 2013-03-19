@@ -15,6 +15,7 @@ Path::Path( ConfigFile* LevelData, int PathNumber )
 		pnt = (Vector2*)malloc( sizeof( Vector2 ) );
 		LevelData->GetFloatValue( (char*)&key, i, &pnt->X );
 		LevelData->GetFloatValue( (char*)&key, i + 1, &pnt->Y );
+		pnt->X += 0.5; pnt->Y += 0.5;	// Centre in tile
 		points.push_back( pnt );
 	}
 	
@@ -29,7 +30,14 @@ Path::~Path()
 	}
 }
 
+int Path::GetPathLength()
+{
+	return points.size();
+}
+
 Vector2* Path::GetPathDestination( int Index )
 {
+	if( Index < 0 || Index >= points.size() )
+		return 0;
 	return points.at( Index );
 }

@@ -68,27 +68,27 @@ void VectorComponent::Update()
 {
 	if( ColourTarget.a != Colour.a )
 	{
-		Colour.a += ( abs(ColourDelta.a) > abs(ColourTarget.a - ColourTarget.a) ? ColourDelta.a : ColourTarget.a - ColourTarget.a );
+		Colour.a += ( abs(ColourDelta.a) < abs(ColourTarget.a - Colour.a) ? ColourDelta.a : ColourTarget.a - Colour.a );
 		Colour.a = max( 0.0, min(Colour.a, 1.0) );
 	}
 	if( ColourTarget.r != Colour.r )
 	{
-		Colour.r += ( abs(ColourDelta.r) > abs(ColourTarget.r - ColourTarget.r) ? ColourDelta.r : ColourTarget.r - ColourTarget.r );
+		Colour.r += ( abs(ColourDelta.r) < abs(ColourTarget.r - Colour.r) ? ColourDelta.r : ColourTarget.r - Colour.r );
 		Colour.r = max( 0.0, min(Colour.r, 1.0) );
 	}
 	if( ColourTarget.g != Colour.g )
 	{
-		Colour.g += ( abs(ColourDelta.g) > abs(ColourTarget.g - ColourTarget.g) ? ColourDelta.g : ColourTarget.g - ColourTarget.g );
+		Colour.g += ( abs(ColourDelta.g) < abs(ColourTarget.g - Colour.g) ? ColourDelta.g : ColourTarget.g - Colour.g );
 		Colour.g = max( 0.0, min(Colour.g, 1.0) );
 	}
 	if( ColourTarget.b != Colour.b )
 	{
-		Colour.b += ( abs(ColourDelta.b) > abs(ColourTarget.b - ColourTarget.b) ? ColourDelta.b : ColourTarget.b - ColourTarget.b );
+		Colour.b += ( abs(ColourDelta.b) < abs(ColourTarget.b - Colour.b) ? ColourDelta.b : ColourTarget.b - Colour.b );
 		Colour.b = max( 0.0, min(Colour.b, 1.0) );
 	}
 
 	if( Scale != ScaleTarget )
-		Scale += ( abs(ScaleDelta) > ScaleTarget - Scale ? ScaleDelta : ScaleTarget - Scale );
+		Scale += ( abs(ScaleDelta) < abs(ScaleTarget - Scale) ? ScaleDelta : ScaleTarget - Scale );
 
 	if( ThicknessTarget > LineThickness )
 		LineThickness++;
@@ -163,10 +163,20 @@ void VectorComponent::Render( Vector2* Position, double ScreenRotation, double Z
 
 void VectorComponent::AnimateColourTo( ALLEGRO_COLOR* Destination, double Speed )
 {
+	ColourTarget.a = Destination->a;
+	ColourTarget.r = Destination->r;
+	ColourTarget.g = Destination->g;
+	ColourTarget.b = Destination->b;
+	ColourDelta.a = Speed * ( Destination->a > Colour.a ? 1 : -1 );
+	ColourDelta.r = Speed * ( Destination->r > Colour.r ? 1 : -1 );
+	ColourDelta.g = Speed * ( Destination->g > Colour.g ? 1 : -1 );
+	ColourDelta.b = Speed * ( Destination->b > Colour.b ? 1 : -1 );
 }
 
-void VectorComponent::AnimateScaleTo( double Scale, double Speed )
+void VectorComponent::AnimateScaleTo( double Destination, double Speed )
 {
+	ScaleDelta = Speed * ( Destination > Scale ? 1 : -1 );
+	ScaleTarget = Destination;
 }
 
 void VectorComponent::AnimateThicknessTo( int Thickness )
