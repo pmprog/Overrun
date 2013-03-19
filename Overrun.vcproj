@@ -303,6 +303,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Game\Structures\buildings.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Framework\GUI\button.h"
 				>
 			</File>

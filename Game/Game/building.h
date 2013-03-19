@@ -18,7 +18,6 @@ class Building
 		Game* CurGame;
 
 		Vector2 AbsolutePosition;
-		Vector2 GridPosition;
 
 		bool Buildable;
 		int  BuildingCost;

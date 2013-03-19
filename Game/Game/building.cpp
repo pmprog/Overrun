@@ -15,8 +15,6 @@ Building::Building( Game* CurrentGame )
 	TilesHigh = 1;
 
 	PlacedOnMap = false;
-	GridPosition.X = -1;
-	GridPosition.Y = -1;
 	AbsolutePosition.X = -1;
 	AbsolutePosition.Y = -1;
 }
@@ -32,14 +30,16 @@ void Building::Update()
 void Building::Render( Camera* View )
 {
 	Vector2 screenPos;
+	screenPos.X = AbsolutePosition.X + ((double)TilesWide / 2);
+	screenPos.Y = AbsolutePosition.Y + ((double)TilesHigh / 2);
+	MultiplyVector( &screenPos, View->PixelsPerUnit * (double)min(TilesWide, TilesHigh) );
 
 	if( PlacedOnMap )
 	{
-		View->AbsoluteToCameraOffset( &AbsolutePosition, &screenPos );
-		sprite->Render( &screenPos, View );
+		View->AbsoluteToCameraOffset( &screenPos, &screenPos );
 	} else {
-		screenPos.X = AbsolutePosition.X + (View->PixelsPerUnit * (TilesWide / 2));
-		screenPos.Y = AbsolutePosition.Y + (View->PixelsPerUnit * (TilesHigh / 2));
-		sprite->Render( &screenPos, View );
+		screenPos.X = screenPos.X + (View->PixelsPerUnit * (TilesWide / 2));
+		screenPos.Y = screenPos.Y + (View->PixelsPerUnit * (TilesHigh / 2));
 	}
+	sprite->Render( &screenPos, View );
 }

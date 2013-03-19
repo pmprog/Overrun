@@ -2,6 +2,8 @@
 #include "map.h"
 #include "../game.h"
 
+#include "../Structures/buildings.h"
+
 Map::Map( Game* CurrentGame, ConfigFile* LevelData )
 {
 	CurGame = CurrentGame;
@@ -25,6 +27,30 @@ Map::Map( Game* CurrentGame, ConfigFile* LevelData )
 	{
 		Paths.push_back( new Path( LevelData, p ) );
 	}
+
+	int buildingcount;
+	buildingcount = LevelData->GetArraySize( "StartingStructures" );
+	for( int i = 0; i < buildingcount; i++ )
+	{
+		Building* b = 0;
+		std::string bname;
+
+		LevelData->GetStringValue( "StartingStructures", i, &bname );
+		if( bname == "Base" )
+			b = new Base( CurGame, 1000 );
+		// TODO: Add building classes here
+
+
+		if( b != 0 )
+		{
+			LevelData->GetFloatValue( "StartingStrutPosX", i, &b->AbsolutePosition.X );
+			LevelData->GetFloatValue( "StartingStrutPosY", i, &b->AbsolutePosition.Y );
+			b->PlacedOnMap = true;
+			Buildings.push_back( b );
+		}
+
+	}
+
 }
 
 Map::~Map()
@@ -47,7 +73,7 @@ bool Map::CanBuildOnTile( int X, int Y )
 	for(std::vector<Building*>::iterator i = Buildings.begin(); i != Buildings.end(); i++ )
 	{
 		Building* b = (Building*)(*i);
-		if( X < b->GridPosition.X + b->TilesWide && X > b->GridPosition.X - b->TilesWide && Y < b->GridPosition.Y + b->TilesHigh && Y > b->GridPosition.Y - b->TilesHigh )
+		if( X < b->AbsolutePosition.X + b->TilesWide && X > b->AbsolutePosition.X - b->TilesWide && Y < b->AbsolutePosition.Y + b->TilesHigh && Y > b->AbsolutePosition.Y - b->TilesHigh )
 			return false;
 	}
 	return true;
@@ -59,7 +85,6 @@ void Map::Update()
 	{
 		Building* b = (Building*)(*i);
 		b->Update();
-		// TODO: Process buildings - Base take damage, Turrets firing
 	}
 }
 

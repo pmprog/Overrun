@@ -43,5 +43,9 @@ Wave::~Wave()
 
 Unit* Wave::SpawnUnit( Path* FollowPath )
 {
+	if( UnitClass == "Spinner" )
+		return new Spinner( UnitSpec, FollowPath );
+
+
 	return new Spinner( UnitSpec, FollowPath );
 }
