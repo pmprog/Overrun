@@ -10,5 +10,5 @@ class Base : public Building
 
 
 		Base( Game* CurrentGame, int StartHealth );
-		~Base();
+		virtual ~Base();
 };

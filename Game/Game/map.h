@@ -15,13 +15,13 @@ class Map
 	private:
 		Game* CurGame;
 
-		int MapWidth;
-		int MapHeight;
 		uint8_t* MapData;
 
 	public:
 		std::vector<Building*> Buildings;
 		std::vector<Path*> Paths;
+		int MapWidth;
+		int MapHeight;
 
 		Map( Game* CurrentGame, ConfigFile* LevelData );
 		~Map();

@@ -21,6 +21,8 @@ void Game::Begin()
 	camStart.Y *= view->PixelsPerUnit;
 	view->MoveTo( &camStart, 12.0 );
 	view->ZoomTo( (double)camZoom, 0.04 );
+	view->RotateOrigin.X = (double)Level->MapWidth / 2.0;
+	view->RotateOrigin.Y = (double)Level->MapHeight / 2.0;
 
 	// Load Wave Data
 	int WaveCount;
@@ -79,6 +81,15 @@ void Game::Event(ALLEGRO_EVENT *e)
 					break;
 				case ALLEGRO_KEY_A:
 					Units.front()->ShieldsCurrent *= -1.0;
+					break;
+				case ALLEGRO_KEY_Q:
+					view->RotateTo( 270, 1 );
+					break;
+				case ALLEGRO_KEY_E:
+					view->RotateTo( 90, 1 );
+					break;
+				case ALLEGRO_KEY_W:
+					view->RotateTo( 0, 1 );
 					break;
 			}
 			break;

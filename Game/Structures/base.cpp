@@ -22,3 +22,7 @@ Base::Base( Game* CurrentGame, int StartHealth ) : Building( CurrentGame )
 	sprite->Components.push_back( vc );
 	free(v);
 }
+
+Base::~Base()
+{
+}

@@ -29,7 +29,7 @@ class Building
 		int TilesHigh;
 
 		Building( Game* CurrentGame );
-		~Building();
+		virtual ~Building();
 		virtual void Update();
 		virtual void Render( Camera* View );
 };

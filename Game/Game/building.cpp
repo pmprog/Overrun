@@ -32,7 +32,7 @@ void Building::Render( Camera* View )
 	Vector2 screenPos;
 	screenPos.X = AbsolutePosition.X + ((double)TilesWide / 2);
 	screenPos.Y = AbsolutePosition.Y + ((double)TilesHigh / 2);
-	MultiplyVector( &screenPos, View->PixelsPerUnit * (double)min(TilesWide, TilesHigh) );
+	MultiplyVector( &screenPos, View->PixelsPerUnit );
 
 	if( PlacedOnMap )
 	{
