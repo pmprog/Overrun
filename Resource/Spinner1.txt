@@ -3,7 +3,7 @@
 
 UnitClass = "Spinner"
 WaveDelay = 5
-SpawnDelay = 0.2
+SpawnDelay = 0.4
 UnitCount = 30
 
 Health = 100

@@ -72,7 +72,7 @@ void Unit::Update()
 	if( nextPoint != 0 )
 	{
 		// TODO: Fix speed control
-		SpeedCurrent = 0.2;
+		SpeedCurrent = 0.05;
 		AbsolutePosition.X += ( abs(SpeedCurrent) < abs(nextPoint->X - AbsolutePosition.X) ? (nextPoint->X > AbsolutePosition.X ? SpeedCurrent : -SpeedCurrent) : nextPoint->X - AbsolutePosition.X );
 		AbsolutePosition.Y += ( abs(SpeedCurrent) < abs(nextPoint->Y - AbsolutePosition.Y) ? (nextPoint->Y > AbsolutePosition.Y ? SpeedCurrent : -SpeedCurrent) : nextPoint->Y - AbsolutePosition.Y );
 

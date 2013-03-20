@@ -81,9 +81,10 @@ bool Map::CanBuildOnTile( int X, int Y )
 
 void Map::Update()
 {
+	Unit* u;
 	for( std::vector<Unit*>::iterator i = Units.begin(); i != Units.end(); i++ )
 	{
-		Unit* u = (*i);
+		u = (*i);
 		u->Update();
 	}
 
@@ -91,6 +92,21 @@ void Map::Update()
 	{
 		Building* b = (Building*)(*i);
 		b->Update();
+
+		// TODO: http://en.wikipedia.org/wiki/Erase-remove_idiom
+		for( std::vector<Unit*>::iterator i = Units.begin(); i != Units.end(); )
+		{
+			u = (*i);
+			if( (int)u->AbsolutePosition.X >= (int)b->AbsolutePosition.X && (int)u->AbsolutePosition.Y >= (int)b->AbsolutePosition.Y &&
+				(int)u->AbsolutePosition.X < (int)b->AbsolutePosition.X + b->TilesWide && (int)u->AbsolutePosition.Y < (int)b->AbsolutePosition.Y + b->TilesHigh )
+			{
+				delete u;
+				i = Units.erase( i );
+				// TODO: Deal Damage
+			} else {
+				i++;
+			}
+		}
 	}
 }
 
