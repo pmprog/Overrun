@@ -25,6 +25,7 @@ Building::~Building()
 
 void Building::Update()
 {
+	sprite->Update();
 }
 
 void Building::Render( Camera* View )

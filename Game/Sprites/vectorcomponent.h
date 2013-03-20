@@ -47,4 +47,7 @@ class VectorComponent
 		void AnimateThicknessTo( int Thickness );
 		void AnimateRotationTo( double Angle, double Speed );
 		void AnimateRotation( double Speed );
+
+		float GetPoint( int PointIndex, bool WantYPosition );
+		void SetPoint( int PointIndex, bool WantYPosition, float NewValue );
 };

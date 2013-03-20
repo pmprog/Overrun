@@ -198,6 +198,27 @@ void VectorComponent::AnimateRotation( double Speed )
 	RotationDelta = Speed;
 }
 
+float VectorComponent::GetPoint( int PointIndex, bool WantYPosition )
+{
+	if( PointIndex < 0 || PointIndex >= PointCount )
+		return 0.0;
+
+	if( !WantYPosition )
+		return Points[PointIndex * 2];
+	else
+		return Points[(PointIndex * 2) + 1];
+}
+
+void VectorComponent::SetPoint( int PointIndex, bool WantYPosition, float NewValue )
+{
+	if( PointIndex < 0 || PointIndex >= PointCount )
+		return;
+
+	if( !WantYPosition )
+		Points[PointIndex * 2] = NewValue;
+	else
+		Points[(PointIndex * 2) + 1] = NewValue;
+}
 
 
 

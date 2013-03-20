@@ -2,6 +2,7 @@
 #include "game.h"
 #include "configure.h"
 #include "Game/unit.h"
+#include "Structures/buildings.h"
 
 void Game::Begin()
 {
@@ -80,7 +81,10 @@ void Game::Event(ALLEGRO_EVENT *e)
 					Units.push_back( Waves.front()->SpawnUnit( Level->Paths.front() ) );
 					break;
 				case ALLEGRO_KEY_A:
-					Units.front()->ShieldsCurrent *= -1.0;
+					((Base*)Level->Buildings.front())->TakeDamage( 10 );
+					break;
+				case ALLEGRO_KEY_Z:
+					((Base*)Level->Buildings.front())->TakeDamage( 40 );
 					break;
 				case ALLEGRO_KEY_Q:
 					view->RotateTo( 270, 1 );
