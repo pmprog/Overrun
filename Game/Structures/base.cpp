@@ -18,10 +18,10 @@ Base::Base( Game* CurrentGame, int StartHealth ) : Building( CurrentGame )
 	VectorComponent* vc;
 
 	v = (float*)malloc(sizeof(float) * 8);
-	v[0] = -4.0; v[1] = -4.0;
-	v[2] = -4.0; v[3] =  4.0;
-	v[4] =  4.0; v[5] =  4.0;
-	v[6] =  4.0; v[7] = -4.0;
+	v[0] = -3.8; v[1] = -1.0;
+	v[2] = -3.8; v[3] =  3.0;
+	v[4] =  3.0; v[5] =  3.0;
+	v[6] =  3.0; v[7] = -1.0;
 	vc = new VectorComponent( VECTORSPRITE_COMPONENT_POLYGON, al_map_rgb( 128, 128, 220 ), v, 4 );
 	vc->AnimateThicknessTo( 2 );
 	sprite->Components.push_back( vc );

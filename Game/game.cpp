@@ -41,6 +41,11 @@ void Game::Begin()
 		delete waveCfg;
 	}
 
+	timerSpawn = 0;
+	timerDelay = al_create_timer( 1.0 );
+	al_register_event_source( EventQueue, al_get_timer_event_source( timerDelay ) );
+	al_start_timer( timerDelay );
+
 	delete MapConfig;
 }
 
@@ -60,6 +65,8 @@ void Game::Finish()
 
 void Game::Event(ALLEGRO_EVENT *e)
 {
+	Wave* w;
+
 	if( e->type == ALLEGRO_EVENT_MOUSEEX_UP && viewDrag )
 		viewDrag = false;
 
@@ -96,6 +103,47 @@ void Game::Event(ALLEGRO_EVENT *e)
 					view->RotateTo( 0, 1 );
 					break;
 			}
+			break;
+
+		case ALLEGRO_EVENT_TIMER:
+			w = Waves.front();
+
+			if( e->timer.source == timerDelay )
+			{
+				w->WaveDelay--;
+				if( w->WaveDelay == 0 )
+				{
+					al_stop_timer( timerDelay );
+					timerSpawn = al_create_timer( w->SpawnDelay );
+					al_register_event_source( EventQueue, al_get_timer_event_source( timerSpawn ) );
+					al_start_timer( timerSpawn );
+				}
+			}
+
+			if( e->timer.source == timerSpawn )
+			{
+				for( int p = 0; p < Level->Paths.size(); p++ )
+				{
+					if( w->UnitCount == 0 )
+						break;
+					Units.push_back( Waves.front()->SpawnUnit( Level->Paths.at( p ) ) );
+					w->UnitCount--;
+				}
+
+				if( w->UnitCount == 0 )
+				{
+					al_stop_timer( timerSpawn );
+					al_unregister_event_source( EventQueue, al_get_timer_event_source( timerSpawn ) );
+					al_destroy_timer( timerSpawn );
+					Waves.pop_front();
+					delete w;
+
+					if( Waves.size() > 0 )
+						al_start_timer( timerDelay );
+				}
+
+			}
+
 			break;
 
 		case ALLEGRO_EVENT_MOUSEEX_DOWN:

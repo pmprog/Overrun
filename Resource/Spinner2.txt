@@ -2,8 +2,8 @@
 # Spinner2 Wave
 
 UnitClass = "Spinner"
-WaveDelay = 30
-SpawnDelay = 0.5
+WaveDelay = 7
+SpawnDelay = 0.2
 UnitCount = 40
 
 Health = 100

@@ -19,6 +19,9 @@ class Game : GuiStage // Stage
 		std::list<Wave*>				Waves;
 		std::vector<Unit*>			Units;
 
+		ALLEGRO_TIMER* timerDelay;
+		ALLEGRO_TIMER* timerSpawn;
+
   public:
 		int TileSize;
 
