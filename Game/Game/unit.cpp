@@ -47,8 +47,7 @@ Unit::Unit( ConfigFile* UnitConfig, Path* MapPath )
 
 Unit::~Unit()
 {
-	if( sprite != 0 )
-		delete sprite;
+	delete sprite;
 };
 
 void Unit::Update()
@@ -67,11 +66,11 @@ void Unit::Update()
 		}
 	}
 
-	// TODO: Process movement
 	Vector2* nextPoint = path->GetPathDestination( nextPathIndex );
 	if( nextPoint != 0 )
 	{
-		SpeedCurrent = 0.1;
+		// TODO: Fix speed control
+		SpeedCurrent = 0.01;
 		AbsolutePosition.X += ( abs(SpeedCurrent) < abs(nextPoint->X - AbsolutePosition.X) ? (nextPoint->X > AbsolutePosition.X ? SpeedCurrent : -SpeedCurrent) : nextPoint->X - AbsolutePosition.X );
 		AbsolutePosition.Y += ( abs(SpeedCurrent) < abs(nextPoint->Y - AbsolutePosition.Y) ? (nextPoint->Y > AbsolutePosition.Y ? SpeedCurrent : -SpeedCurrent) : nextPoint->Y - AbsolutePosition.Y );
 

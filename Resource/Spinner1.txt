@@ -15,5 +15,5 @@ ShieldRegenRate = 0.1
 
 Acceleration = 0.1
 Deceleration = 0.1
-MaxNormalSpeed = 4.0
+MaxNormalSpeed = 0.3
 MaxSlowSpeed = 2.0

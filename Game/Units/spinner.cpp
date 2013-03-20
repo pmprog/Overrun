@@ -29,3 +29,8 @@ Spinner::Spinner( ConfigFile* UnitConfig, Path* MapPath ) : Unit( UnitConfig, Ma
 		free(v);
 	}
 }
+
+Spinner::~Spinner()
+{
+	// TODO: Spawn particle storm
+}

@@ -17,7 +17,6 @@ class Game : GuiStage // Stage
 
 		Map* Level;
 		std::list<Wave*>				Waves;
-		std::vector<Unit*>			Units;
 
 		ALLEGRO_TIMER* timerDelay;
 		ALLEGRO_TIMER* timerSpawn;

@@ -37,7 +37,7 @@ class Unit
 		float SpeedDeceleration;
 
 		Unit( ConfigFile* UnitConfig, Path* MapPath );
-		~Unit();
+		virtual ~Unit();
 		virtual void Update();
 		virtual void Render( Camera* View );
 };

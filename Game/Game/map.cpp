@@ -81,6 +81,12 @@ bool Map::CanBuildOnTile( int X, int Y )
 
 void Map::Update()
 {
+	for( std::vector<Unit*>::iterator i = Units.begin(); i != Units.end(); i++ )
+	{
+		Unit* u = (*i);
+		u->Update();
+	}
+
 	for(std::vector<Building*>::iterator i = Buildings.begin(); i != Buildings.end(); i++ )
 	{
 		Building* b = (Building*)(*i);
@@ -109,6 +115,11 @@ void Map::Render( Camera* View )
 			View->AbsoluteToCameraOffset( &pts[3], &pts[3] );
 			RenderGround( x, y, (Vector2*)&pts );
 		}
+	}
+	for( std::vector<Unit*>::iterator i = Units.begin(); i != Units.end(); i++ )
+	{
+		Unit* u = (*i);
+		u->Render( View );
 	}
 	for(std::vector<Building*>::iterator i = Buildings.begin(); i != Buildings.end(); i++ )
 	{

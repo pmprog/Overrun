@@ -5,6 +5,7 @@
 #include "camera.h"
 #include "building.h"
 #include "path.h"
+#include "unit.h"
 
 #ifndef Game
 class Game;
@@ -18,6 +19,7 @@ class Map
 		uint8_t* MapData;
 
 	public:
+		std::vector<Unit*> Units;
 		std::vector<Building*> Buildings;
 		std::vector<Path*> Paths;
 		int MapWidth;

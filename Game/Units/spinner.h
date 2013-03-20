@@ -7,4 +7,5 @@ class Spinner : public Unit
 {
 	public:
 		Spinner( ConfigFile* UnitConfig, Path* MapPath );
+		virtual ~Spinner();
 };

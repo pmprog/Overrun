@@ -82,17 +82,6 @@ void Game::Event(ALLEGRO_EVENT *e)
 				case ALLEGRO_KEY_ESCAPE:
 					GameStack->Pop();
 					break;
-
-
-				case ALLEGRO_KEY_S:
-					Units.push_back( Waves.front()->SpawnUnit( Level->Paths.front() ) );
-					break;
-				case ALLEGRO_KEY_A:
-					((Base*)Level->Buildings.front())->TakeDamage( 10 );
-					break;
-				case ALLEGRO_KEY_Z:
-					((Base*)Level->Buildings.front())->TakeDamage( 40 );
-					break;
 				case ALLEGRO_KEY_Q:
 					view->RotateTo( 270, 1 );
 					break;
@@ -110,6 +99,7 @@ void Game::Event(ALLEGRO_EVENT *e)
 
 			if( e->timer.source == timerDelay )
 			{
+
 				w->WaveDelay--;
 				if( w->WaveDelay == 0 )
 				{
@@ -118,15 +108,14 @@ void Game::Event(ALLEGRO_EVENT *e)
 					al_register_event_source( EventQueue, al_get_timer_event_source( timerSpawn ) );
 					al_start_timer( timerSpawn );
 				}
-			}
 
-			if( e->timer.source == timerSpawn )
-			{
+			} else if( e->timer.source == timerSpawn ) {
+
 				for( int p = 0; p < Level->Paths.size(); p++ )
 				{
 					if( w->UnitCount == 0 )
 						break;
-					Units.push_back( Waves.front()->SpawnUnit( Level->Paths.at( p ) ) );
+					Level->Units.push_back( Waves.front()->SpawnUnit( Level->Paths.at( p ) ) );
 					w->UnitCount--;
 				}
 
@@ -143,7 +132,6 @@ void Game::Event(ALLEGRO_EVENT *e)
 				}
 
 			}
-
 			break;
 
 		case ALLEGRO_EVENT_MOUSEEX_DOWN:
@@ -182,13 +170,7 @@ void Game::Event(ALLEGRO_EVENT *e)
 
 void Game::Update()
 {
-	for( std::vector<Unit*>::iterator i = Units.begin(); i != Units.end(); i++ )
-	{
-		Unit* u = (*i);
-		u->Update();
-	}
 	Level->Update();
-
 	GuiStage::Update();
 	cursor->Update();
 	view->Update();
@@ -197,19 +179,7 @@ void Game::Update()
 void Game::Render()
 {
 	al_clear_to_color( al_map_rgb( 0, 0, 0 ) );
-
 	Level->Render( view );
-	for( std::vector<Unit*>::iterator i = Units.begin(); i != Units.end(); i++ )
-	{
-		Unit* u = (*i);
-		u->Render( view );
-	}
-	for( std::vector<Building*>::iterator i = Level->Buildings.begin(); i != Level->Buildings.end(); i++ )
-	{
-		Building* b = (*i);
-		b->Render( view );
-	}
-
 	GuiStage::Render();
 	cursor->Render();
 }
