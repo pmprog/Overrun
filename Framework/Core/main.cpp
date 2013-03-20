@@ -50,6 +50,8 @@ int main( int argc, char* argv[] )
 	if( CurrentConfiguration->FullScreen )
 		al_set_new_display_flags( ALLEGRO_FULLSCREEN );
 
+	al_set_new_display_option(ALLEGRO_VSYNC, 1, ALLEGRO_SUGGEST);
+
 	bool foundMode = false;
 	int fallbackW = 640;
 	int fallbackH = 480;

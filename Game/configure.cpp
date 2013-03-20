@@ -15,6 +15,8 @@ void Configuration::InitSettings()
 	int curDev = al_get_new_display_adapter();
 	ALLEGRO_MONITOR_INFO curMon;
 
+	ForceResolution = false;
+
 	if( al_get_monitor_info(curDev, &curMon) )
 	{
 		ScreenWidth = curMon.x2 - curMon.x1;
