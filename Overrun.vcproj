@@ -205,6 +205,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Game\Game\damagable.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Framework\Resource\fontmanager.cpp"
 				>
 			</File>
@@ -328,6 +332,10 @@
 			</File>
 			<File
 				RelativePath=".\Framework\GUI\control.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Game\Game\damagable.h"
 				>
 			</File>
 			<File

@@ -6,8 +6,9 @@
 #include "../Game/camera.h"
 #include "../../Framework/Resource/configfile.h"
 #include "path.h"
+#include "damagable.h"
 
-class Unit
+class Unit : public Damagable
 {
 	protected:
 		VectorSprite* sprite;
@@ -20,12 +21,6 @@ class Unit
 
 		ALLEGRO_COLOR ShieldColour;
 		ALLEGRO_COLOR ShieldColourFaded;
-
-		float HealthMax;
-		float HealthCurrent;
-		float ShieldsMax;
-		float ShieldsCurrent;
-		float ShieldsRegen;
 
 		int Reward;
 		int DamageToBase;

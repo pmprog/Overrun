@@ -18,12 +18,12 @@ void Game::Begin()
 	MapConfig->GetFloatValue( "CameraPosX", &camStart.X );
 	MapConfig->GetFloatValue( "CameraPosY", &camStart.Y );
 	MapConfig->GetFloatValue( "CameraZoom", &camZoom );
-	camStart.X *= view->PixelsPerUnit;
-	camStart.Y *= view->PixelsPerUnit;
+	MultiplyVector( &camStart, view->PixelsPerUnit );
 	view->MoveTo( &camStart, 12.0 );
 	view->ZoomTo( (double)camZoom, 0.04 );
 	view->RotateOrigin.X = (double)Level->MapWidth / 2.0;
 	view->RotateOrigin.Y = (double)Level->MapHeight / 2.0;
+	MultiplyVector( &view->RotateOrigin, view->PixelsPerUnit );
 
 	// Load Wave Data
 	int WaveCount;
@@ -111,7 +111,7 @@ void Game::Event(ALLEGRO_EVENT *e)
 
 			} else if( e->timer.source == timerSpawn ) {
 
-				for( int p = 0; p < Level->Paths.size(); p++ )
+				for( unsigned int p = 0; p < Level->Paths.size(); p++ )
 				{
 					if( w->UnitCount == 0 )
 						break;

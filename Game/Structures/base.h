@@ -1,7 +1,8 @@
 
 #include "../Game/building.h"
+#include "../Game/damagable.h"
 
-class Base : public Building
+class Base : public Building, public Damagable
 {
 
 	private:
@@ -10,17 +11,9 @@ class Base : public Building
 		ALLEGRO_COLOR			HealthColourMid;
 		ALLEGRO_COLOR			HealthColourBad;
 
-		float HealthMax;
-		float HealthCurrent;
-		float HealthTarget;
-
 	public:
-
 		Base( Game* CurrentGame, int StartHealth );
 		virtual ~Base();
 		virtual void Update();
 
-		void TakeDamage( int DamageAmount );
-		void RegainHealth( int RestoreAmount );
-		void BoostMax( int AdditionalAmount, bool BoostCurrent );
 };

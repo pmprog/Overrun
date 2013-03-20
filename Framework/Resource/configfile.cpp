@@ -135,7 +135,7 @@ int ConfigFile::GetArraySize( std::string Key )
 void ConfigFile::ParseFile( std::string TextContents )
 {
 	ConfigData* cd;
-	int charPos = 0;
+	unsigned int charPos = 0;
 	std::string token;
 	bool charQuoted = false;
 	bool wasQuoted = false;
@@ -238,7 +238,7 @@ std::string* ConfigFile::EscapeString( std::string s )
 	std::string* out = new std::string();
 	if( !s.empty() )
 	{
-		for( int i = 0; i < s.size(); i++ )
+		for( unsigned int i = 0; i < s.size(); i++ )
 		{
 			if( s.at(i) == '\\' || s.at(i) == '\"' )
 				out->append( "\\" );

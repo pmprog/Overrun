@@ -63,7 +63,7 @@ void network_close( ENetHost* socket )
 	if( socket == 0 )
 		return;
 
-	for( int i = 0; i < socket->peerCount; i++ )
+	for( unsigned int i = 0; i < socket->peerCount; i++ )
 	{
 		ENetPeer* p = &socket->peers[i];
 		if( p->state != ENET_PEER_STATE_DISCONNECTED )

@@ -1,7 +1,7 @@
 
 #include "unit.h"
 
-Unit::Unit( ConfigFile* UnitConfig, Path* MapPath )
+Unit::Unit( ConfigFile* UnitConfig, Path* MapPath ) : Damagable( 0, 0, 0 )
 {
 	float* v;
 
@@ -13,8 +13,10 @@ Unit::Unit( ConfigFile* UnitConfig, Path* MapPath )
 
 	UnitConfig->GetFloatValue( "Health", &HealthMax );
 	HealthCurrent = HealthMax;
+	HealthTarget = HealthMax;
 	UnitConfig->GetFloatValue( "Shields", &ShieldsMax );
 	ShieldsCurrent = ShieldsMax;
+	ShieldsTarget = ShieldsMax;
 	UnitConfig->GetFloatValue( "ShieldRegenRate", &ShieldsRegen );
 
 	UnitConfig->GetIntegerValue( "Reward", &Reward );
@@ -70,7 +72,7 @@ void Unit::Update()
 	if( nextPoint != 0 )
 	{
 		// TODO: Fix speed control
-		SpeedCurrent = 0.01;
+		SpeedCurrent = 0.2;
 		AbsolutePosition.X += ( abs(SpeedCurrent) < abs(nextPoint->X - AbsolutePosition.X) ? (nextPoint->X > AbsolutePosition.X ? SpeedCurrent : -SpeedCurrent) : nextPoint->X - AbsolutePosition.X );
 		AbsolutePosition.Y += ( abs(SpeedCurrent) < abs(nextPoint->Y - AbsolutePosition.Y) ? (nextPoint->Y > AbsolutePosition.Y ? SpeedCurrent : -SpeedCurrent) : nextPoint->Y - AbsolutePosition.Y );
 

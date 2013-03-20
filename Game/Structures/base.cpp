@@ -1,12 +1,8 @@
 
 #include "base.h"
 
-Base::Base( Game* CurrentGame, int StartHealth ) : Building( CurrentGame )
+Base::Base( Game* CurrentGame, int StartHealth ) : Building( CurrentGame ), Damagable( StartHealth, 0, 0 )
 {
-	HealthMax = StartHealth;
-	HealthCurrent = 0;
-	HealthTarget = StartHealth;
-
 	HealthColourGood = al_map_rgb( 192, 255, 192 );
 	HealthColourMid = al_map_rgb( 255, 255, 192 );
 	HealthColourBad = al_map_rgb( 255, 192, 192 );
@@ -67,11 +63,6 @@ Base::~Base()
 
 void Base::Update()
 {
-	if( HealthCurrent != HealthTarget )
-	{
-		HealthCurrent += max( -5.0, min( 5.0, HealthTarget - HealthCurrent ) );
-	}
-
 	float lifeSize = 3.8 - ((7.6 / HealthMax) * HealthCurrent);
 	HealthBar->SetPoint( 0, true, lifeSize );
 	HealthBar->SetPoint( 3, true, lifeSize );
@@ -89,29 +80,8 @@ void Base::Update()
 			HealthBar->AnimateColourTo( &HealthColourBad, 0.2 );
 	}
 
+	Damagable::Update();
 	Building::Update();
 }
 
-void Base::TakeDamage( int DamageAmount )
-{
-	if( DamageAmount < 0 )
-		RegainHealth( DamageAmount * -1 );
-	else
-		HealthTarget = max( 0, HealthTarget - DamageAmount );
-}
-
-void Base::RegainHealth( int RestoreAmount )
-{
-	if( RestoreAmount < 0 )
-		TakeDamage( RestoreAmount * -1 );
-	else
-		HealthTarget = min( HealthMax, HealthTarget + RestoreAmount );
-}
-
-void Base::BoostMax( int AdditionalAmount, bool BoostCurrent )
-{
-	HealthMax += AdditionalAmount;
-	if( BoostCurrent )
-		HealthTarget += AdditionalAmount;
-}
 
