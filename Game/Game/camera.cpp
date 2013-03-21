@@ -171,3 +171,7 @@ void Camera::SetCameraMaxBounds( Vector2* MaxRange )
 	MaximumPosition.Y = MaxRange->Y;
 }
 
+double Camera::GetRotationDestination()
+{
+	return DestRotation;
+}

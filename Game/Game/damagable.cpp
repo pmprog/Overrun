@@ -36,7 +36,7 @@ void Damagable::Update()
 	}
 }
 
-void Damagable::TakeDamage( int DamageAmount )
+void Damagable::TakeDamage( int DamageAmount, bool HitShields )
 {
 	if( DamageAmount < 0 )
 		RegainHealth( DamageAmount * -1 );
@@ -47,7 +47,7 @@ void Damagable::TakeDamage( int DamageAmount )
 void Damagable::RegainHealth( int RestoreAmount )
 {
 	if( RestoreAmount < 0 )
-		TakeDamage( RestoreAmount * -1 );
+		TakeDamage( RestoreAmount * -1, true );
 	else
 		HealthTarget = min( HealthMax, HealthTarget + RestoreAmount );
 }
@@ -57,5 +57,15 @@ void Damagable::BoostMax( int AdditionalAmount, bool BoostCurrent )
 	HealthMax += AdditionalAmount;
 	if( BoostCurrent )
 		HealthTarget += AdditionalAmount;
+}
+
+float Damagable::GetCurrentHealth()
+{
+	return HealthTarget;
+}
+
+float Damagable::GetCurrentShields()
+{
+	return ShieldsTarget;
 }
 

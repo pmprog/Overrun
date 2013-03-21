@@ -1,7 +1,7 @@
 
 #include "unit.h"
 
-Unit::Unit( ConfigFile* UnitConfig, Path* MapPath ) : Damagable( 0, 0, 0 )
+Unit::Unit( ConfigFile* UnitConfig, Path* MapPath ) : Damagable( 0, 0, 0 ), Inflictor( 0.0, 0.0 )
 {
 	float* v;
 
@@ -20,7 +20,8 @@ Unit::Unit( ConfigFile* UnitConfig, Path* MapPath ) : Damagable( 0, 0, 0 )
 	UnitConfig->GetFloatValue( "ShieldRegenRate", &ShieldsRegen );
 
 	UnitConfig->GetIntegerValue( "Reward", &Reward );
-	UnitConfig->GetIntegerValue( "DamageToBase", &DamageToBase );
+	UnitConfig->GetFloatValue( "DamageToBase", &DamageAmount );
+	ShieldByPassPercent = 0.0;
 
 	SpeedCurrent = 0;
 	UnitConfig->GetFloatValue( "MaxNormalSpeed", &SpeedMaxNormal );

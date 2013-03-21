@@ -91,22 +91,27 @@ void Map::Update()
 	for(std::vector<Building*>::iterator i = Buildings.begin(); i != Buildings.end(); i++ )
 	{
 		Building* b = (Building*)(*i);
-		b->Update();
+		Damagable* d = static_cast<Damagable*>(b);
 
-		// TODO: http://en.wikipedia.org/wiki/Erase-remove_idiom
-		for( std::vector<Unit*>::iterator i = Units.begin(); i != Units.end(); )
+		// Process any damage if available
+		if( d != 0 )
 		{
-			u = (*i);
-			if( (int)u->AbsolutePosition.X >= (int)b->AbsolutePosition.X && (int)u->AbsolutePosition.Y >= (int)b->AbsolutePosition.Y &&
-				(int)u->AbsolutePosition.X < (int)b->AbsolutePosition.X + b->TilesWide && (int)u->AbsolutePosition.Y < (int)b->AbsolutePosition.Y + b->TilesHigh )
+			// TODO: http://en.wikipedia.org/wiki/Erase-remove_idiom
+			for( std::vector<Unit*>::iterator i = Units.begin(); i != Units.end(); )
 			{
-				delete u;
-				i = Units.erase( i );
-				// TODO: Deal Damage
-			} else {
-				i++;
+				u = (*i);
+				if( (int)u->AbsolutePosition.X >= (int)b->AbsolutePosition.X && (int)u->AbsolutePosition.Y >= (int)b->AbsolutePosition.Y &&
+					(int)u->AbsolutePosition.X < (int)b->AbsolutePosition.X + b->TilesWide && (int)u->AbsolutePosition.Y < (int)b->AbsolutePosition.Y + b->TilesHigh )
+				{
+					u->InflictDamage( d );
+					delete u;
+					i = Units.erase( i );
+				} else {
+					i++;
+				}
 			}
 		}
+		b->Update();
 	}
 }
 

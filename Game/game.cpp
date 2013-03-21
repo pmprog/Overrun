@@ -83,10 +83,10 @@ void Game::Event(ALLEGRO_EVENT *e)
 					GameStack->Pop();
 					break;
 				case ALLEGRO_KEY_Q:
-					view->RotateTo( 270, 1 );
+					view->RotateTo( view->GetRotationDestination() - 15, 1 );
 					break;
 				case ALLEGRO_KEY_E:
-					view->RotateTo( 90, 1 );
+					view->RotateTo( view->GetRotationDestination() + 15, 1 );
 					break;
 				case ALLEGRO_KEY_W:
 					view->RotateTo( 0, 1 );

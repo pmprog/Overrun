@@ -20,8 +20,11 @@ class Damagable
 		virtual ~Damagable();
 		virtual void Update();
 
-		void TakeDamage( int DamageAmount );
+		void TakeDamage( int DamageAmount, bool HitShields );
 		void RegainHealth( int RestoreAmount );
 		void BoostMax( int AdditionalAmount, bool BoostCurrent );
+
+		float GetCurrentHealth();
+		float GetCurrentShields();
 
 };

@@ -39,5 +39,7 @@ class Camera
 		void SetCameraMinBounds( Vector2* MinRange );
 		void SetCameraMaxBounds( Vector2* MaxRange );
 
+		double GetRotationDestination();
+
 		void Update();
 };

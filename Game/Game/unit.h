@@ -6,9 +6,9 @@
 #include "../Game/camera.h"
 #include "../../Framework/Resource/configfile.h"
 #include "path.h"
-#include "damagable.h"
+#include "inflictor.h"
 
-class Unit : public Damagable
+class Unit : public Damagable, public Inflictor
 {
 	protected:
 		VectorSprite* sprite;
@@ -23,7 +23,7 @@ class Unit : public Damagable
 		ALLEGRO_COLOR ShieldColourFaded;
 
 		int Reward;
-		int DamageToBase;
+		// int DamageToBase;
 
 		float SpeedCurrent;
 		float SpeedMaxNormal;
