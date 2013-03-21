@@ -3,9 +3,9 @@
 
 Base::Base( Game* CurrentGame, int StartHealth ) : Building( CurrentGame ), Damagable( StartHealth, 0, 0 )
 {
-	HealthColourGood = al_map_rgb( 192, 255, 192 );
-	HealthColourMid = al_map_rgb( 255, 255, 192 );
-	HealthColourBad = al_map_rgb( 255, 192, 192 );
+	HealthColourGood = al_map_rgb( 128, 255, 128 );
+	HealthColourMid = al_map_rgb( 192, 128, 64 );
+	HealthColourBad = al_map_rgb( 255, 0, 0 );
 
 	TilesWide = 4;
 	TilesHigh = 4;
@@ -71,13 +71,13 @@ void Base::Update()
 	if( lifePC > 0.5 )
 	{
 		if( HealthBar->Colour.r != HealthColourGood.r || HealthBar->Colour.g != HealthColourGood.g || HealthBar->Colour.b != HealthColourGood.b )
-			HealthBar->AnimateColourTo( &HealthColourGood, 0.2 );
+			HealthBar->AnimateColourTo( &HealthColourGood, 0.02 );
 	} else if( lifePC > 0.23 ) {
 		if( HealthBar->Colour.r != HealthColourMid.r || HealthBar->Colour.g != HealthColourMid.g || HealthBar->Colour.b != HealthColourMid.b )
-			HealthBar->AnimateColourTo( &HealthColourMid, 0.2 );
+			HealthBar->AnimateColourTo( &HealthColourMid, 0.02 );
 	} else {
 		if( HealthBar->Colour.r != HealthColourBad.r || HealthBar->Colour.g != HealthColourBad.g || HealthBar->Colour.b != HealthColourBad.b )
-			HealthBar->AnimateColourTo( &HealthColourBad, 0.2 );
+			HealthBar->AnimateColourTo( &HealthColourBad, 0.02 );
 	}
 
 	Damagable::Update();

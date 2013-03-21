@@ -84,4 +84,4 @@ StartingStructures	[ "Base" ]
 StartingStrutPosX	[ 11 ]
 StartingStrutPosY	[ 10 ]
 
-Waves			[ "Spinner1", "Spinner2" ]
+Waves			[ "Spinner1", "Spinner2", "Spinner2", "Spinner2", "Spinner2" ]

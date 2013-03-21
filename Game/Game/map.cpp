@@ -91,7 +91,7 @@ void Map::Update()
 	for(std::vector<Building*>::iterator i = Buildings.begin(); i != Buildings.end(); i++ )
 	{
 		Building* b = (Building*)(*i);
-		Damagable* d = static_cast<Damagable*>(b);
+		Damagable* d = dynamic_cast<Damagable*>(b);
 
 		// Process any damage if available
 		if( d != 0 )
