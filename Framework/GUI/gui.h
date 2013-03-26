@@ -8,3 +8,4 @@
 #include "button.h"
 #include "imagebutton.h"
 #include "panel.h"
+#include "label.h"

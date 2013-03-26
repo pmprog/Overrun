@@ -19,7 +19,7 @@ bool Button::Event(ALLEGRO_EVENT *e)
 	switch( e->type )
 	{
 		case ALLEGRO_EVENT_MOUSEEX_DOWN:
-			if( Enabled && Visible && ((Vector2*)e->user.data2)->X >= Position.X && ((Vector2*)e->user.data2)->X < Position.X + Size.X && ((Vector2*)e->user.data2)->Y >= Position.Y && ((Vector2*)e->user.data2)->Y < Position.Y + Size.Y )
+			if( Visible && ((Vector2*)e->user.data2)->X >= Position.X && ((Vector2*)e->user.data2)->X < Position.X + Size.X && ((Vector2*)e->user.data2)->Y >= Position.Y && ((Vector2*)e->user.data2)->Y < Position.Y + Size.Y )
 			{
 				((Mouse*)e->user.data1)->CancelBoxing();
 				Depressed = true;
@@ -29,20 +29,23 @@ bool Button::Event(ALLEGRO_EVENT *e)
 		case ALLEGRO_EVENT_MOUSEEX_UP:
 			if( Depressed )
 				Depressed = false;
-			if( Enabled && Visible && ((Vector2*)e->user.data2)->X >= Position.X && ((Vector2*)e->user.data2)->X < Position.X + Size.X && ((Vector2*)e->user.data2)->Y >= Position.Y && ((Vector2*)e->user.data2)->Y < Position.Y + Size.Y )
+			if( Visible && ((Vector2*)e->user.data2)->X >= Position.X && ((Vector2*)e->user.data2)->X < Position.X + Size.X && ((Vector2*)e->user.data2)->Y >= Position.Y && ((Vector2*)e->user.data2)->Y < Position.Y + Size.Y )
 				return true;
 			break;
 		case ALLEGRO_EVENT_MOUSEEX_CLICK:
-			if( Enabled && Visible && ((Vector2*)e->user.data2)->X >= Position.X && ((Vector2*)e->user.data2)->X < Position.X + Size.X && ((Vector2*)e->user.data2)->Y >= Position.Y && ((Vector2*)e->user.data2)->Y < Position.Y + Size.Y )
+			if( Visible && ((Vector2*)e->user.data2)->X >= Position.X && ((Vector2*)e->user.data2)->X < Position.X + Size.X && ((Vector2*)e->user.data2)->Y >= Position.Y && ((Vector2*)e->user.data2)->Y < Position.Y + Size.Y )
 			{
-				ev.user.data1 = (intptr_t)this;
-				ev.type = ALLEGRO_EVENT_BUTTON_CLICK;
-				al_emit_user_event( &controlEventSource, &ev, 0 );
+				if( Enabled )
+				{
+					ev.user.data1 = (intptr_t)this;
+					ev.type = ALLEGRO_EVENT_BUTTON_CLICK;
+					al_emit_user_event( &controlEventSource, &ev, 0 );
+				}
 				return true;
 			}
 			break;
 		case ALLEGRO_EVENT_MOUSEEX_DOUBLECLICK:
-			if( Enabled && Visible && ((Vector2*)e->user.data2)->X >= Position.X && ((Vector2*)e->user.data2)->X < Position.X + Size.X && ((Vector2*)e->user.data2)->Y >= Position.Y && ((Vector2*)e->user.data2)->Y < Position.Y + Size.Y )
+			if( Visible && ((Vector2*)e->user.data2)->X >= Position.X && ((Vector2*)e->user.data2)->X < Position.X + Size.X && ((Vector2*)e->user.data2)->Y >= Position.Y && ((Vector2*)e->user.data2)->Y < Position.Y + Size.Y )
 				return true;
 			break;
 	}

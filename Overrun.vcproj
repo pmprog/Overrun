@@ -229,6 +229,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Framework\GUI\label.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Framework\Core\main.cpp"
 				>
 			</File>
@@ -368,6 +372,10 @@
 			</File>
 			<File
 				RelativePath=".\Game\Game\inflictor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Framework\GUI\label.h"
 				>
 			</File>
 			<File

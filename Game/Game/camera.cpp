@@ -10,6 +10,8 @@ Camera::Camera()
 	Rotation = 0.0;
 	Zoom = 1.0;
 
+	OverlayMode = false;
+
 	DestPosition.X = 0;
 	DestPosition.Y = 0;
 	DestSpeedPosition = 0.0;
@@ -63,6 +65,13 @@ void Camera::ZoomTo( double Destination, double Speed )
 
 void Camera::AbsoluteToCameraOffset( Vector2* Absolute, Vector2* Out )
 {
+	if( OverlayMode )
+	{
+		Out->X = Absolute->X;
+		Out->Y = Absolute->Y;
+		return;
+	}
+
 	// Camera Position is centre of the screen
 	Vector2 Offset;
 
@@ -86,6 +95,13 @@ void Camera::AbsoluteToCameraOffset( Vector2* Absolute, Vector2* Out )
 
 void Camera::CameraOffsetToAbsolute( Vector2* Offset, Vector2* Out )
 {
+	if( OverlayMode )
+	{
+		Out->X = Offset->X;
+		Out->Y = Offset->Y;
+		return;
+	}
+
 	// Camera Position is centre of the screen
 	Vector2 Temp;
 
@@ -164,11 +180,25 @@ void Camera::SetCameraMinBounds( Vector2* MinRange )
 	MinimumPosition.Y = MinRange->Y;
 }
 
+void Camera::SetCameraMinBounds( int X, int Y )
+{
+	HasMinPos = true;
+	MinimumPosition.X = X;
+	MinimumPosition.Y = Y;
+}
+
 void Camera::SetCameraMaxBounds( Vector2* MaxRange )
 {
 	HasMaxPos = true;
 	MaximumPosition.X = MaxRange->X;
 	MaximumPosition.Y = MaxRange->Y;
+}
+
+void Camera::SetCameraMaxBounds( int X, int Y )
+{
+	HasMaxPos = true;
+	MaximumPosition.X = X;
+	MaximumPosition.Y = Y;
 }
 
 double Camera::GetRotationDestination()

@@ -10,14 +10,12 @@ class Game;
 
 class Wave
 {
-	private:
+	public:
 		std::string UnitClass;
 		ConfigFile* UnitSpec;
-
-	public:
-		int WaveDelay;
-		float SpawnDelay;
-		int UnitCount;
+		int					WaveDelay;
+		float				SpawnDelay;
+		int					UnitCount;
 
 		Wave( ConfigFile* WaveData );
 		~Wave();

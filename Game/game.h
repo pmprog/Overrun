@@ -13,7 +13,15 @@ class Game : GuiStage // Stage
 		Mouse*  cursor;
 
 		Camera* view;
+		Camera* overlay;
 		bool viewDrag;
+
+		Panel* overlayNextWavePanel;
+		Label* overlayNextWaveClass;
+		Label* overlayNextWaveHealth;
+		Label* overlayNextWaveShield;
+		Label* overlayNextWaveTime;
+		Unit* overlayNextWaveUnit;
 
 		Map* Level;
 		std::list<Wave*>				Waves;

@@ -23,6 +23,8 @@ void Game::Begin()
 	view->ZoomTo( (double)camZoom, 0.04 );
 	view->RotateOrigin.X = (double)Level->MapWidth / 2.0;
 	view->RotateOrigin.Y = (double)Level->MapHeight / 2.0;
+	view->SetCameraMinBounds( 0, 0 );
+	view->SetCameraMaxBounds( Level->MapWidth * view->PixelsPerUnit, Level->MapHeight * view->PixelsPerUnit );
 	MultiplyVector( &view->RotateOrigin, view->PixelsPerUnit );
 
 	// Load Wave Data
@@ -40,6 +42,8 @@ void Game::Begin()
 		Waves.push_back( new Wave( waveCfg ) );
 		delete waveCfg;
 	}
+
+	overlayNextWaveUnit = 0;
 
 	timerSpawn = 0;
 	timerDelay = al_create_timer( 1.0 );
@@ -65,6 +69,7 @@ void Game::Finish()
 
 void Game::Event(ALLEGRO_EVENT *e)
 {
+	char buffer[128];
 	Wave* w;
 
 	if( e->type == ALLEGRO_EVENT_MOUSEEX_UP && viewDrag )
@@ -99,10 +104,26 @@ void Game::Event(ALLEGRO_EVENT *e)
 
 			if( e->timer.source == timerDelay )
 			{
+				if( overlayNextWaveUnit == 0 )
+				{
+					overlayNextWaveUnit = w->SpawnUnit( 0 );
+					overlayNextWaveUnit->AbsolutePosition.X = 12 + (overlay->PixelsPerUnit / 2);
+					overlayNextWaveUnit->AbsolutePosition.Y = 32 + (overlay->PixelsPerUnit / 2);
+					sprintf((char*)&buffer, "%s x%d", w->UnitClass.c_str(), w->UnitCount );
+					overlayNextWaveClass->Text = std::string(buffer);
+					sprintf((char*)&buffer, "Health: %d", (int)overlayNextWaveUnit->GetCurrentHealth() );
+					overlayNextWaveHealth->Text = std::string(buffer);
+					sprintf((char*)&buffer, "Shield: %d", (int)overlayNextWaveUnit->GetCurrentShields() );
+					overlayNextWaveShield->Text = std::string(buffer);
+					// TODO: Position on screen
+				}
 
 				w->WaveDelay--;
+				sprintf((char*)&buffer, "Spawn: %d sec", w->WaveDelay );
+				overlayNextWaveTime->Text = std::string(buffer);
 				if( w->WaveDelay == 0 )
 				{
+					overlayNextWaveTime->Text = "";
 					al_stop_timer( timerDelay );
 					timerSpawn = al_create_timer( w->SpawnDelay );
 					al_register_event_source( EventQueue, al_get_timer_event_source( timerSpawn ) );
@@ -126,6 +147,8 @@ void Game::Event(ALLEGRO_EVENT *e)
 					al_destroy_timer( timerSpawn );
 					Waves.pop_front();
 					delete w;
+					delete overlayNextWaveUnit;
+					overlayNextWaveUnit = 0;
 
 					if( Waves.size() > 0 )
 						al_start_timer( timerDelay );
@@ -172,6 +195,8 @@ void Game::Update()
 {
 	Level->Update();
 	GuiStage::Update();
+	if( overlayNextWaveUnit != 0 )
+		overlayNextWaveUnit->Update();
 	cursor->Update();
 	view->Update();
 }
@@ -179,16 +204,66 @@ void Game::Update()
 void Game::Render()
 {
 	al_clear_to_color( al_map_rgb( 0, 0, 0 ) );
+
 	Level->Render( view );
+
 	GuiStage::Render();
+
+	if( overlayNextWaveUnit != 0 )
+		overlayNextWaveUnit->Render( overlay );
+
 	cursor->Render();
 }
 
 void Game::InitialiseGui()
 {
 	view = new Camera();
+	overlay = new Camera();
+	overlay->OverlayMode = true;
+	overlay->PixelsPerUnit = 32;
+
 	TileSize = view->PixelsPerUnit;
 	viewDrag = false;
+
+	overlayNextWavePanel = new Panel();
+	overlayNextWavePanel->Position.X = 4;
+	overlayNextWavePanel->Position.Y = 4;
+	overlayNextWavePanel->Size.X = 160;
+	overlayNextWavePanel->Size.Y = (overlayNextWavePanel->FontSize * 5) + (overlayNextWavePanel->BorderWidth * 2) + 6;
+	overlayNextWavePanel->Title = "Next Wave";
+	overlayNextWavePanel->HasTitle = true;
+	overlayNextWavePanel->Border = al_map_rgb( 192, 255, 192 );
+	overlayNextWavePanel->Background = al_map_rgba( 48, 64, 48, 96 );
+	overlayNextWavePanel->Foreground = al_map_rgb( 0, 0, 0 );
+	Controls.push_back( overlayNextWavePanel );
+
+	overlayNextWaveClass = new Label();
+	overlayNextWaveClass->Background.a = 0;
+	overlayNextWaveClass->Position.X = 12 + (overlayNextWavePanel->BorderWidth * 2) + overlay->PixelsPerUnit;
+	overlayNextWaveClass->Position.Y = overlayNextWavePanel->FontSize + (overlayNextWavePanel->BorderWidth * 2) + 12;
+	overlayNextWaveClass->Text = "A Label";
+	Controls.push_back( overlayNextWaveClass );
+
+	overlayNextWaveHealth = new Label();
+	overlayNextWaveHealth->Background.a = 0;
+	overlayNextWaveHealth->Position.X = 12 + (overlayNextWavePanel->BorderWidth * 2) + overlay->PixelsPerUnit;
+	overlayNextWaveHealth->Position.Y = (overlayNextWavePanel->FontSize * 2) + (overlayNextWavePanel->BorderWidth * 2) + 12;
+	overlayNextWaveHealth->Text = "B Label";
+	Controls.push_back( overlayNextWaveHealth );
+
+	overlayNextWaveShield = new Label();
+	overlayNextWaveShield->Background.a = 0;
+	overlayNextWaveShield->Position.X = 12 + (overlayNextWavePanel->BorderWidth * 2) + overlay->PixelsPerUnit;
+	overlayNextWaveShield->Position.Y = (overlayNextWavePanel->FontSize * 3) + (overlayNextWavePanel->BorderWidth * 2) + 12;
+	overlayNextWaveShield->Text = "C Label";
+	Controls.push_back( overlayNextWaveShield );
+
+	overlayNextWaveTime = new Label();
+	overlayNextWaveTime->Background.a = 0;
+	overlayNextWaveTime->Position.X = 12 + (overlayNextWavePanel->BorderWidth * 2) + overlay->PixelsPerUnit;
+	overlayNextWaveTime->Position.Y = (overlayNextWavePanel->FontSize * 4) + (overlayNextWavePanel->BorderWidth * 2) + 12 ;
+	overlayNextWaveTime->Text = "D Label";
+	Controls.push_back( overlayNextWaveTime );
 
 	cursor = new Mouse();
 	cursor->AllowBoxing = true;
@@ -198,4 +273,5 @@ void Game::UninitialiseGui()
 {
 	delete cursor;
 	delete view;
+	delete overlay;
 }

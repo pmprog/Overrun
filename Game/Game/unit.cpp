@@ -7,8 +7,14 @@ Unit::Unit( ConfigFile* UnitConfig, Path* MapPath ) : Damagable( 0, 0, 0 ), Infl
 
 	path = MapPath;
 
-	AbsolutePosition.X = MapPath->GetPathDestination( 0 )->X;
-	AbsolutePosition.Y = MapPath->GetPathDestination( 0 )->Y;
+	if( MapPath == 0 )
+	{
+		AbsolutePosition.X = 0;
+		AbsolutePosition.Y = 0;
+	} else {
+		AbsolutePosition.X = MapPath->GetPathDestination( 0 )->X;
+		AbsolutePosition.Y = MapPath->GetPathDestination( 0 )->Y;
+	}
 	nextPathIndex = 1;
 
 	UnitConfig->GetFloatValue( "Health", &HealthMax );
@@ -69,6 +75,9 @@ void Unit::Update()
 		}
 	}
 
+	if( path == 0 )
+		return;
+
 	Vector2* nextPoint = path->GetPathDestination( nextPathIndex );
 	if( nextPoint != 0 )
 	{
@@ -86,7 +95,8 @@ void Unit::Render( Camera* View )
 {
 	Vector2 screenPos;
 	screenPos.X = AbsolutePosition.X; screenPos.Y = AbsolutePosition.Y;
-	MultiplyVector( &screenPos, View->PixelsPerUnit );
+	if( !View->OverlayMode )
+		MultiplyVector( &screenPos, View->PixelsPerUnit );
 	View->AbsoluteToCameraOffset( &screenPos, &screenPos );
 	sprite->Render( &screenPos, View );
 }

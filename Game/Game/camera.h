@@ -25,6 +25,7 @@ class Camera
 		double  Rotation;
 		double  Zoom;
 		double	PixelsPerUnit;
+		bool		OverlayMode;
 
 
 		Camera();
@@ -37,7 +38,9 @@ class Camera
 
 		void SetCameraBounds( Vector2* MinRange, Vector2* MaxRange );
 		void SetCameraMinBounds( Vector2* MinRange );
+		void SetCameraMinBounds( int X, int Y );
 		void SetCameraMaxBounds( Vector2* MaxRange );
+		void SetCameraMaxBounds( int X, int Y );
 
 		double GetRotationDestination();
 
