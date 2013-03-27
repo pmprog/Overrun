@@ -261,6 +261,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Game\results.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Framework\Resource\soundmanager.cpp"
 				>
 			</File>
@@ -404,6 +408,10 @@
 			</File>
 			<File
 				RelativePath=".\Game\Game\path.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Game\results.h"
 				>
 			</File>
 			<File

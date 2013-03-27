@@ -9,7 +9,7 @@ Control::Control()
 	Size.Y = 0;
 	Enabled = true;
 	Visible = true;
-	FontName = "Resource/visitor1.ttf";
+	FontName = "Resource/anonymous_pro.ttf";
 	FontSize = 14;
 	FontFlags = ALLEGRO_TTF_MONOCHROME;
 

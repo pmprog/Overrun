@@ -19,4 +19,5 @@ class Panel : public Control
 		virtual void Update();
 		virtual void Render();
 
+		void GetClientArea( Vector2* TopLeft, Vector2* BottomRight );
 };

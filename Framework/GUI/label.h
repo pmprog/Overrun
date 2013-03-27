@@ -12,6 +12,7 @@ class Label : public Control
 		ALLEGRO_COLOR Background;
 		ALLEGRO_COLOR Foreground;
 		std::string Text;
+		int TextAlignment; // ALLEGRO_ALIGN_*
 
 		Label();
 		virtual bool Event(ALLEGRO_EVENT *e);

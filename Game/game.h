@@ -16,12 +16,14 @@ class Game : GuiStage // Stage
 		Camera* overlay;
 		bool viewDrag;
 
-		Panel* overlayNextWavePanel;
-		Label* overlayNextWaveClass;
-		Label* overlayNextWaveHealth;
-		Label* overlayNextWaveShield;
-		Label* overlayNextWaveTime;
-		Unit* overlayNextWaveUnit;
+		Panel*	overlayNextWavePanel;
+		Label*	overlayNextWaveClass;
+		Label*	overlayNextWaveHealth;
+		Label*	overlayNextWaveShield;
+		Label*	overlayNextWaveTime;
+		Unit*		overlayNextWaveUnit;
+		Button*	overlayNextWaveShowHide;
+		int			overlayNextWaveShowHideTargetHeight;
 
 		Map* Level;
 		std::list<Wave*>				Waves;
@@ -31,6 +33,8 @@ class Game : GuiStage // Stage
 
   public:
 		int TileSize;
+
+		~Game();
 
     // Stage control
     void Begin();
@@ -43,4 +47,9 @@ class Game : GuiStage // Stage
 
 		void InitialiseGui();
 		void UninitialiseGui();
+
+		void NextWaveInitGui();
+		void NextWaveUpdate();
+
+		void CheckEndOfGameConditions();
 };

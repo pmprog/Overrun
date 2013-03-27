@@ -75,3 +75,17 @@ void Panel::Render()
 void Panel::Update()
 {
 }
+
+void Panel::GetClientArea( Vector2* TopLeft, Vector2* BottomRight )
+{
+	if( TopLeft != 0 )
+	{
+		TopLeft->X = Position.X + BorderWidth;
+		TopLeft->Y = min( Position.Y + max( CornerCut, FontSize + BorderWidth ) + BorderWidth, Position.Y + Size.Y );
+	}
+	if( BottomRight != 0 )
+	{
+		BottomRight->X = Position.X + Size.X - BorderWidth;
+		BottomRight->Y = Position.Y + Size.Y - BorderWidth;
+	}
+}

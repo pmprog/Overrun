@@ -3,6 +3,13 @@
 #include "configure.h"
 #include "Game/unit.h"
 #include "Structures/buildings.h"
+#include "results.h"
+
+Game::~Game()
+{
+	// Due to the way I'm passing this to results, I can't use Game::Finish() to close off the GuiStage
+	GuiStage::Finish();
+}
 
 void Game::Begin()
 {
@@ -19,7 +26,7 @@ void Game::Begin()
 	MapConfig->GetFloatValue( "CameraPosY", &camStart.Y );
 	MapConfig->GetFloatValue( "CameraZoom", &camZoom );
 	MultiplyVector( &camStart, view->PixelsPerUnit );
-	view->MoveTo( &camStart, 12.0 );
+	view->MoveTo( &camStart, 32.0 );
 	view->ZoomTo( (double)camZoom, 0.04 );
 	view->RotateOrigin.X = (double)Level->MapWidth / 2.0;
 	view->RotateOrigin.Y = (double)Level->MapHeight / 2.0;
@@ -64,7 +71,7 @@ void Game::Resume()
 
 void Game::Finish()
 {
-	GuiStage::Finish();
+	// GuiStage::Finish();	// Dealt with in the destructor
 }
 
 void Game::Event(ALLEGRO_EVENT *e)
@@ -188,15 +195,32 @@ void Game::Event(ALLEGRO_EVENT *e)
 				view->MoveTo( d, 1000.0 );
 			}
 			break;
+
+		case ALLEGRO_EVENT_BUTTON_CLICK:
+			if( e->user.data1 == (intptr_t)overlayNextWaveShowHide )
+			{
+				if( overlayNextWaveShowHideTargetHeight == ((overlayNextWavePanel->FontSize * 5) + (overlayNextWavePanel->BorderWidth * 2) + 6) )
+				{
+					overlayNextWaveShowHideTargetHeight = (overlayNextWavePanel->BorderWidth * 3) + overlayNextWavePanel->FontSize;
+				} else {
+					overlayNextWaveShowHideTargetHeight = (overlayNextWavePanel->FontSize * 5) + (overlayNextWavePanel->BorderWidth * 2) + 6;
+				}
+			}
+			break;
 	}
 }
 
 void Game::Update()
 {
 	Level->Update();
+
+
 	GuiStage::Update();
-	if( overlayNextWaveUnit != 0 )
-		overlayNextWaveUnit->Update();
+
+	NextWaveUpdate();
+
+	CheckEndOfGameConditions();
+
 	cursor->Update();
 	view->Update();
 }
@@ -209,7 +233,10 @@ void Game::Render()
 
 	GuiStage::Render();
 
-	if( overlayNextWaveUnit != 0 )
+
+	Vector2 cBR;
+	overlayNextWavePanel->GetClientArea( 0, &cBR );
+	if( overlayNextWaveUnit != 0 && cBR.Y > overlayNextWaveUnit->AbsolutePosition.Y + (overlay->PixelsPerUnit / 2) )
 		overlayNextWaveUnit->Render( overlay );
 
 	cursor->Render();
@@ -225,45 +252,7 @@ void Game::InitialiseGui()
 	TileSize = view->PixelsPerUnit;
 	viewDrag = false;
 
-	overlayNextWavePanel = new Panel();
-	overlayNextWavePanel->Position.X = 4;
-	overlayNextWavePanel->Position.Y = 4;
-	overlayNextWavePanel->Size.X = 160;
-	overlayNextWavePanel->Size.Y = (overlayNextWavePanel->FontSize * 5) + (overlayNextWavePanel->BorderWidth * 2) + 6;
-	overlayNextWavePanel->Title = "Next Wave";
-	overlayNextWavePanel->HasTitle = true;
-	overlayNextWavePanel->Border = al_map_rgb( 192, 255, 192 );
-	overlayNextWavePanel->Background = al_map_rgba( 48, 64, 48, 96 );
-	overlayNextWavePanel->Foreground = al_map_rgb( 0, 0, 0 );
-	Controls.push_back( overlayNextWavePanel );
-
-	overlayNextWaveClass = new Label();
-	overlayNextWaveClass->Background.a = 0;
-	overlayNextWaveClass->Position.X = 12 + (overlayNextWavePanel->BorderWidth * 2) + overlay->PixelsPerUnit;
-	overlayNextWaveClass->Position.Y = overlayNextWavePanel->FontSize + (overlayNextWavePanel->BorderWidth * 2) + 12;
-	overlayNextWaveClass->Text = "A Label";
-	Controls.push_back( overlayNextWaveClass );
-
-	overlayNextWaveHealth = new Label();
-	overlayNextWaveHealth->Background.a = 0;
-	overlayNextWaveHealth->Position.X = 12 + (overlayNextWavePanel->BorderWidth * 2) + overlay->PixelsPerUnit;
-	overlayNextWaveHealth->Position.Y = (overlayNextWavePanel->FontSize * 2) + (overlayNextWavePanel->BorderWidth * 2) + 12;
-	overlayNextWaveHealth->Text = "B Label";
-	Controls.push_back( overlayNextWaveHealth );
-
-	overlayNextWaveShield = new Label();
-	overlayNextWaveShield->Background.a = 0;
-	overlayNextWaveShield->Position.X = 12 + (overlayNextWavePanel->BorderWidth * 2) + overlay->PixelsPerUnit;
-	overlayNextWaveShield->Position.Y = (overlayNextWavePanel->FontSize * 3) + (overlayNextWavePanel->BorderWidth * 2) + 12;
-	overlayNextWaveShield->Text = "C Label";
-	Controls.push_back( overlayNextWaveShield );
-
-	overlayNextWaveTime = new Label();
-	overlayNextWaveTime->Background.a = 0;
-	overlayNextWaveTime->Position.X = 12 + (overlayNextWavePanel->BorderWidth * 2) + overlay->PixelsPerUnit;
-	overlayNextWaveTime->Position.Y = (overlayNextWavePanel->FontSize * 4) + (overlayNextWavePanel->BorderWidth * 2) + 12 ;
-	overlayNextWaveTime->Text = "D Label";
-	Controls.push_back( overlayNextWaveTime );
+	NextWaveInitGui();
 
 	cursor = new Mouse();
 	cursor->AllowBoxing = true;
@@ -274,4 +263,116 @@ void Game::UninitialiseGui()
 	delete cursor;
 	delete view;
 	delete overlay;
+}
+
+void Game::NextWaveInitGui()
+{
+	overlayNextWavePanel = new Panel();
+	overlayNextWavePanel->Position.X = 4;
+	overlayNextWavePanel->Position.Y = 4;
+	overlayNextWavePanel->Size.X = 240;
+	overlayNextWavePanel->Size.Y = (overlayNextWavePanel->FontSize * 5) + (overlayNextWavePanel->BorderWidth * 2) + 6;
+	overlayNextWavePanel->Title = "   Next Wave";
+	overlayNextWavePanel->HasTitle = true;
+	overlayNextWavePanel->Border = al_map_rgb( 192, 255, 192 );
+	overlayNextWavePanel->Background = al_map_rgba( 48, 64, 48, 96 );
+	overlayNextWavePanel->Foreground = al_map_rgb( 0, 0, 0 );
+	Controls.push_back( overlayNextWavePanel );
+
+	overlayNextWaveClass = new Label();
+	overlayNextWaveClass->Background.a = 0;
+	overlayNextWaveClass->Position.X = 12 + (overlayNextWavePanel->BorderWidth * 2) + overlay->PixelsPerUnit;
+	overlayNextWaveClass->Position.Y = overlayNextWavePanel->FontSize + (overlayNextWavePanel->BorderWidth * 2) + 12;
+	overlayNextWaveClass->Text = "";
+	Controls.push_back( overlayNextWaveClass );
+
+	overlayNextWaveHealth = new Label();
+	overlayNextWaveHealth->Background.a = 0;
+	overlayNextWaveHealth->Position.X = 12 + (overlayNextWavePanel->BorderWidth * 2) + overlay->PixelsPerUnit;
+	overlayNextWaveHealth->Position.Y = (overlayNextWavePanel->FontSize * 2) + (overlayNextWavePanel->BorderWidth * 2) + 12;
+	overlayNextWaveHealth->Text = "";
+	Controls.push_back( overlayNextWaveHealth );
+
+	overlayNextWaveShield = new Label();
+	overlayNextWaveShield->Background.a = 0;
+	overlayNextWaveShield->Position.X = 12 + (overlayNextWavePanel->BorderWidth * 2) + overlay->PixelsPerUnit;
+	overlayNextWaveShield->Position.Y = (overlayNextWavePanel->FontSize * 3) + (overlayNextWavePanel->BorderWidth * 2) + 12;
+	overlayNextWaveShield->Text = "";
+	Controls.push_back( overlayNextWaveShield );
+
+	overlayNextWaveTime = new Label();
+	overlayNextWaveTime->Background.a = 0;
+	overlayNextWaveTime->Position.X = 12 + (overlayNextWavePanel->BorderWidth * 2) + overlay->PixelsPerUnit;
+	overlayNextWaveTime->Position.Y = (overlayNextWavePanel->FontSize * 4) + (overlayNextWavePanel->BorderWidth * 2) + 12 ;
+	overlayNextWaveTime->Text = "";
+	Controls.push_back( overlayNextWaveTime );
+
+	overlayNextWaveShowHide = new Button();
+	overlayNextWaveShowHide->Background = al_map_rgb( 192, 255, 192 );
+	overlayNextWaveShowHide->Foreground = al_map_rgb( 0, 0, 0 );
+	overlayNextWaveShowHide->BorderHighlight = al_map_rgb( 0, 0, 0 );
+	overlayNextWaveShowHide->BorderLowlight = al_map_rgb( 0, 0, 0 );
+	overlayNextWaveShowHide->FontName = "Resource/unicons.ttf";
+	overlayNextWaveShowHide->FontSize = 18;
+	overlayNextWaveShowHide->Text = "f";
+	overlayNextWaveShowHide->Position.X = 6;
+	overlayNextWaveShowHide->Position.Y = 6;
+	overlayNextWaveShowHide->Size.X = 16;
+	overlayNextWaveShowHide->Size.Y = 16;
+	Controls.push_back( overlayNextWaveShowHide );
+
+	overlayNextWaveShowHideTargetHeight = overlayNextWavePanel->Size.Y;
+}
+
+void Game::NextWaveUpdate()
+{
+	Vector2 cBR;
+	overlayNextWavePanel->GetClientArea( 0, &cBR );
+
+	// Hide/Show next wave window
+	if( overlayNextWaveShowHideTargetHeight != overlayNextWavePanel->Size.Y )
+		overlayNextWavePanel->Size.Y += (overlayNextWaveShowHideTargetHeight > overlayNextWavePanel->Size.Y ? 1 : -1);
+	if( overlayNextWaveUnit != 0 )
+		overlayNextWaveUnit->Update();
+
+	if( cBR.Y < overlayNextWaveTime->Position.Y + overlayNextWaveTime->Size.Y )
+		overlayNextWaveTime->Visible = false;
+	else
+		overlayNextWaveTime->Visible = true;
+	if( cBR.Y < overlayNextWaveShield->Position.Y + overlayNextWaveShield->Size.Y )
+		overlayNextWaveShield->Visible = false;
+	else
+		overlayNextWaveShield->Visible = true;
+	if( cBR.Y < overlayNextWaveHealth->Position.Y + overlayNextWaveHealth->Size.Y )
+		overlayNextWaveHealth->Visible = false;
+	else
+		overlayNextWaveHealth->Visible = true;
+	if( cBR.Y < overlayNextWaveClass->Position.Y + overlayNextWaveClass->Size.Y )
+		overlayNextWaveClass->Visible = false;
+	else
+		overlayNextWaveClass->Visible = true;
+
+}
+
+void Game::CheckEndOfGameConditions()
+{
+	Results* resultsStage;
+
+	for(std::vector<Building*>::iterator i = Level->Buildings.begin(); i != Level->Buildings.end(); i++ )
+	{
+		Building* b = (Building*)(*i);
+		Base* plyBase = dynamic_cast<Base*>(b);
+		if( plyBase != 0 )
+		{
+			// TODO: If we want to support multiple bases later on, we'll need to change this condition
+			if( plyBase->GetCurrentShields() <= 0.0 && plyBase->GetCurrentHealth() <= 0.0 )
+			{
+				resultsStage = new Results( (Game*)GameStack->Pop(), false );	// Send player to the results screen for this game, and pop it out of the stack
+				cursor->Position.X = -20;
+				GameStack->Push( (Stage*)resultsStage );
+				return;
+			}
+			break;
+		}
+	}
 }
