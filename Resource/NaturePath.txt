@@ -1,9 +1,10 @@
 
 # Test Comment Line
 
-Name	= "Nature's Path"
-Money	= 1000
-Interest = 3
+Name		= "Nature's Path"
+BaseHealth	= 600
+Money		= 1000
+Interest	= 3
 
 CameraPosX = 12
 CameraPosY = 11

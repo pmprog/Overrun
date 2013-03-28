@@ -17,6 +17,7 @@ class Results : GuiStage // Stage
 
 		int			backgroundAlpha;
 		Label*	labelResult;
+		Button* buttonQuit;
 
   public:
 		Results( Game* curGame, bool Victory );

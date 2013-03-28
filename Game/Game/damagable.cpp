@@ -21,7 +21,13 @@ Damagable::~Damagable()
 
 void Damagable::Update()
 {
-	float HealthMaxChange = (HealthMax / 1000);
+	float HealthMaxChange = HealthMax / 1000;
+	if( abs(HealthTarget - HealthCurrent) / HealthMaxChange > 100 )
+		HealthMaxChange *= 6.0;
+	else if( abs(HealthTarget - HealthCurrent) / HealthMaxChange > 75 )
+		HealthMaxChange *= 3.5;
+	else if( abs(HealthTarget - HealthCurrent) / HealthMaxChange > 40 )
+		HealthMaxChange *= 2.0;
 
 	if( HealthCurrent != HealthTarget )
 	{

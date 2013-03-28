@@ -6,9 +6,12 @@
 
 Map::Map( Game* CurrentGame, ConfigFile* LevelData )
 {
+	int BaseHealth;
+
 	CurGame = CurrentGame;
 	LevelData->GetIntegerValue( "Width", &MapWidth );
 	LevelData->GetIntegerValue( "Height", &MapHeight );
+	LevelData->GetIntegerValue( "BaseHealth", &BaseHealth );
 
 	MapData = (uint8_t*)malloc( MapWidth * MapHeight * sizeof( uint8_t ) );
 	for( int y = 0; y < MapHeight; y++ )
@@ -37,7 +40,7 @@ Map::Map( Game* CurrentGame, ConfigFile* LevelData )
 
 		LevelData->GetStringValue( "StartingStructures", i, &bname );
 		if( bname == "Base" )
-			b = new Base( CurGame, 1000 );
+			b = new Base( CurGame, BaseHealth );
 		// TODO: Add building classes here
 
 

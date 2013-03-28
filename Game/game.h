@@ -25,14 +25,13 @@ class Game : GuiStage // Stage
 		Button*	overlayNextWaveShowHide;
 		int			overlayNextWaveShowHideTargetHeight;
 
-		Map* Level;
-		std::list<Wave*>				Waves;
-
 		ALLEGRO_TIMER* timerDelay;
 		ALLEGRO_TIMER* timerSpawn;
 
   public:
 		int TileSize;
+		Map* Level;
+		std::list<Wave*>				Waves;
 
 		~Game();
 

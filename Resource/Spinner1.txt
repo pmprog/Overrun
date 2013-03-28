@@ -7,7 +7,7 @@ SpawnDelay = 0.4
 UnitCount = 30
 
 Health = 100
-DamageToBase = 5
+DamageToBase = 7
 Reward = 10
 
 Shields = 50

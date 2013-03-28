@@ -58,19 +58,20 @@ void Results::Update()
 {
 	if( backgroundAlpha < 192 )
 	{
+		gameStage->Level->Update();
 		backgroundAlpha += 4;
 	} else {
 		if( labelResult->Background.a < 1.0 )
 		{
+			gameStage->Level->Update();
 			labelResult->Background.a += 0.04;
 			if( labelResult->Background.a > 1.0 )
 				labelResult->Background.a = 1.0;
-		}
-		if( labelResult->Foreground.a < 1.0 )
-		{
-			labelResult->Foreground.a += 0.04;
-			if( labelResult->Foreground.a > 1.0 )
-				labelResult->Foreground.a = 1.0;
+			labelResult->Foreground.a = labelResult->Background.a;
+			buttonQuit->Background.a = labelResult->Background.a;
+			buttonQuit->Foreground.a = labelResult->Background.a;
+			buttonQuit->BorderHighlight.a = labelResult->Background.a;
+			buttonQuit->BorderLowlight.a = labelResult->Background.a;
 		}
 	}
 
@@ -103,6 +104,18 @@ void Results::InitialiseGui()
 	labelResult->Background.a = 0;
 	labelResult->Foreground.a = 0;
 	Controls.push_back( labelResult );
+
+	buttonQuit = new Button();
+	buttonQuit->Background = al_map_rgba( 192, 255, 192, 0 );
+	buttonQuit->Foreground = al_map_rgba( 0, 0, 0, 0 );
+	buttonQuit->BorderHighlight = al_map_rgba( 220, 255, 220, 0 );
+	buttonQuit->BorderLowlight = al_map_rgba( 96, 128, 96, 0 );
+	buttonQuit->Text = "Return To Menu";
+	buttonQuit->Position.X = CurrentConfiguration->ScreenWidth - 172;
+	buttonQuit->Position.Y = CurrentConfiguration->ScreenHeight - (buttonQuit->FontSize * 2) - 12;
+	buttonQuit->Size.X = 160;
+	buttonQuit->Size.Y = buttonQuit->FontSize * 2;
+	Controls.push_back( buttonQuit );
 }
 
 void Results::UninitialiseGui()
